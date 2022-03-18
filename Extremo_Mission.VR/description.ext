@@ -1,0 +1,368 @@
+/*
+	## EXTREMO
+	## Nikko Renolds
+*/
+
+#include "defines.hpp"
+
+class CfgPatches
+{
+    class Extremo_Mission
+	{
+        class authors_info
+		{
+			class author_0
+			{
+				name = "Nikko";
+				uid = "76561199109931625";
+				email = "Ni1kko@outlook.com";
+				github = "github.com/Ni1kko";
+			};	
+			class author_1
+			{
+				name = "HappyFeet";
+				uid = "76561198147157388";
+				email = "Stephenallen1414@gmail.com";
+				github = "github.com/Spodini";
+			};
+		};
+        version = "1.0.72";
+		armaVersion= "2.04";
+	};
+};
+
+class Header
+{
+	gameType="Survive";
+	minPlayers=1;
+	maxPlayers=60;
+};
+
+//--- Arma Settings
+author = "Nikko";
+onLoadName = "Extremo Survival";
+loadScreen = "textures\logo.paa";
+scriptedPlayer = true;
+disableRandomization[] = {"All"};
+enableDebugConsole[] = {"76561199109931625", "76561198147157388"}; 
+showWatch = false;
+allowProfileGlasses = false;
+joinUnassigned = false;
+skipLobby = true; // bypassing role selection screen
+OnLoadIntro = "";
+OnLoadIntroTime = 0;
+OnLoadMissionTime = 0;
+allowFunctionsRecompile = false;
+disabledAI = true;
+showSquadRadar = false;
+showUAVFeed = false;
+showCompass = false;
+showGPS = true;
+showGroupIndicator = true;
+enableItemsDropping = false;// Disable dropping items while swimming
+briefing = false;// Briefing will still be displayed until all clients are connected and done loading :(
+debriefing = false;// Defines if the debriefing is shown or not at the end of the mission. 
+allowFunctionsLog = true;// Allow RPT loging
+forceRotorLibSimulation = 2;// https://community.bistudio.com/wiki/Description.ext#forceRotorLibSimulation
+disableChannels[] = {0, 2};// https://community.bistudio.com/wiki/Description.ext#disableChannels
+showHUD[] = {
+	true, // Scripted HUD (same as showHUD command)
+	false, // Vehicle and unit info
+	false, // Vehicle radar [HIDDEN]
+	false, // Vehicle compass [HIDDEN]
+	false, // Tank direction indicator
+	false, // Commanding menu
+	false, // Group info bar
+	true, // HUD weapon cursors
+	false, // Vehicle display panels
+	false, // "x killed by y" systemChat messages
+	true  // force show drawIcon3D icons
+};
+respawn = "BASE";
+respawnDialog = false;
+respawnOnStart = disabled;
+respawnButton = true;
+respawnTemplates[] = {"Extremo"};
+
+///////////////////////////////////////////////
+// These are broken as fuck, do not use them!
+corpseManagerMode = 0;
+corpseLimit = 20;//max dead bodys
+corpseRemovalMinTime = 1800;
+corpseRemovalMaxTime = 3600;
+wreckManagerMode = 0;
+wreckLimit = 2;
+wreckRemovalMinTime = 60;
+wreckRemovalMaxTime = 360;
+minPlayerDistance = 50; // meters. Default: 0
+///////////////////////////////////////////////
+
+class CfgRespawnTemplates
+{
+	class Extremo
+	{
+		onPlayerKilled="Extremo_fnc_event_playerKilled";
+		onPlayerRespawn="Extremo_fnc_event_playerRespawned"; 
+	    respawnLocation[] = SpawnIsland;
+        bleedoutDuration = 100;	// 0 - 1000
+        hideBodyOnRespawn = false;
+        deleteBodyOnRespawn = false;
+        class RespawnTimers 
+        {
+            Executed = 15;
+            Bleedout = 10;
+            Suicide  = 20;
+            Revived  = 3;
+        };
+	};
+};
+
+class CfgPlayer
+{
+	class Extremo
+	{
+        startCash = 100;
+        startBank = 10000;
+	    respawnUnits[] = {
+            "C_Man_casual_6_F"
+        };
+        forbiddenPositions[] = {
+            {SpawnIsland, 90}
+        };
+        
+	};
+};
+
+#include "ui\common.hpp"
+
+class RscTitles 
+{
+    class RscExtremo_BleedoutScreen 
+    {
+        idd = 10;
+        fadein = 1;
+        fadeout = 1;
+        name = "RscExtremo_BleedoutScreen";
+        onLoad = "uiNameSpace setVariable ['RscExtremo_BleedoutScreen', _this select 0]";
+        onUnLoad = "uiNameSpace setVariable ['RscExtremo_BleedoutScreen', displayNull]";
+        duration = 10e100;
+
+        class controls 
+        {
+            class progressbar: RscProgress
+            {
+                idc = 1;
+                x = GUI_GRID_X(7);
+                y = GUI_GRID_Y(30.5);
+                w = GUI_GRID_W(25.5);
+                h = GUI_GRID_H(1.5);
+                colorBackground[] = {0,0,0,0.5};
+            };
+            class title: RscStructuredText
+            {
+                idc = 2;
+                x = GUI_GRID_X(5.5);
+                y = GUI_GRID_Y(28.5);
+                w = GUI_GRID_W(28.5);
+                h = GUI_GRID_H(1.5);
+            };
+            class medic: RscStructuredText
+            {
+                idc = 3;
+                x = GUI_GRID_X(42.5);
+                y = GUI_GRID_Y(-10);
+                w = GUI_GRID_W(25.5);
+                h = GUI_GRID_H(1.5);
+            };
+        };
+
+        class controlsBackground 
+        {
+            class background: IGUIBack
+            {
+                idc = -1;
+                x = GUI_GRID_X(-28.5);
+                y = GUI_GRID_Y(27);
+                w = GUI_GRID_W(97);
+                h = GUI_GRID_H(6.5);
+                colorBackground[] = {0.3, 0.3, 0.3, 0.3};
+            };
+        };
+    };
+    class RscExtremo_ProgressScreen 
+    {
+        name = "RscExtremo_ProgressScreen";
+        idd = 38200;
+        fadein = 1;
+        duration = 99999999999;
+        fadeout = 1;
+        movingEnable = 0;
+        onLoad="uiNamespace setVariable ['RscExtremo_ProgressScreen',_this select 0]";
+        
+        class controls {
+            class actionTitle: RscStructuredText
+            {
+                idc = 3391;
+                text = "<t align='center'>Loading...</t>";
+                x = 0.360781 * safezoneW + safezoneX;
+                y = 0.687 * safezoneH + safezoneY;
+                w = 0.283594 * safezoneW;
+                h = 0.022 * safezoneH;
+            };
+            class progress: RscProgress
+            {
+                idc = 3390;
+                x = 0.350469 * safezoneW + safezoneX;
+                y = 0.709 * safezoneH + safezoneY;
+                w = 0.304219 * safezoneW;
+                h = 0.022 * safezoneH;
+                colorFrame[] = {0, 0, 0, 0};
+            };
+            class progressTextBackground: RscStructuredText
+            {
+                idc = 3393;
+                x = 0.350469 * safezoneW + safezoneX;
+                y = 0.709 * safezoneH + safezoneY;
+                w = 0.304219 * safezoneW;
+                h = 0.022 * safezoneH;
+                //colorBackground[] = {0, 0, 0, 0.3};
+            };
+            class actionTitleProgress: RscStructuredText
+            {
+                idc = 3392;
+                text = "<t align='center'>100%</t>";
+                x = 0.350469 * safezoneW + safezoneX;
+                y = 0.709 * safezoneH + safezoneY;
+                w = 0.304219 * safezoneW;
+                h = 0.022 * safezoneH;
+            };
+            class cancelInfo: RscStructuredText
+            {
+                idc = 1102;
+                text = "<t align='center'>Press </t><t color='#C478DB' align='center'> [SPACE] </t><t align='center'> to cancel</t>";
+                x = 0.360781 * safezoneW + safezoneX;
+                y = 0.731 * safezoneH + safezoneY;
+                w = 0.283594 * safezoneW;
+                h = 0.022 * safezoneH;
+            };
+        };
+    };
+    class RscExtremo_SplashScreen 
+    {
+        idd = 8001001;
+        onLoad = "uiNameSpace setVariable ['RscExtremo_SplashScreen', _this select 0]";
+        onUnLoad = "uiNameSpace setVariable ['RscExtremo_SplashScreen', displayNull]";
+        duration = 10e10;
+        class controls {
+            class Title: Extremo_ctrlStatic {
+                idc            = 1;
+                text           = "";
+                x              = "safezoneX";
+                y              = "0.881986 * safezoneH + safezoneY";
+                w              = "safezoneW";
+                h              = "0.0506 * safezoneH";
+                font           = "RobotoCondensedBold";
+                sizeEx         = "0.04 * safezoneH";
+                style          = 0x01;
+            };
+            class Subtitle: TITLE {
+                idc            = 2;
+                y              = "0.911941 * safezoneH + safezoneY";
+                h              = "0.0418 * safezoneH";
+                font           = "RobotoCondensed";
+                sizeEx         = "0.025 * safezoneH";
+            };
+        };
+        class controlsBackground {};
+    };
+};
+
+class cfgFunctions 
+{
+    class Extremo 
+    {
+        class database {
+            file = "core\database"; 
+            class database_client2server {}; 
+        };
+        class events {
+            file = "core\events"; 
+            class event_handleDamage {};
+            class event_playerKilled {};
+            class event_playerRespawned {};
+        };
+        class medic {
+            file = "core\medical";
+            class bledout {};
+            class medical_bledoutEVH {};
+            class canDie {};
+            class createRevivedEffects {};
+            class destroyRevivedEffects {};
+            class givePainKillers {};
+            class incapacitated {};
+            class revive {};
+            class revived {};
+        };
+        class player {
+            file = "core\player"; 
+            class player_login {}; 
+        };
+        class sys {
+            file = "core\system"; 
+            class system_animationSync {};
+            class system_destroyLayer {};
+            class system_deathType {};
+            class system_replacmentCallback {};
+            class system_splashScreen {};
+            class system_splashScreenEH {};
+        };
+    };
+};
+
+class CfgRemoteExec 
+{
+    class Functions 
+    {
+        // RemoteExec modes:
+		// 0 - disabled
+		// 1 - allowed, taking whitelist into account
+		// 2 - allowed, ignoring whitelist (default, because of backward compatibility)
+		mode = 2;// 2 while we are developing
+
+		// Ability to send JIP messages:
+		// 0 - disable JIP messages
+		// 1 - allow JIP messages (default)
+		jip = 1;
+
+		//-- Whitelist
+        class bis_fnc_debugconsoleexec { allowedTargets = 0; jip = 0; };
+        class extremo_fnc_system_animationSync { allowedTargets = 0; jip = 0; };
+        class extremo_fnc_database_server2client { allowedTargets = 1; jip = 0; };
+        class extremo_fnc_database_client2server { allowedTargets = 2; jip = 0; };
+    };
+
+    class Commands 
+    {
+        // RemoteExec modes:
+		// 0 - disabled
+		// 1 - allowed, taking whitelist into account
+		// 2 - allowed, ignoring whitelist (default, because of backward compatibility)
+		mode = 2;// 2 while we are developing
+
+        // Ability to send JIP messages:
+		// 0 - disable JIP messages
+		// 1 - allow JIP messages (default)
+        jip = 0;
+
+        //-- Whitelist
+        class addHandgunItem { allowedTargets = 0; jip = 0; };
+        class addMagazine { allowedTargets = 0; jip = 0; };
+        class addPrimaryWeaponItem { allowedTargets = 0; jip = 0; };
+        class addWeapon { allowedTargets = 0; jip = 0; };
+        class setFuel { allowedTargets = 0; jip = 0; };
+        class hideGlobal { allowedTargets = 0; jip = 0; };
+        class systemChat { allowedTargets = 0; jip = 0; };
+        class lock { allowedTargets = 0; jip = 0; };
+        class deleteVehicle { allowedTargets = 0; jip = 0; };
+    };
+};

@@ -1,0 +1,19 @@
+{
+  "Port": 2302,
+  "ProfileName": "Extremo",
+  "ProfilesPath": "D:\\SteamLibrary\\steamapps\\common\\Arma3Server\\@ExtremoServer\\server_configs\\serverData",
+  "CfgsPath": "D:\\SteamLibrary\\steamapps\\common\\Arma3Server\\@ExtremoServer\\server_configs",
+  "CfgPerformance": "A3_Performance.cfg",
+  "CfgDedicatedServer": "A3_DedicatedServer.cfg",
+  "CustomServerDirectory": "D:\\SteamLibrary\\steamapps\\common\\Arma3Server",
+  "ServerMods": [
+    "@ExtremoServer"
+  ],
+  "ClientMods": [
+  ],
+  "EnableHyperThreading": false,
+  "EnableLargePage": false,
+  "EnableExperimentalAlg": true,
+  "EnableAutoInit": true,
+  "Enable64Bit": true
+}
