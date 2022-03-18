@@ -51,6 +51,11 @@ switch _table do {
 					format["Reading database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
 					private _request = ["READ","characters",[["BEGuid","S64ID","LastKnownName","LastLoadout","LastPosition","Class","Wallet"],_whereClause]]call Extremo_fnc_database_request;
 
+					//--- DB Down...
+					if("DB:Task-failure" in _request)exitWith {
+						[_rexecID, "Warning error occured with database"] call Extremo_fnc_rcon_kick;
+					};
+
 					//--- Bad.. fail safe
 					if (typeName _request isNotEqualTo "ARRAY") exitWith {
 						missionNamespace setVariable [_uniqueVar, (_attempts + 1), true];
