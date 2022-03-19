@@ -68,7 +68,7 @@ switch _table do {
 
 						format["Inserting database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
 
-						["CREATE", "characters", 
+						_request = ["CREATE", "characters", 
 							[//What
 								["BEGuid", 			["DB","STRING", _BEGuid] call Extremo_fnc_database_parse],
 								["S64ID", 			["DB","STRING", _steamID] call Extremo_fnc_database_parse],
@@ -78,6 +78,11 @@ switch _table do {
 							]
 						]call Extremo_fnc_database_request;
 
+						if("DB:Task-failure" in _request)exitWith {
+							[_rexecID, "Warning error occured with database"] call Extremo_fnc_rcon_kick;
+						};
+						
+						format["Inserted database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
 						[_this,{_this remoteExec ["extremo_fnc_database_server2client", 2]}] remoteExec ['call', _rexecID];
 					};
 
@@ -129,10 +134,24 @@ switch _table do {
 						if(_LastPosition isEqualTo [0,0,0])then{
 							_LastPosition = nil;
 						}else{
+							_LastPosition params [
+								["_posX",0,[0]],
+								["_posY",0,[0]],
+								["_posZ",0,[0]]
+							];
+							
+							//Push scripted respawn position into forbidden positions
 							_forbiddenPositions pushback [_respawnPosition,90];
 
+							//Check Last position is not within any forbidden positions
 							if(true in (_forbiddenPositions apply {_LastPosition distance2D (_x#0) <= (_x#1)}))then{
 								_LastPosition = nil;
+							};
+ 
+							//Last position Not on land, so reset Z axis so they don't freefall from Last position to land. (mostly occurs if player was flying whilst server was restarted)
+							if(_posZ > 0) then {
+								_posZ = 0.00001;
+								_LastPosition set [2, _posZ];
 							};
 						};
 					}else{
@@ -147,8 +166,11 @@ switch _table do {
 					};
 
 					//--- Any changes?
-					if(count _updates > 0)then{
-						["UPDATE", "characters",[_updates,_whereClause]]call Extremo_fnc_database_request;
+					if(count _updates > 0)then{ 
+						_request = ["UPDATE", "characters",[_updates,_whereClause]]call Extremo_fnc_database_request;
+						if("DB:Update:Task-completed" in _request)then {
+							format["Updated database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
+						};
 					};
 
 					//--- Send result to client
