@@ -131,6 +131,13 @@ class CfgPlayer
 	    respawnUnits[] = {
             "C_Man_casual_6_F"
         };
+        respawnMarkers[] = {
+            "extremo_marker_spawnzone_northjackson",
+            "extremo_marker_spawnzone_eastside",
+            "extremo_marker_spawnzone_city",
+            "extremo_marker_spawnzone_cityisle",
+            "extremo_marker_spawnzone_mistyfarms"
+        };
         forbiddenPositions[] = {
             {SpawnIsland, 90}
         };
