@@ -52,7 +52,7 @@ skipLobby = true; // bypassing role selection screen
 OnLoadIntro = "";
 OnLoadIntroTime = 0;
 OnLoadMissionTime = 0;
-allowFunctionsRecompile = false;
+allowFunctionsRecompile = true;
 disabledAI = true;
 showSquadRadar = false;
 showUAVFeed = false;
@@ -141,13 +141,12 @@ class CfgPlayer
         forbiddenPositions[] = {
             {SpawnIsland, 90}
         };
-        
 	};
 };
 
 #include "ui\common.hpp"
 
-class RscTitles 
+class RscTitles
 {
     class RscExtremo_BleedoutScreen 
     {
@@ -289,21 +288,36 @@ class RscTitles
     };
 };
 
-class cfgFunctions 
+class cfgFunctions
 {
-    class Extremo 
+    class Extremo
     {
-        class database {
+        //--- Database
+        class Database
+        {
             file = "core\database"; 
             class database_client2server {}; 
         };
-        class events {
+
+        //--- Events
+        class Events
+        {
             file = "core\events"; 
             class event_handleDamage {};
             class event_playerKilled {};
             class event_playerRespawned {};
         };
-        class medic {
+
+        //--- GUI
+        class Gui
+        {
+            file = "core\gui"; 
+            class gui_spawnmenu {}; 
+        };
+
+        //--- Medical
+        class Medical
+        {
             file = "core\medical";
             class medical_bledout {};
             class medical_bledoutEVH {};
@@ -315,12 +329,18 @@ class cfgFunctions
             class medical_revive {};
             class medical_revived {};
         };
-        class player {
-            file = "core\player"; 
+
+        //--- Player
+        class Player
+        {
+            file = "core\player";
             class player_init {};
-            class player_login {}; 
+            class player_login {};
         };
-        class sys {
+
+        //--- System
+        class System
+        {
             file = "core\system"; 
             class system_animationSync {};
             class system_destroyLayer {};
@@ -328,11 +348,13 @@ class cfgFunctions
             class system_replacmentCallback {};
             class system_splashScreen {};
             class system_splashScreenEH {};
+            class system_locationInfo {};
+            class system_directionInfo {};
         };
     };
 };
 
-class CfgRemoteExec 
+class CfgRemoteExec
 {
     class Functions 
     {

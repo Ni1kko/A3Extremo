@@ -14,16 +14,6 @@ if !(getRemoteSensorsDisabled) then{
 	disableRemoteSensors true;
 };
 
-//temp
-Extremo_fnc_rcon_kick = {
-	params [ 
-		["_ownerID",-999,[0]],
-		["_message","",[""]]
-	];
-	
-	[_message] call Extremo_fnc_util_serverlog;
-};
-
 //--- Database setup
 if(call Extremo_fnc_database_initialize)then{
 
