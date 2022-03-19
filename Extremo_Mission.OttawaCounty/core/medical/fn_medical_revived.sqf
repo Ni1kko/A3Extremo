@@ -3,7 +3,7 @@
 	## Nikko Renolds
 
 	
-	[_target, _reviver, false] call Extremo_fnc_revived;
+	[_target, _reviver, false] call extremo_fnc_medical_revived;
 */
 
 if !(params [
@@ -27,7 +27,7 @@ ppEffectDestroy Extremo_var_death_blurEffect;
 ppEffectDestroy Extremo_var_death_colorEffect;
 
 //-- Revived effects
-[] remoteExecCall ["Extremo_fnc_createRevivedEffects", _target];
+[] remoteExecCall ["extremo_fnc_medical_createRevivedEffects", _target];
 
 hint format [""];
 if !(_adminRevive) then {

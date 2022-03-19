@@ -1,3 +1,12 @@
+/*
+	## EXTREMO Survival
+	## Nikko Renolds
+
+	_text = "%ProfileName% your steamid is: %SteamID% and steam name is %<U>SteamName%. Visit %Website%"; 
+	["_text"] call Extremo_fnc_system_replacmentCallback; 
+	_text
+*/
+
 params[
 	["_variable","",[""]]
 ];

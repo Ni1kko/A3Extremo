@@ -14,7 +14,7 @@ if(Extremo_var_splashTimer isNotEqualTo Extremo_var_respawnTimer)then{
 };
 
 if (Extremo_var_respawnTimer - diag_ticktime < 0) then {		
-	[_player,_deleteBody] spawn Extremo_fnc_bledout;
+	[_player,_deleteBody] spawn extremo_fnc_medical_bledout;
 	Extremo_var_respawnTimer = nil;
 	removeMissionEventHandler ["EachFrame", missionNamespace getVariable [_EVHVar,-1]];
 };

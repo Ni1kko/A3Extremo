@@ -82,7 +82,7 @@ if (!isNull _source && {_source isNotEqualTo _player}) then
 	};
 };
 
-private _canDie = [_player,_selectionName,_damage,_source,_projectile,_hitPartIndex,_instigator] call Extremo_fnc_canDie;
+private _canDie = [_player,_selectionName,_damage,_source,_projectile,_hitPartIndex,_instigator] call extremo_fnc_medical_canDie;
 private _execute = false;
 
 if (_canDie) then {
@@ -103,7 +103,7 @@ if (_canDie) then {
 			if (!(_player getVariable ["extremo_var_incapacitated", false])) then 
 			{
 				_player setVariable ["extremo_var_canExecute", false, true];
-				[_source,_player] spawn Extremo_fnc_incapacitated;
+				[_source,_player] spawn extremo_fnc_medical_incapacitated;
 
 				[_player] spawn {
 					params ["_player"];

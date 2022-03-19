@@ -2,10 +2,10 @@
 	## EXTREMO
 	## Nikko Renolds
 
-	[cursorObject, player] call extremo_fnc_revive;
+	[cursorObject, player] call extremo_fnc_medical_revive;
 */
 
-if(!canSuspend)exitWith {_this spawn Extremo_fnc_revive};
+if(!canSuspend)exitWith {_this spawn extremo_fnc_medical_revive};
 disableSerialization;
 
 params [
@@ -103,7 +103,7 @@ Extremo_var_actionBlocked = false;
 
 //---
 if (_cP >= 1) then {
-	[_target, _reviver, false] call Extremo_fnc_revived;
+	[_target, _reviver, false] call extremo_fnc_medical_revived;
 
 	//-- Re-enable thier damage
 	_target allowDamage true;

@@ -12,43 +12,29 @@ params [
     ["_directPlayIDStr","",[""]],		// String - same as _id but in string format, so could be exactly compared to user marker ids. (since Arma 3 v1.95) 
     ["_customArgs",[]] 		            // User-Defined - custom passed args (since Arma 3 v2.03) 
 ];
- 
-private _BEGuid = ExtremoBeGuidHashmap getOrDefault [_characterSteamID,'BEGuid' callExtension ("get:"+_characterSteamID)]; 
-private _BEGuidNotCached = _characterSteamID in keys ExtremoBeGuidHashmap;
 
-if(_BEGuid isEqualTo "")exitWith{
-    //[_ownerID,"Error calculating players BEGuid"] call Extremo_fnc_rcon_kick;
-};
+private _client = ((count _characterSteamID) isEqualTo 17 AND _characterOwnerID > 3);
+private _server = ((_characterSteamID isEqualTo "__SERVER__" OR _characterOwnerID isEqualTo 2) AND not(_client));
 
-if _BEGuidNotCached then{
-    ExtremoBeGuidHashmap set [_characterSteamID, _BEGuid];
-};
-
-//--- Send to client
-[_BEGuid, 
+switch (true) do 
+{
+    //--- Load Server
+    case _server: 
+    { 
+        finishMissionInit;
+        [] call extremo_fnc_server_init;
+    };
+    
+    //--- Load Client
+    case _client:
     {
-        BEGuid = compileFinal str _this;
-        onPreloadFinished {
-            onPreloadFinished { };
-            //startLoadingScreen ["Loading...", "RscExtremo_InitScreen"];
-            //[player,true,_LastLoadout,_LastPosition,_Wallet] spawn Extremo_fnc_player_login;
-            
-            []spawn{
-                    
-                [0,"LOADING", "Fetching your data",true,true] spawn Extremo_fnc_system_splashScreen;
-                uiSleep 2;
-                ["characters","load",player] remoteExec ["extremo_fnc_database_server2client", 2];
-                
-                while{true}do{
-                    uiSleep (3 * 60);
-                    if(!isNull(uiNamespace getVariable ["RscExtremo_SplashScreen",displayNull]))then{
-                        waitUntil{isNull(uiNamespace getVariable ["RscExtremo_SplashScreen",displayNull])};   
-                    };
-                    [0, ["Extremo",[1,0,0,0.25]],"",false,false] spawn Extremo_fnc_system_splashScreen;
-                    uiSleep 50;
-                    [10, ["Extremo",[1,0,0,0.25]],"%Website%",false,false] spawn Extremo_fnc_system_splashScreen;
-                };
-            };
-        };
-    }
-] remoteExec ['call', _characterOwnerID];
+        private _BEGuid = ExtremoBeGuidHashmap getOrDefault [_characterSteamID,'BEGuid' callExtension ("get:"+_characterSteamID)]; 
+        private _BEGuidNotCached = not(_characterSteamID in keys ExtremoBeGuidHashmap);
+        private _BEGuidNotCalculated = _BEGuid isEqualTo "";
+
+        if _BEGuidNotCalculated exitWith{[_characterOwnerID,"<extremo_fnc_event_player_connected> Error calculating players BEGuid"] call Extremo_fnc_rcon_kick};
+        if _BEGuidNotCached then{ExtremoBeGuidHashmap set [_characterSteamID, _BEGuid]};
+
+        [_BEGuid] remoteExec ['extremo_fnc_player_init', _characterOwnerID];
+    };
+};

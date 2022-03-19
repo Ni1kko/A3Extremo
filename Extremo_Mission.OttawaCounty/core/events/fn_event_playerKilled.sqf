@@ -18,7 +18,7 @@ switch (missionNamespace getVariable ["Extremo_var_healthState",0]) do {
 		private _pos = getPosATL _corpse;
 
 		//Start incapacitated system
-		["respawned",player] spawn Extremo_fnc_incapacitated;
+		["respawned",player] spawn extremo_fnc_medical_incapacitated;
 
 		[_corpse, false] remoteExec ["hideObjectGlobal", 2];
 		player setPosATL _pos;

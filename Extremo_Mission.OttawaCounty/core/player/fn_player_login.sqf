@@ -105,19 +105,25 @@ if(_deleteoldcharacter)then{
 };
 
 //--- Setup character events
-//_newcharacter addEventHandler ["Killed", { _this call extremo_fnc_event_player_killed}];
-//_newcharacter addEventHandler ["Fired",{_this call extremo_fnc_event_player_weaponFired}]; 
-//_newcharacter addEventHandler ["FiredNear", { _this call extremo_fnc_event_player_firedNear}];
-//_newcharacter addEventHandler ["Explosion", { _this call extremo_fnc_event_player_explosion}];
-//_newcharacter addEventHandler ["Hit", { _this call extremo_fnc_event_player_hit}]; 
-//_newcharacter addEventHandler ["Put", { _this call extremo_fnc_event_player_put}];
-//_newcharacter addEventHandler ["Take",{_this call extremo_fnc_event_player_takeItem}];
-//_newcharacter addEventHandler ["InventoryClosed", {_this call extremo_fnc_event_player_inventoryClosed}];
-//_newcharacter addEventHandler ["InventoryOpened", {_this call extremo_fnc_event_player_inventoryOpened}];
-_newcharacter addEventHandler ["handleDamage", {_this call extremo_fnc_event_handleDamage}];
+{_newcharacter call compile ("_this addEventHandler ['"+_x+"', {_this call " + str(missionNamespace getVariable [format ["extremo_fnc_event_%1",tolower _x], {}]) + "}]; nil");}forEach[
+	"Fired",
+	"FiredNear",
+	"Explosion",
+	"Hit",
+	"Put",
+	"Take",
+	"InventoryClosed", 
+	"InventoryOpened", 
+	"handleDamage"
+];
 
 Extremo_fnc_spawn_openmenu = {
 	private _locname = "your chosen location";
+	//extremo_marker_spawnzone_northjackson
+	//extremo_marker_spawnzone_eastside
+	//extremo_marker_spawnzone_city
+	//extremo_marker_spawnzone_cityisle
+	//extremo_marker_spawnzone_mistyfarms
 	[7,"SPAWNED", format ["You have spawned at %1",_locname],false,false] spawn Extremo_fnc_system_splashScreen;
 };
 

@@ -34,11 +34,10 @@ class CfgFunctions
             class event_mpKilled {};
         };
 
-        //--- Extremo Session Functions
-        class Session_Functions
+        class Server_Functions
         {
-            file = "\Extremo_Server\functions\session"; 
-            class session_create {};//triggred after player joins server 
+            file = "\Extremo_Server\functions\server"; 
+            class server_init {};
         };
     };
 };

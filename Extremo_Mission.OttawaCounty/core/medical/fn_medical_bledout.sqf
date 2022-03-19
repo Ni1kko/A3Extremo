@@ -22,7 +22,7 @@ if((missionNamespace getVariable ["Extremo_var_death_colorEffect",-1]) isNotEqua
 	Extremo_var_death_colorEffect = nil;
 };
 
-[] call Extremo_fnc_destroyRevivedEffects;
+[] call extremo_fnc_medical_destroyRevivedEffects;
 
 [_character,_deleteBody] spawn Extremo_fnc_player_login;
  

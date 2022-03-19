@@ -97,6 +97,11 @@ wreckRemovalMaxTime = 360;
 minPlayerDistance = 50; // meters. Default: 0
 ///////////////////////////////////////////////
 
+welcomeMessages[] = {
+    "Welcome %SteamName%, have fun and respect the rules...",
+    "%Website%"
+};
+
 class CfgRespawnTemplates
 {
 	class Extremo
@@ -293,18 +298,19 @@ class cfgFunctions
         };
         class medic {
             file = "core\medical";
-            class bledout {};
+            class medical_bledout {};
             class medical_bledoutEVH {};
-            class canDie {};
-            class createRevivedEffects {};
-            class destroyRevivedEffects {};
-            class givePainKillers {};
-            class incapacitated {};
-            class revive {};
-            class revived {};
+            class medical_canDie {};
+            class medical_createRevivedEffects {};
+            class medical_destroyRevivedEffects {};
+            class medical_givePainKillers {};
+            class medical_incapacitated {};
+            class medical_revive {};
+            class medical_revived {};
         };
         class player {
             file = "core\player"; 
+            class player_init {};
             class player_login {}; 
         };
         class sys {
@@ -325,9 +331,9 @@ class CfgRemoteExec
     {
         // RemoteExec modes:
 		// 0 - disabled
-		// 1 - allowed, taking whitelist into account
-		// 2 - allowed, ignoring whitelist (default, because of backward compatibility)
-		mode = 2;// 2 while we are developing
+		// 1 - enabled, taking whitelist into account
+		// 2 - enabled, ignoring whitelist (default, because of backward compatibility)
+		mode = 1;// 2 while we are developing
 
 		// Ability to send JIP messages:
 		// 0 - disable JIP messages
@@ -335,19 +341,25 @@ class CfgRemoteExec
 		jip = 1;
 
 		//-- Whitelist
+        class foski_changetrafficlights { allowedTargets = 0; jip = 0; };
+        class bis_fnc_execvm { allowedTargets = 0; jip = 0; };
         class bis_fnc_debugconsoleexec { allowedTargets = 0; jip = 0; };
         class extremo_fnc_system_animationSync { allowedTargets = 0; jip = 0; };
-        class extremo_fnc_database_server2client { allowedTargets = 1; jip = 0; };
-        class extremo_fnc_database_client2server { allowedTargets = 2; jip = 0; };
+        class extremo_fnc_player_init { allowedTargets = 1; jip = 0; };
+        class extremo_fnc_medical_revive { allowedTargets = 1; jip = 0; };
+        class extremo_fnc_medical_revived { allowedTargets = 1; jip = 0; };
+        class extremo_fnc_medical_createRevivedEffects { allowedTargets = 1; jip = 0; };
+        class extremo_fnc_database_server2client { allowedTargets = 0; jip = 0; };
+        class extremo_fnc_database_client2server { allowedTargets = 0; jip = 0; };
     };
 
     class Commands 
     {
         // RemoteExec modes:
-		// 0 - disabled
-		// 1 - allowed, taking whitelist into account
-		// 2 - allowed, ignoring whitelist (default, because of backward compatibility)
-		mode = 2;// 2 while we are developing
+		// 0 - disabled 
+		// 1 - enabled, taking whitelist into account
+		// 2 - enabled, ignoring whitelist (default, because of backward compatibility)
+		mode = 1;// 2 while we are developing
 
         // Ability to send JIP messages:
 		// 0 - disable JIP messages
@@ -359,10 +371,12 @@ class CfgRemoteExec
         class addMagazine { allowedTargets = 0; jip = 0; };
         class addPrimaryWeaponItem { allowedTargets = 0; jip = 0; };
         class addWeapon { allowedTargets = 0; jip = 0; };
+        class addAction { allowedTargets = 1; jip = 0; };
         class setFuel { allowedTargets = 0; jip = 0; };
-        class hideGlobal { allowedTargets = 0; jip = 0; };
-        class systemChat { allowedTargets = 0; jip = 0; };
-        class lock { allowedTargets = 0; jip = 0; };
-        class deleteVehicle { allowedTargets = 0; jip = 0; };
+        class hideObjectGlobal { allowedTargets = 0; jip = 0; };
+        class systemChat { allowedTargets = 1; jip = 0; };
+        class hint { allowedTargets = 1; jip = 0; };
+        class lock { allowedTargets = 1; jip = 0; };
+        class deleteVehicle { allowedTargets = 2; jip = 0; };
     };
 };

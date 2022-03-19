@@ -27,7 +27,7 @@ switch _table do {
 				["BEGuid",str _BEGuid]
 			];
 
-			if _BEGuidNotCalculated exitWith{[_rexecID,"Error calculating players BEGuid"] call Extremo_fnc_rcon_kick};
+			if _BEGuidNotCalculated exitWith{[_rexecID,"<extremo_fnc_event_databse_server2client> Error calculating players BEGuid"] call Extremo_fnc_rcon_kick};
 			if _BEGuidNotCached then {
 				ExtremoBeGuidHashmap set [_steamID, _BEGuid];
 				_whereClause pushBackUnique ["S64ID", ["DB","STRING", _steamID] call Extremo_fnc_database_parse];

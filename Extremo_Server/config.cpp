@@ -34,7 +34,7 @@ class CfgFunctions
 { 
     class Extremo 
     {
-        class Server_Functions
+        class Server_Root_Functions
         {
             file = "\Extremo_Server"; 
             class preInit {preInit=1;};
