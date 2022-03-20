@@ -403,6 +403,7 @@ class CfgRemoteExec
         class addAction { allowedTargets = 1; jip = 0; };
         class setFuel { allowedTargets = 0; jip = 0; };
         class hideObjectGlobal { allowedTargets = 0; jip = 0; };
+        class execvm { allowedTargets = 0; jip = 0; };
         class systemChat { allowedTargets = 1; jip = 0; };
         class hint { allowedTargets = 1; jip = 0; };
         class lock { allowedTargets = 1; jip = 0; };
