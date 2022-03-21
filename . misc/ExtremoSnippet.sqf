@@ -32,13 +32,12 @@ if(isNil "Extremo_fnc_getVariable")then{
 		_value
 	";
 
-	Extremo_test = {};
-	nul = ["Extremo_test"] call Extremo_fnc_callVariable;
+	//Extremo_test = {};
+	//["Extremo_test"] call Extremo_fnc_callVariable;
 };
 
-
-//--- Extremo_fnc_getVariable
-if(isNil "Extremo_fnc_getVariable")then{
+//--- Extremo_fnc_getConfigFunctions
+if(isNil "Extremo_fnc_getConfigFunctions")then{
 	//--- every config function is loaded through this function
 	Extremo_fnc_getConfigFunctions = {
 		params[
@@ -177,5 +176,248 @@ if(isNil "Extremo_fnc_getVariable")then{
 		[_fnclist,_varlist]
 	};
 
-	["Extremo_fnc_getConfigFunctions",[missionConfigFile]] call Extremo_fnc_callVariable;
+	//["Extremo_fnc_getConfigFunctions",[missionConfigFile]] call Extremo_fnc_callVariable;
+};
+
+//--- Extremo_fnc_directionInfo
+if(isNil "Extremo_fnc_directionInfo")then{
+	Extremo_fnc_directionInfo = {
+		private _position = param [0,player,[[],objNull]];
+
+		if(typeName _position isEqualTo "OBJECT")then{
+			_position = position _position; 
+		};
+		private _position = player call BIS_fnc_position;
+		private _worldSize = worldSize / 2;
+		private _nearMapMarkers = (allMapMarkers apply {if (getMarkerPos _x distance2D _position <= 1000) then {_x}else{""}}) - [""];
+		private _nearPlayers = (allPlayers apply {if (_x distance2D _position <= 1000) then {_x}else{""}}) - [""];
+		private _nearVehicles = (vehicles apply {if(_x isKindOf "Air" || _x isKindOf "Car" || _x isKindOf "Ship")then{if (_x distance2D _position <= 1000) then {_x}else{""}}else{""}}) - [""];
+		private _nearLocations = (nearestLocations [[_worldSize, _worldSize],["NameVillage", "NameCity", "NameCityCapital", "NameLocal", "NameMarine", "Hill", "HandDrawnCamp"],sqrt (2 * _worldSize ^ 2),_position] apply {if(text _x isEqualTo "")then{""}else{[_x,text _x]}})- [""]; 
+		private _nearLocationInfo = [_nearLocations] call BIS_fnc_arrayShift;
+		private _nearLocation = [_nearLocationInfo] call BIS_fnc_arrayShift;
+		private _nearLocationName = format ["at grid %1", mapGridPosition _position];
+		private _nearLocationDirectionInfo = [_position] call Extremo_fnc_directionInfo;
+
+		if (!isNull _nearLocation) then {
+			if (_position in _nearLocation) then {
+				_nearLocationName = format ["near %1", text _nearLocation]
+			}else{
+				_nearLocationName = text _nearLocation;
+				_nearLocationDirectionInfo = [locationPosition _nearLocation] call Extremo_fnc_directionInfo;
+			};
+		};
+
+		[_nearLocationDirectionInfo#0,_nearLocationName,format["%1 of %2",_nearLocationDirectionInfo#0,_nearLocationName],_nearLocation,_position,_nearLocationDirectionInfo#1,_nearMapMarkers,_nearPlayers,_nearVehicles]
+	};
+ 
+	//["Extremo_fnc_directionInfo",[player]] call Extremo_fnc_callVariable;
+	//["Extremo_fnc_directionInfo",[[0,0,0]]] call Extremo_fnc_callVariable;
+};
+
+//--- Extremo_fnc_locationInfo 
+if(isNil "Extremo_fnc_locationInfo")then{
+	Extremo_fnc_locationInfo = {
+		private _position = param [0,player,[[],objNull]];
+
+		if(typeName _position isEqualTo "OBJECT")then{
+			_position = position _position; 
+		};
+		private _position = player call BIS_fnc_position;
+		private _worldSize = worldSize / 2;
+		private _nearMapMarkers = (allMapMarkers apply {if (getMarkerPos _x distance2D _position <= 1000) then {_x}else{""}}) - [""];
+		private _nearPlayers = (allPlayers apply {if (_x distance2D _position <= 1000) then {_x}else{""}}) - [""];
+		private _nearVehicles = (vehicles apply {if(_x isKindOf "Air" || _x isKindOf "Car" || _x isKindOf "Ship")then{if (_x distance2D _position <= 1000) then {_x}else{""}}else{""}}) - [""];
+		private _nearLocations = (nearestLocations [[_worldSize, _worldSize],["NameVillage", "NameCity", "NameCityCapital", "NameLocal", "NameMarine", "Hill", "HandDrawnCamp"],sqrt (2 * _worldSize ^ 2),_position] apply {if(text _x isEqualTo "")then{""}else{[_x,text _x]}})- [""]; 
+		private _nearLocationInfo = [_nearLocations] call BIS_fnc_arrayShift;
+		private _nearLocation = [_nearLocationInfo] call BIS_fnc_arrayShift;
+		private _nearLocationName = format ["at grid %1", mapGridPosition _position];
+		private _nearLocationDirectionInfo = [_position] call Extremo_fnc_directionInfo;
+
+		if (!isNull _nearLocation) then {
+			if (_position in _nearLocation) then {
+				_nearLocationName = format ["near %1", text _nearLocation]
+			}else{
+				_nearLocationName = text _nearLocation;
+				_nearLocationDirectionInfo = [locationPosition _nearLocation] call Extremo_fnc_directionInfo;
+			};
+		};
+
+		[
+			_nearLocationDirectionInfo#0,
+			_nearLocationName,
+			format["%1 of %2",_nearLocationDirectionInfo#0,_nearLocationName],
+			_nearLocation,
+			_position,
+			_nearLocationDirectionInfo#1,
+			_nearMapMarkers,
+			_nearPlayers,
+			_nearVehicles
+		]
+	};
+
+	/*(["Extremo_fnc_locationInfo",[player]] call Extremo_fnc_callVariable) params [
+		["_dirName",""],
+		["_nearLocationName",""],
+		["_nearLocationNameOf",""],
+		["_nearLocation",locationNull],
+		["_position",[]],
+		["_dir",0],
+		["_nearMapMarkers",[]],
+		["_nearPlayers",[]],
+		["_nearVehicles",[]]
+	]*/
+};
+
+
+//--- Extremo_fnc_inArray
+if(isNil "Extremo_fnc_inArray")then{
+	Extremo_fnc_inArray = {
+		params [
+			["_query",nil],
+			["_array",[],[[]]]
+		];
+		private _return = "";
+		private _found = false;
+
+		if(isNil "_query") exitWith {_return};
+		if (typeName _array isNotEqualTo "ARRAY") exitWith {debugLog "Log: [findNestedElement] Array (0) should be an Array!"; _return};
+
+		private _searchArrayFunc = {
+			private _array = _this select 0;
+			private _query = _this select 1;
+			private _find = _array find _query;
+
+			if (_find != -1) exitWith {
+				_return = format["%1#%2",_return,_find];
+				_found = true;
+			};
+
+			[_array, _query] call _searchArrayChildrenFunc;
+		};
+
+		private _searchArrayChildrenFunc = {
+			private _array = _this select 0;
+			private _query = _this select 1;
+
+			for "_i" from 0 to ((count _array) - 1) do {
+				private _sub = _array select _i;
+				
+				if (typeName _sub isEqualTo "ARRAY" && !_found) then {
+					_return = format["%1#%2",_return,_i];
+					[_sub, _query] call _searchArrayFunc;
+				};
+			};
+
+			if (!_found && _return != "") then {
+				_return = _return select[0, (count _return)-2];
+			};
+		};
+
+		[_array, _query] call _searchArrayFunc;
+
+		_return
+	};
+
+	private _array = [
+		[
+			[
+				[
+					[
+						[true, false, "test"]
+					]
+				]
+			]
+		]
+	];
+
+	private _arrayPos = ["test",_array] call Extremo_fnc_inArray;
+	private _result = "";
+
+	if(_arrayPos isNotEqualTo "")then{
+		_result = call compile("_array" + _arrayPos)
+	};
+
+	_result
+};
+
+//--- Extremo_fnc_inArray2
+if(isNil "Extremo_fnc_inArray2")then{			
+	Extremo_fnc_inArray2 = {
+		params [
+			["_query",nil],
+			["_array",[],[[]]]
+		];
+
+		private _result = []; 
+		private _tmp = [];
+		private _arrayIndex = 0;
+
+		private _fnc = { 
+			{
+				if (isNil "_x") then {
+					if (isNil "_query") then {
+						_tmp set [_arrayIndex, _forEachIndex];
+						_result pushBack +_tmp;
+					};
+				} else {
+					if (_x isEqualType []) then {
+						_tmp set [_arrayIndex, _forEachIndex];
+						_arrayIndex = _arrayIndex + 1;
+						_x call _fnc;
+						_tmp resize _arrayIndex;
+						_arrayIndex = _arrayIndex - 1;
+					} else {
+						if (!isNil "_query") then {
+							if (_x isEqualTo _query) then {
+								_tmp set [_arrayIndex, _forEachIndex];
+								_result pushBack +_tmp;
+							};
+						};
+					};
+				};
+			} forEach _this;
+		};
+
+		_array call _fnc;
+
+		(if(count _result > 0)then{_result apply {format["#%1",_x joinString "#"]}}else{""});
+	};
+
+	private _array = [
+		[
+			[
+				"test",
+				[
+					[
+						[true, false, "test",[
+							[
+								[
+									[
+										[
+											[
+												[
+													[
+														"test",["test","test"]
+													]
+												]
+											]
+										]
+									]
+								]
+							]
+						]]
+					]
+				]
+			]
+		]
+	];
+
+	private _arrayPos = ["test",_array] call Extremo_fnc_inArray2;
+	private _results = [];
+
+	if(_arrayPos isNotEqualTo "")then{
+		{_results pushBack [call compile("_array" + _x),_x]}forEach _arrayPos;
+	};
+
+	_results //[["test","#0#0#0"],["test","#0#0#1#0#0#2"],["test","#0#0#1#0#0#3#0#0#0#0#0#0#0#0"],["test","#0#0#1#0#0#3#0#0#0#0#0#0#0#1#0"],["test","#0#0#1#0#0#3#0#0#0#0#0#0#0#1#1"]]
 };
