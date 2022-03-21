@@ -425,10 +425,13 @@ if(isNil "Extremo_fnc_inArray2")then{
 //--- Extremo_fnc_inArray3
 if(isNil "Extremo_fnc_inArray3")then{			
 	Extremo_fnc_inArray3 = {
-		reverse _this;
+		params [
+			["_query",nil],
+			["_array",[],[[]]]
+		];
 
 		private _results = [];
-		private _result = _this call BIS_fnc_findAllNestedElements;
+		private _result = [_array,_query] call BIS_fnc_findAllNestedElements;
 
 		_result = (if(count _result > 0)then{_result apply {format["#%1",_x joinString "#"]}}else{""});
 		
