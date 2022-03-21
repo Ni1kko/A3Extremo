@@ -29,6 +29,18 @@ if(typeName _title isEqualTo "ARRAY")then{
 	_titleColor = _color;
 };
 
+if (_title isEqualTo "ERROR") then {
+	_titleColor = [
+		1, //Red
+		0, //Green
+		0, //Blue
+		1  //Alpha
+	];
+	if (_subtitle isNotEqualTo "") then {
+		diag_log format["Extremo Error: %1",_subtitle];	
+	};
+};
+
 private _display = compile 'uiNamespace getVariable ["RscExtremo_SplashScreen",displayNull]';
 private _layer1 = ["RscExtremo_SplashScreenBlackoutLayer"] call BIS_fnc_rscLayer;
 private _layer2 = ["RscExtremo_SplashScreenNoiseLayer"] call BIS_fnc_rscLayer;

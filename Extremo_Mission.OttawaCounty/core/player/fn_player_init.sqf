@@ -30,8 +30,8 @@ onPreloadFinished {
 			[0,"LOADING","Please wait...",true,true] spawn Extremo_fnc_system_splashScreen;
 		}else{
 			[0,"ERROR","An error occured whilst registering key handlers",true,true] spawn Extremo_fnc_system_splashScreen;
-			uiSleep 3;
-			endMission "extremoError";
+			uiSleep 2;
+			"extremoError" call BIS_fnc_endMission;
 		};
 
 		//--- Request server to handle player login 

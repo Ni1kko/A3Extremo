@@ -12,7 +12,9 @@ if(!canSuspend) exitWith {_this spawn Extremo_fnc_gui_spawnmenu; true};
 private _markers = [missionConfigFile >> "CfgPlayer" >> "Extremo", "respawnMarkers", []] call BIS_fnc_returnConfigEntry;
 if (isNull _character) exitWith {false};
 if (count _markers <= 0) exitWith {
-	diag_log "CfgPlayer >> Extremo >> respawnMarkers is empty... place a marker down in editor and put its varname in respawnMarkers";
+	[0,"ERROR","An error occured ('CfgPlayer' >> 'Extremo' >> 'respawnMarkers') is empty...",true,true] spawn Extremo_fnc_system_splashScreen;
+	uiSleep 1.5;
+	"extremoError" call BIS_fnc_endMission;
 	false
 };
 
