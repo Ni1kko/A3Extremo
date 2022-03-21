@@ -421,3 +421,37 @@ if(isNil "Extremo_fnc_inArray2")then{
 
 	_results //[["test","#0#0#0"],["test","#0#0#1#0#0#2"],["test","#0#0#1#0#0#3#0#0#0#0#0#0#0#0"],["test","#0#0#1#0#0#3#0#0#0#0#0#0#0#1#0"],["test","#0#0#1#0#0#3#0#0#0#0#0#0#0#1#1"]]
 };
+
+//--- Extremo_fnc_inArray3
+if(isNil "Extremo_fnc_inArray3")then{			
+	Extremo_fnc_inArray3 = {
+		reverse _this;
+
+		private _results = [];
+		private _result = _this call BIS_fnc_findAllNestedElements;
+
+		_result = (if(count _result > 0)then{_result apply {format["#%1",_x joinString "#"]}}else{""});
+		
+		if(_result isNotEqualTo "")then{
+			{_results pushBack [call compile("_array" + _x),_x]}forEach _result;
+		};
+
+		_results
+	};
+
+	private _array = [
+		[
+			"test",
+			[
+				[
+					[
+						[true, false, "test"]
+					]
+				]
+			]
+		]
+	];
+
+	["test",_array] call Extremo_fnc_inArray3;//[["test","#0#0"],["test","#0#1#0#0#0#2"]]
+	
+};
