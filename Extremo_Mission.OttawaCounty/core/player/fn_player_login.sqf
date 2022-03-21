@@ -45,7 +45,7 @@ showSubtitles false;
 showChat false;
 0 fadeSound 0;
 
-[0,"SETUP", "Almost done",true,true] spawn Extremo_fnc_system_splashScreen;
+[0,"SETUP", "Almost done",true,true] spawn Extremo_fnc_gui_splashScreen;
 uiSleep 3;
 
 { 
@@ -122,14 +122,14 @@ if(_deleteoldcharacter)then{
 _newcharacter setVariable ["ExtremoDataLoaded",true,true];
 
 //--- Spawn menu
-[0,"SETUP", "Preparing player spawn",true,true] spawn Extremo_fnc_system_splashScreen;
+[0,"SETUP", "Preparing player spawn",true,true] spawn Extremo_fnc_gui_splashScreen;
 uiSleep 3;
 if _resapwn then{
-	[0,"SETUP", "Loading spawn options",true,true] spawn Extremo_fnc_system_splashScreen;
+	[0,"SETUP", "Loading spawn options",true,true] spawn Extremo_fnc_gui_splashScreen;
 	uiSleep 1.5;
 	[_newcharacter] spawn Extremo_fnc_gui_spawnmenu;
 }else{
-	[7,"SPAWNED", "You have spawned at your old location",false,false] spawn Extremo_fnc_system_splashScreen;
+	[7,"SPAWNED", "You have spawned at your old location",false,false] spawn Extremo_fnc_gui_splashScreen;
 
 	//--- Preloader
 	waitUntil {_newcharacter nearObjectsReady 2500};

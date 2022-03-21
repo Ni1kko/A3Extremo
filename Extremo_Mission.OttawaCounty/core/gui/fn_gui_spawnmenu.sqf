@@ -12,7 +12,7 @@ if(!canSuspend) exitWith {_this spawn Extremo_fnc_gui_spawnmenu; true};
 private _markers = [missionConfigFile >> "CfgPlayer" >> "Extremo", "respawnMarkers", []] call BIS_fnc_returnConfigEntry;
 if (isNull _character) exitWith {false};
 if (count _markers <= 0) exitWith {
-	[0,"ERROR","An error occured ('CfgPlayer' >> 'Extremo' >> 'respawnMarkers') is empty...",true,true] spawn Extremo_fnc_system_splashScreen;
+	[0,"ERROR","An error occured ('CfgPlayer' >> 'Extremo' >> 'respawnMarkers') is empty...",true,true] spawn Extremo_fnc_gui_splashScreen;
 	uiSleep 1.5;
 	"extremoError" call BIS_fnc_endMission;
 	false
@@ -40,8 +40,8 @@ _character setPosATL _markerPosition;
 waitUntil {_newcharacter nearObjectsReady 2500};
 waitUntil {50 preloadObject "SoldierW"};
 
-[0,"SPAWNED","",true,true] spawn Extremo_fnc_system_splashScreen;
+[0,"SPAWNED","",true,true] spawn Extremo_fnc_gui_splashScreen;
 uiSleep 2.5;
-[7,"SPAWNED", format ["You have spawned at %1",_markerText],false,false] spawn Extremo_fnc_system_splashScreen;
+[7,"SPAWNED", format ["You have spawned at %1",_markerText],false,false] spawn Extremo_fnc_gui_splashScreen;
 
 true

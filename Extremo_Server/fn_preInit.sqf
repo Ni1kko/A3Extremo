@@ -20,7 +20,7 @@ Extremo_fnc_rcon_kick = {
 
 	if (_ownerID > 3) then {
 		[_message,{
-			[0,"ERROR",_this,true,true] spawn Extremo_fnc_system_splashScreen;
+			[0,"ERROR",_this,true,true] spawn Extremo_fnc_gui_splashScreen;
 			uiSleep 1.5;
 			"extremoError" call BIS_fnc_endMission;
 		}] remoteExec ["spawn", _ownerID];	

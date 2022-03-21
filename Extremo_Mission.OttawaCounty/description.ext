@@ -349,7 +349,9 @@ class cfgFunctions
         class Gui
         {
             file = "core\gui"; 
-            class gui_spawnmenu {}; 
+            class gui_spawnmenu {};
+            class gui_splashScreen {};
+            class gui_splashScreenEH {}; 
         };
 
         //--- Medical
@@ -383,8 +385,6 @@ class cfgFunctions
             class system_destroyLayer {};
             class system_deathType {};
             class system_replacmentCallback {};
-            class system_splashScreen {};
-            class system_splashScreenEH {};
             class system_locationInfo {};
             class system_directionInfo {};
         };

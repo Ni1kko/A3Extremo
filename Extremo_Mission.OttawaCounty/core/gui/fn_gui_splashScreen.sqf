@@ -81,12 +81,12 @@ if(_displayTime <= 0)then{
 		Extremo_var_splashTimerEVH = nil;
 	};
 	Extremo_var_splashTimer = diag_tickTime + 99999;
-	[_title,_titleColor,_subtitle,false] call Extremo_fnc_system_splashScreenEH;
+	[_title,_titleColor,_subtitle,false] call Extremo_fnc_gui_splashScreenEH;
 }else{
 	Extremo_var_splashTimer = diag_tickTime + _displayTime;
 	Extremo_var_splashTimerEVH = addMissionEventHandler [
 		"EachFrame",
-		{_thisArgs call Extremo_fnc_system_splashScreenEH},
+		{_thisArgs call Extremo_fnc_gui_splashScreenEH},
 		[_title,_titleColor,_subtitle,_background]
 	];
 };

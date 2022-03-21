@@ -169,7 +169,7 @@ escKeyEH = (uiNamespace getVariable "RscExtremo_BleedoutScreen") displayAddEvent
 			_titleColor = [0, 1, 0, 1];
 			_subtitle = "%<U>ProfileName% You may need medical supplies";
 			_blockEscapeKey = true;
-			[_timer,[_title,_titleColor],_subtitle,true,_blockEscapeKey] spawn Extremo_fnc_system_splashScreen;
+			[_timer,[_title,_titleColor],_subtitle,true,_blockEscapeKey] spawn Extremo_fnc_gui_splashScreen;
 		};
 
 		//--- Other states
@@ -203,7 +203,7 @@ escKeyEH = (uiNamespace getVariable "RscExtremo_BleedoutScreen") displayAddEvent
 		};
 
 		//--- Create splash
-		[_timer,[_title,_titleColor],_subtitle,true,_blockEscapeKey] spawn Extremo_fnc_system_splashScreen;
+		[_timer,[_title,_titleColor],_subtitle,true,_blockEscapeKey] spawn Extremo_fnc_gui_splashScreen;
 
 		//--- Hide body
 		if _hideBody then{

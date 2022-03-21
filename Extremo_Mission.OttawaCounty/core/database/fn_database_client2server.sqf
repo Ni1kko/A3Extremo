@@ -20,7 +20,7 @@ switch _table do
 			["_Wallet",0,[0]]
 		];
 		missionNamespace setVariable ["extremo_var_playerclass", compileFinal str _Class];
-		[0,"LOADED", "Your data has been loaded",true,true] spawn Extremo_fnc_system_splashScreen;
+		[0,"LOADED", "Your data has been loaded",true,true] spawn Extremo_fnc_gui_splashScreen;
 		[player,true,_LastLoadout,_LastPosition,_Wallet] spawn Extremo_fnc_player_login;
 	};
 	case "vehicles": 
