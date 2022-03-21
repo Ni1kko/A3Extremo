@@ -45,7 +45,7 @@ showSubtitles false;
 showChat false;
 0 fadeSound 0;
 
-[0,"Loading", "Almost done",true,true] spawn Extremo_fnc_system_splashScreen;
+[0,"SETUP", "Almost done",true,true] spawn Extremo_fnc_system_splashScreen;
 uiSleep 3;
 
 { 
@@ -117,18 +117,25 @@ if(_deleteoldcharacter)then{
 	"handleDamage"
 ];
 
+
+//---Tell all system players data is loaded
+_newcharacter setVariable ["ExtremoDataLoaded",true,true];
+
 //--- Spawn menu
+[0,"SETUP", "Preparing player spawn",true,true] spawn Extremo_fnc_system_splashScreen;
+uiSleep 3;
 if _resapwn then{
-	[0,"Loading", "Preparing spawn options",true,true] spawn Extremo_fnc_system_splashScreen;
-	uiSleep 3;
+	[0,"SETUP", "Loading spawn options",true,true] spawn Extremo_fnc_system_splashScreen;
+	uiSleep 1.5;
 	[_newcharacter] spawn Extremo_fnc_gui_spawnmenu;
 }else{
 	[7,"SPAWNED", "You have spawned at your old location",false,false] spawn Extremo_fnc_system_splashScreen;
+
+	//--- Preloader
+	waitUntil {_newcharacter nearObjectsReady 2500};
+	waitUntil {50 preloadObject "SoldierW"};
 };
 
-//--- Preloader
-waitUntil {_newcharacter nearObjectsReady 2500};
-waitUntil {50 preloadObject "SoldierW"};
 
 //---  Force showing the chat. Sometimes Arma resets this
 showChat true;

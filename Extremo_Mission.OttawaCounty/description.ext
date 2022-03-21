@@ -102,6 +102,28 @@ welcomeMessages[] = {
     "%Website%"
 };
 
+class CfgKeyHandler 
+{
+    class Extremo
+	{
+        //https://community.bistudio.com/wiki/DIK_KeyCodes#German_keyboard
+        class KeyDown 
+        {
+            functions[] = {
+                //Function,             		[dik,shift,ctrl,alt]   	    		call/spawn
+                {"Extremo_fnc_test1", 			{"DIK_SPACE",true,false,false}, 	"call"		} // Shift + Space
+            };
+        };
+        class KeyUp 
+        {
+            functions[] = {
+                //Function,             		[dik,shift,ctrl,alt]   	    		call/spawn
+                {"Extremo_fnc_test2", 			{"DIK_SPACE",true,true,false}, 	"call"		} // Shift + Ctrl + Space
+            };
+        };
+    };
+};
+
 class CfgRespawnTemplates
 {
 	class Extremo
@@ -142,6 +164,14 @@ class CfgPlayer
             {SpawnIsland, 90}
         };
 	};
+};
+
+class CfgDebriefing 
+{ 
+    //endMission "extremoAborted";
+    DBRIEF(extremoAnticheat,   "Anticheat!",   "Extremo anti-cheat has flagged you.",              "Goodday, your antics have been logged and will be dealt with.");
+    DBRIEF(extremoError,       "Error!",       "An error has occured!",                            "An error occured please report this to the server owner.");
+    DBRIEF(extremoAborted,     "Goodbye!",     "Your data has been sent to the server!",           "www.extremo.co.uk #1 Survival Framework in the UK and Europe.");
 };
 
 #include "ui\common.hpp"
@@ -297,6 +327,13 @@ class cfgFunctions
         {
             file = "core\database"; 
             class database_client2server {}; 
+        };
+
+        //--- DIK
+        class Dik
+        {
+            file = "core\dik"; 
+            class dik_initEventHandlers {}; 
         };
 
         //--- Events

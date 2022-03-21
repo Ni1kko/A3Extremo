@@ -33,6 +33,11 @@ if(_markerText isEqualTo "")then{
 
 _character setVariable ["ExtremoLastSpawnZone",_markerName];
 _character setPosATL _markerPosition;
+
+//--- Preloader
+waitUntil {_newcharacter nearObjectsReady 2500};
+waitUntil {50 preloadObject "SoldierW"};
+
 [0,"SPAWNED","",true,true] spawn Extremo_fnc_system_splashScreen;
 uiSleep 2.5;
 [7,"SPAWNED", format ["You have spawned at %1",_markerText],false,false] spawn Extremo_fnc_system_splashScreen;

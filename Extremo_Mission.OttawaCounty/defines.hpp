@@ -59,5 +59,16 @@
 #define GUI_GRID_W(GRID) 				(GRID * 0.0103125) * safeZoneW
 #define GUI_GRID_H(GRID) 				(GRID * 0.022) * safeZoneH
 
+//--- Config (Helpers)
+#define DBRIEF(CLASSNAME, TITLE, SUBTITLE, DESC)\
+class CLASSNAME { \
+	title = TITLE; \
+	subtitle = SUBTITLE; \
+	description = DESC; \
+	pictureBackground = "textures\logo.paa"; \
+	picture = ""; \
+	pictureColor[] = {0, 0.3, 0.6, 1}; \
+}
+
 //--- 	
 #define SpawnIsland {6242.62,6495.94,0}
