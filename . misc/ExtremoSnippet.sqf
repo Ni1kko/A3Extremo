@@ -1,7 +1,8 @@
 
 
 //--- Extremo_fnc_getVariable
-if(isNil "Extremo_fnc_getVariable")then{
+if(isNil "Extremo_fnc_getVariable")then
+{
 	Extremo_fnc_callVariable = compile "
 		params [
 			['_variable','test',['']],
@@ -37,7 +38,8 @@ if(isNil "Extremo_fnc_getVariable")then{
 };
 
 //--- Extremo_fnc_getConfigFunctions
-if(isNil "Extremo_fnc_getConfigFunctions")then{
+if(isNil "Extremo_fnc_getConfigFunctions")then
+{
 	//--- every config function is loaded through this function
 	Extremo_fnc_getConfigFunctions = {
 		params[
@@ -180,7 +182,8 @@ if(isNil "Extremo_fnc_getConfigFunctions")then{
 };
 
 //--- Extremo_fnc_directionInfo
-if(isNil "Extremo_fnc_directionInfo")then{
+if(isNil "Extremo_fnc_directionInfo")then
+{
 	Extremo_fnc_directionInfo = {
 		private _position = param [0,player,[[],objNull]];
 
@@ -215,7 +218,8 @@ if(isNil "Extremo_fnc_directionInfo")then{
 };
 
 //--- Extremo_fnc_locationInfo 
-if(isNil "Extremo_fnc_locationInfo")then{
+if(isNil "Extremo_fnc_locationInfo")then
+{
 	Extremo_fnc_locationInfo = {
 		private _position = param [0,player,[[],objNull]];
 
@@ -270,7 +274,8 @@ if(isNil "Extremo_fnc_locationInfo")then{
 
 
 //--- Extremo_fnc_inArray
-if(isNil "Extremo_fnc_inArray")then{
+if(isNil "Extremo_fnc_inArray")then
+{
 	Extremo_fnc_inArray = {
 		params [
 			["_query",nil],
@@ -341,7 +346,8 @@ if(isNil "Extremo_fnc_inArray")then{
 };
 
 //--- Extremo_fnc_inArray2
-if(isNil "Extremo_fnc_inArray2")then{			
+if(isNil "Extremo_fnc_inArray2")then
+{			
 	Extremo_fnc_inArray2 = {
 		params [
 			["_query",nil],
@@ -423,7 +429,8 @@ if(isNil "Extremo_fnc_inArray2")then{
 };
 
 //--- Extremo_fnc_inArray3
-if(isNil "Extremo_fnc_inArray3")then{			
+if(isNil "Extremo_fnc_inArray3")then
+{			
 	Extremo_fnc_inArray3 = {
 		params [
 			["_query",nil],
@@ -458,3 +465,65 @@ if(isNil "Extremo_fnc_inArray3")then{
 	["test",_array] call Extremo_fnc_inArray3;//[["test","#0#0"],["test","#0#1#0#0#0#2"]]
 	
 };
+
+//--- extremo_fnc_vehicle_NeturalInit
+if(isNil "extremo_fnc_vehicle_NeturalInit")then
+{	
+	if(hasInterface)then
+	{ 
+		extremo_fnc_vehicle_NeturalInit = { 
+			//init config var
+			Extremo_var_vehicleIsNetural = false;
+			Extremo_var_gear = "D";
+
+			//keyhandler
+			(uiNamespace getVariable "RscDisplayMission") displayAddEventhandler ["KeyDown", {
+				params ["_displayOrControl", "_key", "_shift", "_ctrl", "_alt"];
+
+				if(_key isEqualTo 0x11)exitWith{
+					Extremo_var_vehicleIsNetural = false;
+					Extremo_var_gear = "D";
+					false
+				};
+
+				if(_key isEqualTo 0x1F)exitWith{
+					Extremo_var_vehicleIsNetural = false;
+					Extremo_var_gear = "R";
+					false
+				};
+
+				false
+			}];
+					
+		};
+
+		extremo_fnc_vehicleNeturalAction = {
+			params ["_vehicle", "_caller", "_actionId", "_arguments"];
+			Extremo_var_vehicleIsNetural = true;
+			Extremo_var_gear = "N";
+			hint "Netural Selected";
+			_vehicle disableBrakes true;
+			_vehicle spawn{
+				waitUntil{!Extremo_var_vehicleIsNetural || isNull _this};
+				if(isNull _this)exitWith{};
+				hint format["%1 Selected", ["Drive","Reverse"] select (Extremo_var_gear isEqualTo "R")];
+				_this disableBrakes false;
+			}
+		};
+	};
+
+	if(isServer)then
+	{ 
+		extremo_fnc_vehicle_Init = { 
+			private _vehicle = "C_Offroad_01_F" createVehicle position player;	
+			
+			[_vehicle, ["Select netural", extremo_fnc_vehicleNeturalAction,nil, 0, false, false, "", "!Extremo_var_vehicleIsNetural AND (player isEqualTo driver(vehicle player))"]] remoteExec ["addAction",-2, "extremo_fnc_vehicle_NeturalActionJIP"];	
+
+			[] remoteExec ["extremo_fnc_vehicle_NeturalInit",-2,"extremo_fnc_vehicle_NeturalInitJIP"];  
+		};
+
+		
+		[] spawn extremo_fnc_vehicle_Init
+	};
+};
+
