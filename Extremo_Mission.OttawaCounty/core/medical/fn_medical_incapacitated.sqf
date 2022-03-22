@@ -203,7 +203,7 @@ escKeyEH = (uiNamespace getVariable "RscExtremo_BleedoutScreen") displayAddEvent
 		};
 
 		//--- Create splash
-		[_timer,[_title,_titleColor],_subtitle,true,_blockEscapeKey] spawn Extremo_fnc_gui_splashScreen;
+		[_timer,[_title,_titleColor],_subtitle,true,_blockEscapeKey,true] spawn Extremo_fnc_gui_splashScreen;
 
 		//--- Hide body
 		if _hideBody then{

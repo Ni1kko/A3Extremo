@@ -18,7 +18,7 @@ onPreloadFinished {
 		private _welcomeMessages = [missionConfigFile, "welcomeMessages", []] call BIS_fnc_returnConfigEntry;
 		
 		//--- Make sure player object is loaded before any requests
-		[0,"LOADING","Please wait...",true,true] spawn Extremo_fnc_gui_splashScreen;
+		[0,"LOADING","%Loading%",true,true] spawn Extremo_fnc_gui_splashScreen;
 		uiSleep 1.5;
 		waitUntil{!isNull player};
 
@@ -27,7 +27,7 @@ onPreloadFinished {
 		[0,"SETUP","Registering key handlers",true,true] spawn Extremo_fnc_gui_splashScreen;  
 		if([findDisplay 46,["KeyDown","KeyUp"]] call extremo_fnc_dik_initEventHandlers)then{
 			uiSleep 1.5;
-			[0,"LOADING","Please wait...",true,true] spawn Extremo_fnc_gui_splashScreen;
+			[0,"LOADING","%Loading%",true,true] spawn Extremo_fnc_gui_splashScreen;
 		}else{
 			[0,"ERROR","An error occured whilst registering key handlers",true,true] spawn Extremo_fnc_gui_splashScreen;
 			uiSleep 2;

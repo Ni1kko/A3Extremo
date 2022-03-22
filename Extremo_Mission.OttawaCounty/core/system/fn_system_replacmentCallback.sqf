@@ -17,6 +17,7 @@ private _callbacks = [
 	["%RespawnTimer%", str(round((missionNamespace getVariable ["Extremo_var_respawnTimer",diag_tickTime]) - diag_ticktime))],
 	["%FrameworkVersion%", "Extremo v1.0"],
 	["%Website%", "www.extremo.co.uk"],
+	["%Loading%", "please wait..."],
 
 	//--- player
 	["%SteamID%", getPlayerUID player],

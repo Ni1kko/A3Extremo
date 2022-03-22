@@ -14,14 +14,14 @@
 		["_nearVehicles",[]]
 	];
 */
-
-private _position = param [0,player,[[],objNull]];
-
-if(typeName _position isEqualTo "OBJECT")then{
-	_position = position _position; 
+ 
+private _input = param [0,player,[[],objNull,""]];
+private _position = switch (typeName _input) do {
+	case "OBJECT": {_input call BIS_fnc_position};
+	case "STRING": {getMarkerPos [_input, true]};
+	default {_input};
 };
 
-private _position = player call BIS_fnc_position;
 private _worldSize = worldSize / 2;
 private _nearMapMarkers = (allMapMarkers apply {if (getMarkerPos _x distance2D _position <= 1000) then {_x}else{""}}) - [""];
 private _nearPlayers = (allPlayers apply {if (_x distance2D _position <= 1000) then {_x}else{""}}) - [""];

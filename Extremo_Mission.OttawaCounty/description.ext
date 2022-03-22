@@ -144,6 +144,44 @@ class CfgRespawnTemplates
 	};
 };
 
+class CfgSpawn 
+{
+    activeTemplate = "Extremo";
+
+    /*
+        class Template 
+        {
+            class WorldName 
+            {
+                zones[] = {
+                    {"Title", "Description", "Marker", "Picture"},
+                };
+            };
+        };
+    */
+
+    class Extremo 
+    {
+        class VR 
+        {
+            zones[] = {
+                {"extremo_marker_spawnzone",     "textures\icon.paa"},
+                {"extremo_marker_spawnzone2",    "textures\icon.paa"}
+            };
+        };
+        class OttawaCounty 
+        { 
+            zones[] = {
+                {"extremo_marker_spawnzone_northjackson",    "textures\icon.paa"},
+                {"extremo_marker_spawnzone_eastside",        "textures\icon.paa"},
+                {"extremo_marker_spawnzone_city",            "textures\icon.paa"},
+                {"extremo_marker_spawnzone_cityisle",        "textures\icon.paa"},
+                {"extremo_marker_spawnzone_mistyfarms",      "textures\icon.paa"}
+            };
+        };
+    };
+};
+
 class CfgPlayer
 {
 	class Extremo
@@ -152,13 +190,6 @@ class CfgPlayer
         startBank = 10000;
 	    respawnUnits[] = {
             "C_Man_casual_6_F"
-        };
-        respawnMarkers[] = {
-            "extremo_marker_spawnzone_northjackson",
-            "extremo_marker_spawnzone_eastside",
-            "extremo_marker_spawnzone_city",
-            "extremo_marker_spawnzone_cityisle",
-            "extremo_marker_spawnzone_mistyfarms"
         };
         forbiddenPositions[] = {
             {SpawnIsland, 90}
@@ -175,6 +206,79 @@ class CfgDebriefing
 };
 
 #include "ui\common.hpp"
+
+class RscExtremo_SpawnScreen 
+{
+	idd = 1000;
+	movingEnabled = 0;
+	enableSimulation = 1;
+    onLoad = "[_this#0,'onLoad'] call extremo_fnc_gui_spawnScreenEH";
+    onUnLoad = "[_this#0,'onUnLoad'] call extremo_fnc_gui_spawnScreenEH";
+    
+	class controlsBackground
+	{
+		class Background: Extremo_RscText
+		{
+			idc = 1;
+			x = 0.4175 * safezoneW + safezoneX;
+			y = 0.379 * safezoneH + safezoneY;
+			w = 0.165 * safezoneW;
+			h = 0.308 * safezoneH;
+			colorBackground[] = {0, 0, 0, 0.8};
+		};
+		class Header: Background
+		{
+            idc = 2;
+			text = "Available Spawns";
+			h = 0.022 * safezoneH;
+			colorBackground[] = {0,0,0,1};
+		};
+  	};
+    
+	class controls
+	{ 
+		class Info: Extremo_RscText
+		{
+			idc = 3;
+			text = "";
+			x = 0.4175 * safezoneW + safezoneX;
+			y = 0.401 * safezoneH + safezoneY;
+			w = 0.165 * safezoneW;
+			h = 0.022 * safezoneH;
+			colorBackground[] = {0,0,0,0};
+		};
+		class Selection: Extremo_RscListNBox
+		{
+			idc = 4;
+			text = "";
+			sizeEx = 0.041;
+			coloumns[] = {0,0,0.9};
+			drawSideArrows = false;
+			idcLeft = -1;
+			idcRight = -1;
+			rowHeight = 0.050;
+			x = 0.422657 * safezoneW + safezoneX;
+			y = 0.423 * safezoneH + safezoneY;
+			w = 0.154687 * safezoneW;
+			h = 0.22 * safezoneH;
+			onLBSelChanged = "[_this#0,'onLBSelChanged',_this select [1, count _this]] spawn extremo_fnc_gui_spawnScreenEH";
+		};
+		class Confirm: Extremo_RscButtonMenu
+		{
+			idc = 5;
+			text = "Spawn";
+			x = 0.45875 * safezoneW + safezoneX;
+			y = 0.654 * safezoneH + safezoneY;
+			w = 0.0825 * safezoneW;
+			h = 0.022 * safezoneH;
+			onButtonClick = "[_this#0,'onConfirmClick'] spawn extremo_fnc_gui_spawnScreenEH";
+			class Attributes
+			{
+				align = "center";
+			};
+		};
+	};
+};
 
 class RscTitles
 {
@@ -233,7 +337,7 @@ class RscTitles
     class RscExtremo_ProgressScreen 
     {
         name = "RscExtremo_ProgressScreen";
-        idd = 38200;
+        idd = 11;
         fadein = 1;
         duration = 99999999999;
         fadeout = 1;
@@ -290,7 +394,7 @@ class RscTitles
     };
     class RscExtremo_SplashScreen 
     {
-        idd = 8001001;
+        idd = 12;
         onLoad = "uiNameSpace setVariable ['RscExtremo_SplashScreen', _this select 0]";
         onUnLoad = "uiNameSpace setVariable ['RscExtremo_SplashScreen', displayNull]";
         duration = 10e10;
@@ -349,7 +453,8 @@ class cfgFunctions
         class Gui
         {
             file = "core\gui"; 
-            class gui_spawnmenu {};
+            class gui_spawnScreen {};
+            class gui_spawnScreenEH {};
             class gui_splashScreen {};
             class gui_splashScreenEH {}; 
         };

@@ -8,6 +8,9 @@
 #define false 0
 #define disabled -1
 
+#define IDC_OK 1 //emulate "Ok" button 
+#define IDC_CANCEL 2 //emulate "Cancel" button
+
 //--- UI (Fonts)
 #define FONT_LIGHT    			"PuristaLight"
 #define FONT_HEAVY    			"RobotoCondensed"

@@ -10,7 +10,8 @@ params [
 	["_title","",["",[]]],
 	["_subtitle","",[""]],
 	["_background",true],
-	["_blockEscapeKey",true]
+	["_blockEscapeKey",true],
+	["_keepOpen",false]
 ];
 
 private _titleColor = [
@@ -66,7 +67,7 @@ if(isNull(call _display))then
 
 if(isNil "Extremo_var_splashKeydownEVH")then{ 		
 	if _blockEscapeKey then{ 
-		Extremo_var_splashKeydownEVH = (call _display) displayAddEventhandler ["KeyDown", {(_this#1) isEqualTo 1}];
+		Extremo_var_splashKeydownEVH = (call _display) displayAddEventhandler ["KeyDown", "(_this#1) isEqualTo 1"];
 	};
 }else{
 	if !_blockEscapeKey then{ 
@@ -87,6 +88,6 @@ if(_displayTime <= 0)then{
 	Extremo_var_splashTimerEVH = addMissionEventHandler [
 		"EachFrame",
 		{_thisArgs call Extremo_fnc_gui_splashScreenEH},
-		[_title,_titleColor,_subtitle,_background]
+		[_title,_titleColor,_subtitle,_background,_keepOpen]
 	];
 };
