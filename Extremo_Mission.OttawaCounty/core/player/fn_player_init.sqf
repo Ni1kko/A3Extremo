@@ -34,6 +34,20 @@ onPreloadFinished {
 			"extremoError" call BIS_fnc_endMission;
 		};
 
+		//--- Make sure database is ready
+		if(isNil "extdb_var_database_error")then{
+			[0,"SETUP","Waiting for database to ready up",true,true] spawn Extremo_fnc_gui_splashScreen;
+        	waitUntil {!isNil "extdb_var_database_error"};
+			if(extdb_var_database_error)then{
+				[0,"ERROR","An server-side error occured whilst loading database",true,true] spawn Extremo_fnc_gui_splashScreen;
+				uiSleep 5;
+				"extremoError" call BIS_fnc_endMission;
+			}else{
+				[0,"SETUP","Database loaded",true,true] spawn Extremo_fnc_gui_splashScreen;
+				uiSleep 1.5;
+			};
+		};
+		
 		//--- Request server to handle player login 
 		[0,"SETUP","Fetching your data",true,true] spawn Extremo_fnc_gui_splashScreen;  
 		uiSleep 1.5;
