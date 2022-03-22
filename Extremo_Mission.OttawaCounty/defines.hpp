@@ -65,7 +65,7 @@ class CLASSNAME { \
 	title = TITLE; \
 	subtitle = SUBTITLE; \
 	description = DESC; \
-	pictureBackground = "textures\logo.paa"; \
+	pictureBackground = "textures\logo_debriefing.paa"; \
 	picture = ""; \
 	pictureColor[] = {0, 0.3, 0.6, 1}; \
 }
