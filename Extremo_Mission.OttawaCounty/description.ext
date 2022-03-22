@@ -167,8 +167,8 @@ class CfgPlayer
 };
 
 class CfgDebriefing 
-{ 
-    //endMission "extremoAborted";
+{
+    //https://community.bistudio.com/wiki/BIS_fnc_endMission
     DBRIEF(extremoAnticheat,   "Anticheat!",   "Extremo anti-cheat has flagged you.",              "Goodday, your antics have been logged and will be dealt with.");
     DBRIEF(extremoError,       "Error!",       "An error has occured!",                            "An error occured please report this to the server owner.");
     DBRIEF(extremoAborted,     "Goodbye!",     "Your data has been sent to the server!",           "www.extremo.co.uk #1 Survival Framework in the UK and Europe.");
