@@ -35,7 +35,7 @@ switch _table do {
 
 			switch _action do 
 			{
-				//["characters","load",player] remoteExec ["extremo_fnc_database_server2client", 2];
+				//["characters","load",player] remoteExec ["extremo_fnc_database_client2server", 2];
 				case "load": 
 				{ 
 					private _spawnIsland = [missionConfigFile >> "CfgSpawn" >> "Extremo" >> worldName, "spawnIsland", ""] call BIS_fnc_returnConfigEntry;
@@ -59,7 +59,7 @@ switch _table do {
 					//--- Bad.. fail safe
 					if (typeName _request isNotEqualTo "ARRAY") exitWith {
 						missionNamespace setVariable [_uniqueVar, (_attempts + 1), true];
-						[_this,{_this remoteExec ["extremo_fnc_database_server2client", 2]}] remoteExec ['call', _rexecID];
+						[_this,{_this remoteExec ["extremo_fnc_database_client2server", 2]}] remoteExec ['call', _rexecID];
 					};
 
 					//--- Check for insert 
@@ -83,7 +83,7 @@ switch _table do {
 						};
 						
 						format["Inserted database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
-						[_this,{_this remoteExec ["extremo_fnc_database_server2client", 2]}] remoteExec ['call', _rexecID];
+						[_this,{_this remoteExec ["extremo_fnc_database_client2server", 2]}] remoteExec ['call', _rexecID];
 					};
 
 					//--- 
@@ -175,9 +175,9 @@ switch _table do {
 					};
 
 					//--- Send result to client
-					[_table,_action,_BEGuid,_Class,_LastLoadout,_LastPosition,_Wallet] remoteExec ["extremo_fnc_database_client2server",_rexecID];
+					[_table,_action,_BEGuid,_Class,_LastLoadout,_LastPosition,_Wallet] remoteExec ["extremo_fnc_database_server2client",_rexecID];
 				};
-				//["characters","update",player,20000] remoteExec ["extremo_fnc_database_server2client", 2];
+				//["characters","update",player,20000] remoteExec ["extremo_fnc_database_client2server", 2];
 				case "update": 
 				{
 					private _LastPosition = getPosATL _object;

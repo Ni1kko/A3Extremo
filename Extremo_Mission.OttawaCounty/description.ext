@@ -525,9 +525,9 @@ class CfgRemoteExec
         ExtremoRE_Client(extremo_fnc_medical_revive);
         ExtremoRE_Client(extremo_fnc_medical_revived);
         ExtremoRE_Client(extremo_fnc_medical_createRevivedEffects);
-        ExtremoRE_Client(extremo_fnc_database_client2server);
+        ExtremoRE_Client(extremo_fnc_database_server2client);
         //////////////// SERVER Whitelist ////////////////
-        ExtremoRE_Server(extremo_fnc_database_server2client);
+        ExtremoRE_Server(extremo_fnc_database_client2server);
     };
 
     class Commands 
