@@ -491,9 +491,9 @@ class CfgFunctions
             class system_animationSync {};
             class system_destroyLayer {};
             class system_deathType {};
+            class system_itemDetails {};
             class system_replacmentCallback {};
             class system_locationInfo {};
-            class system_directionInfo {};
         };
     };
 };
