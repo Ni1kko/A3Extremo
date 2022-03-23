@@ -73,5 +73,12 @@ class CLASSNAME { \
 	pictureColor[] = {0, 0.3, 0.6, 1}; \
 }
 
-//--- 	
-#define SpawnIsland {6242.62,6495.94,0}
+//--- RemoteExec (Helpers)
+#define ExtremoRE_Setup(MODE,JIP) mode = MODE; jip = JIP
+#define ExtremoRE_Class(RECLASS,TARGET,JIP) class RECLASS { allowedTargets = TARGET; jip = JIP; }
+#define ExtremoRE_Global(RECLASS) ExtremoRE_Class(RECLASS,0,false)
+#define ExtremoRE_Client(RECLASS) ExtremoRE_Class(RECLASS,1,false)
+#define ExtremoRE_Server(RECLASS) ExtremoRE_Class(RECLASS,2,false)
+#define ExtremoRE_GlobalJIP(RECLASS) ExtremoRE_Class(RECLASS,0,true)
+#define ExtremoRE_ClientJIP(RECLASS) ExtremoRE_Class(RECLASS,1,true)
+#define ExtremoRE_ServerJIP(RECLASS) ExtremoRE_Class(RECLASS,2,true)

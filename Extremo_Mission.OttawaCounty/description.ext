@@ -35,7 +35,7 @@ class Header
 {
 	gameType="Survive";
 	minPlayers=1;
-	maxPlayers=60;
+	maxPlayers=150;
 };
 
 //--- Arma Settings
@@ -129,8 +129,7 @@ class CfgRespawnTemplates
 	class Extremo
 	{
 		onPlayerKilled="Extremo_fnc_event_playerKilled";
-		onPlayerRespawn="Extremo_fnc_event_playerRespawned"; 
-	    respawnLocation[] = SpawnIsland;
+		onPlayerRespawn="Extremo_fnc_event_playerRespawned";
         bleedoutDuration = 100;	// 0 - 1000
         hideBodyOnRespawn = false;
         deleteBodyOnRespawn = false;
@@ -153,6 +152,7 @@ class CfgSpawn
         {
             class WorldName 
             {
+                spawnIsland = "Marker";
                 zones[] = {
                     {"Title", "Description", "Marker", "Picture"},
                 };
@@ -164,6 +164,7 @@ class CfgSpawn
     {
         class VR 
         {
+            spawnIsland = "extremo_marker_spawnisland";
             zones[] = {
                 {"extremo_marker_spawnzone",     "textures\icon.paa"},
                 {"extremo_marker_spawnzone2",    "textures\icon.paa"}
@@ -171,6 +172,7 @@ class CfgSpawn
         };
         class OttawaCounty 
         { 
+            spawnIsland = "extremo_marker_spawnisland";//ToDo: add marker `extremo_marker_spawnisland`
             zones[] = {
                 {"extremo_marker_spawnzone_northjackson",    "textures\icon.paa"},
                 {"extremo_marker_spawnzone_eastside",        "textures\icon.paa"},
@@ -192,7 +194,7 @@ class CfgPlayer
             "C_Man_casual_6_F"
         };
         forbiddenPositions[] = {
-            {SpawnIsland, 90}
+            //{"marker", distance}
         };
 	};
 };
@@ -422,7 +424,7 @@ class RscTitles
     };
 };
 
-class cfgFunctions
+class CfgFunctions
 {
     class Extremo
     {
@@ -498,57 +500,55 @@ class cfgFunctions
 
 class CfgRemoteExec
 {
+    // RemoteExec modes:
+    // 0 - disabled
+    // 1 - enabled, taking whitelist into account
+    // 2 - enabled, ignoring whitelist (default, because of backward compatibility)
+    #define ExtremoRE_Mode 2
+
+    // Ability to send JIP messages:
+    // false - disable JIP messages
+    // true - allow JIP messages (default)
+    #define ExtremoRE_AllowJIP true
+    
     class Functions 
-    {
-        // RemoteExec modes:
-		// 0 - disabled
-		// 1 - enabled, taking whitelist into account
-		// 2 - enabled, ignoring whitelist (default, because of backward compatibility)
-		mode = 1;// 2 while we are developing
+    { 
+		ExtremoRE_Setup(ExtremoRE_Mode,ExtremoRE_AllowJIP);
 
-		// Ability to send JIP messages:
-		// 0 - disable JIP messages
-		// 1 - allow JIP messages (default)
-		jip = 1;
-
-		//-- Whitelist
-        class foski_changetrafficlights { allowedTargets = 0; jip = 0; };
-        class bis_fnc_execvm { allowedTargets = 0; jip = 0; };
-        class bis_fnc_debugconsoleexec { allowedTargets = 0; jip = 0; };
-        class extremo_fnc_system_animationSync { allowedTargets = 0; jip = 0; };
-        class extremo_fnc_player_init { allowedTargets = 1; jip = 0; };
-        class extremo_fnc_medical_revive { allowedTargets = 1; jip = 0; };
-        class extremo_fnc_medical_revived { allowedTargets = 1; jip = 0; };
-        class extremo_fnc_medical_createRevivedEffects { allowedTargets = 1; jip = 0; };
-        class extremo_fnc_database_server2client { allowedTargets = 0; jip = 0; };
-        class extremo_fnc_database_client2server { allowedTargets = 0; jip = 0; };
+        //////////////// GLOBAL Whitelist ////////////////
+        ExtremoRE_Global(foski_changetrafficlights);
+        ExtremoRE_Global(bis_fnc_debugconsoleexec);
+        ExtremoRE_GlobalJIP(bis_fnc_execvm);
+        ExtremoRE_GlobalJIP(extremo_fnc_system_animationSync);
+        //////////////// CLIENT Whitelist ////////////////
+        ExtremoRE_Client(extremo_fnc_player_init);
+        ExtremoRE_Client(extremo_fnc_medical_revive);
+        ExtremoRE_Client(extremo_fnc_medical_revived);
+        ExtremoRE_Client(extremo_fnc_medical_createRevivedEffects);
+        ExtremoRE_Client(extremo_fnc_database_client2server);
+        //////////////// SERVER Whitelist ////////////////
+        ExtremoRE_Server(extremo_fnc_database_server2client);
     };
 
     class Commands 
     {
-        // RemoteExec modes:
-		// 0 - disabled 
-		// 1 - enabled, taking whitelist into account
-		// 2 - enabled, ignoring whitelist (default, because of backward compatibility)
-		mode = 1;// 2 while we are developing
+        ExtremoRE_Setup(ExtremoRE_Mode,ExtremoRE_AllowJIP);
 
-        // Ability to send JIP messages:
-		// 0 - disable JIP messages
-		// 1 - allow JIP messages (default)
-        jip = 0;
-
-        //-- Whitelist
-        class addHandgunItem { allowedTargets = 0; jip = 0; };
-        class addMagazine { allowedTargets = 0; jip = 0; };
-        class addPrimaryWeaponItem { allowedTargets = 0; jip = 0; };
-        class addWeapon { allowedTargets = 0; jip = 0; };
-        class addAction { allowedTargets = 1; jip = 0; };
-        class setFuel { allowedTargets = 0; jip = 0; };
-        class hideObjectGlobal { allowedTargets = 0; jip = 0; };
-        class execvm { allowedTargets = 0; jip = 0; };
-        class systemChat { allowedTargets = 1; jip = 0; };
-        class hint { allowedTargets = 1; jip = 0; };
-        class lock { allowedTargets = 1; jip = 0; };
-        class deleteVehicle { allowedTargets = 2; jip = 0; };
+        //////////////// GLOBAL Whitelist ////////////////
+        ExtremoRE_Global(addHandgunItem);
+        ExtremoRE_Global(addMagazine);
+        ExtremoRE_Global(addPrimaryWeaponItem);
+        ExtremoRE_Global(addWeapon);
+        ExtremoRE_Global(setFuel);
+        ExtremoRE_Global(hideObjectGlobal);
+        ExtremoRE_GlobalJIP(execvm);
+        ExtremoRE_GlobalJIP(lock);
+        //////////////// CLIENT Whitelist ////////////////
+        ExtremoRE_Client(addAction);
+        ExtremoRE_Client(systemChat);
+        ExtremoRE_ClientJIP(hint);
+        ExtremoRE_ClientJIP(switchMove);
+        //////////////// SERVER Whitelist ////////////////
+        ExtremoRE_ServerJIP(deleteVehicle);
     };
 };

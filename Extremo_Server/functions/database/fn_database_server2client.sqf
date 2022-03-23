@@ -38,7 +38,7 @@ switch _table do {
 				//["characters","load",player] remoteExec ["extremo_fnc_database_server2client", 2];
 				case "load": 
 				{ 
-					private _respawnPosition = [missionConfigFile >> "CfgRespawnTemplates" >> "Extremo", "respawnLocation", []] call BIS_fnc_returnConfigEntry;
+					private _spawnIsland = [missionConfigFile >> "CfgSpawn" >> "Extremo" >> worldName, "spawnIsland", ""] call BIS_fnc_returnConfigEntry;
 					private _classes = [missionConfigFile >> "CfgPlayer" >> "Extremo", "respawnUnits", ["C_Man_casual_6_F"]] call BIS_fnc_returnConfigEntry;
 					private _startcash = [missionConfigFile >> "CfgPlayer" >> "Extremo", "startCash", 0] call BIS_fnc_returnConfigEntry;
 					private _forbiddenPositions = [missionConfigFile >> "CfgPlayer" >> "Extremo", "forbiddenPositions", []] call BIS_fnc_returnConfigEntry;
@@ -141,10 +141,11 @@ switch _table do {
 							];
 							
 							//Push scripted respawn position into forbidden positions
-							_forbiddenPositions pushback [_respawnPosition,90];
+							_forbiddenPositions pushback [_spawnIsland,1000];
 
+							
 							//Check Last position is not within any forbidden positions
-							if(true in (_forbiddenPositions apply {_LastPosition distance2D (_x#0) <= (_x#1)}))then{
+							if(true in (_forbiddenPositions apply {_LastPosition distance2D (if(typeName(_x#0) isEqualTo "STRING")then{getMarkerPos(_x#0)}else{_x#0}) <= (_x#1)}))then{
 								_LastPosition = nil;
 							};
  

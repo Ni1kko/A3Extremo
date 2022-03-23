@@ -8,6 +8,5 @@
 //--- SYSTEM
 #undef true
 #undef false
-#undef SpawnIsland
 #define disabled if(true)exitWith{}
 

@@ -32,12 +32,20 @@ if(_group isEqualTo grpNull)then{_group = createGroup independent};
 
 
 [0,"LOGIN", "Requesting character",true,true] spawn Extremo_fnc_gui_splashScreen;
-uiSleep 1.5;
+uiSleep 2.5;
 
 //
-private _respawnPosition = [missionConfigFile >> "CfgRespawnTemplates" >> "Extremo", "respawnLocation", []] call BIS_fnc_returnConfigEntry;
+private _spawnIslandMarker = [missionConfigFile >> "CfgSpawn" >> "Extremo" >> worldName, "spawnIsland", []] call BIS_fnc_returnConfigEntry;
+private _spawnIslandPos = getMarkerPos _spawnIslandMarker;
+if(count _spawnIslandPos < 2)exitWith{
+	[0,"ERROR","An config error occured whilst setting characters position",true,true] spawn Extremo_fnc_gui_splashScreen;
+	uiSleep 3;
+	"extremoError" call BIS_fnc_endMission;
+};
+
+//
 private _class = call(missionNamespace getVariable ["extremo_var_playerclass", {"C_Man_casual_6_F"}]);
-private _newcharacter = _group createUnit [_class, _respawnPosition, [], 0, "CAN_COLLIDE"]; 
+private _newcharacter = _group createUnit [_class, _spawnIslandPos, [], 0, "CAN_COLLIDE"]; 
 private _respawn = true;
 
 //Reveal newbody to the oldbody
@@ -80,9 +88,7 @@ showChat false;
 }forEach [_newcharacter, _oldcharacter];
 
 //--- Wallet
-if(!isNil "_Wallet")then{ 
-	_oldcharacter setVariable ["ExtremoWallet", 0, true];
-}else{
+if(isNil "_Wallet")then{ 
 	_Wallet = 0;
 };
 _newcharacter setVariable ["ExtremoWallet", _Wallet, true];
@@ -115,7 +121,7 @@ if(count _LastPosition isEqualTo 3)then{
 	_newcharacter setPosATL _LastPosition;
 	_respawn = false;
 }else{ 
-	_newcharacter setPosATL _respawnPosition;
+	_newcharacter setPosATL _spawnIslandPos;
 	["characters","update",_newcharacter] remoteExec ["extremo_fnc_database_server2client", 2];
 };
 
