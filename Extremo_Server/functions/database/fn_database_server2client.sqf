@@ -179,15 +179,15 @@ switch _table do {
 				};
 				//["characters","update",player,20000] remoteExec ["extremo_fnc_database_server2client", 2];
 				case "update": 
-				{	
+				{
 					private _LastPosition = getPosATL _object;
 					private _LastLoadout = getUnitLoadout _object;
 					private _Wallet = _object getVariable ["ExtremoWallet", 0];
 
 					//--- Parse data
 					{
-						if((typeName _x#1) isEqualTo _x#2)then{
-							_updates pushBackUnique [_x#0,["DB",_x#3, _x#1] call Extremo_fnc_database_parse];
+						if((typeName (_x#1)) isEqualTo _x#2)then{
+							_updates pushBackUnique [_x#0,["DB",_x#3,_x#1] call Extremo_fnc_database_parse];
 						};
 					}forEach [
 						["Wallet",_Wallet,"SCALAR","A2NET"],
