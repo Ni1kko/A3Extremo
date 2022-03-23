@@ -893,3 +893,217 @@ if(isNil "Extremo_fnc_system_itemDetails")then
 		["_bipods",[],[[]]]
 	]; 	
 };
+
+//--- Extremo_fnc_player_setupEVH
+if(isNil "Extremo_fnc_player_setupEVH")then{
+	Extremo_fnc_player_setupEVH = {
+		params [
+			["_player",player,[objNull]]
+		];
+
+		private _evhIds = [];
+
+		if(isNull _player)exitWith { _evhIds };//bad object
+		if(isPlayer _player AND !hasInterface)exitWith { _evhIds };//object is headless
+		if(!isPlayer _player)exitWith { _evhIds };//object is unknown
+
+		//set cache
+		if(count (missionNamespace getVariable ["ExtremoEvents",[]]) isEqualTo 0)then{
+			missionNamespace setVariable ["ExtremoEvents",[
+				"Fired",
+				"FiredNear",
+				"Explosion",
+				"Hit",
+				"Put",
+				"Take",
+				"InventoryClosed", 
+				"InventoryOpened", 
+				"handleDamage"
+			] apply {
+				compile "
+					_this addEventHandler ['"+_x+"',{
+						_this call (missionNamespace getVariable [format['extremo_fnc_event_%1',tolower '"+_x+"'],{}])
+					}];
+				"
+			}];
+		};
+		
+		//load cache
+		{_evhIds pushBack (_player call _x)} forEach (missionNamespace getVariable ["ExtremoEvents",[]]);
+
+		//
+		_evhIds
+	};
+
+	[player] call Extremo_fnc_player_setupEVH;
+};
+
+//--- Extremo_fnc_event_put
+if(isNil "Extremo_fnc_event_put")then
+{	 
+	Extremo_fnc_event_put = {
+		params [
+			["_unit",objNull,[objNull]],
+			["_container",objNull,[objNull]],
+			["_item","",[""]]
+		];
+
+		([_item] call Extremo_fnc_system_itemDetails) params [
+			["_item","",[""]],
+			["_displayName","",[""]],
+			["_picture","",[""]],
+			["_desc","",[""]],
+			["_category","",[""]],
+			["_type","",[""]],
+			["_weight",0,[0]],
+			["_magazines",[],[[]]],
+			["_muzzles",[],[[]]],
+			["_optics",[],[[]]],
+			["_pointers",[],[[]]],
+			["_bipods",[],[[]]]
+		];
+		
+		private _isPerson = _container isKindOf "Man";
+		private _isVehicle = (true in (["Land","Air","Water"] apply {_container isKindOf _x}));
+		private _needsSorted = (true in ([_type,_category] apply {_x in ["Weapon","Vest","Uniform","Backpack"]}));
+		private _containers = [_container];
+
+		if _needsSorted then
+		{
+			private _fnc_sortContainer = { 
+				private _container = [_this] param [0, objNull, [objNull]];
+				if(_container isEqualTo objNull) exitWith {diag_log format["Invalid object passed."]; false};
+
+				_newInventory = [];
+				_newInventoryBackpacks = [];
+				_newInventoryAmmo = [];
+				_newInventoryWeapons = [];
+				
+				{
+					_searchContainer = _x#1;
+					//Pushback Magazines as [magazine class,ammo count] if not throwable
+					{
+						if(_x#0 call BIS_fnc_isThrowable) then {
+							_newInventory pushBack [_x#0,1];
+						}else{
+							_newInventoryAmmo pushBack [_x#0,_x#1];
+						};
+					}forEach magazinesAmmoCargo _searchContainer;
+					{
+						//Sets inventory as [class,amount] only good for vests,uniforms,and items
+						_newInventory pushBack [_x,((getItemCargo _searchContainer)#1)#_forEachIndex];
+					}forEach (getItemCargo _searchContainer)#0;
+					//Find all backpacks inside containers
+					{
+						_newInventoryBackpacks pushBack [_x call BIS_fnc_basicBackpack,1];
+					}forEach backpackCargo _searchContainer;
+					//Find all weapons and attatchments
+					{
+						_newInventoryWeapons pushBack _x#0;
+						_weaponItems = _x select [1,6];
+						_compare = ["","","",[],[],""];
+						if!(_weaponItems isEqualTo _compare) then {
+							{
+								if (typeName _x isEqualTo "ARRAY") then {
+									if!(_x isEqualTo [])then {
+										_newInventoryAmmo pushBack [_x#0,_x#1];
+									};
+								}else{
+									if!(_x isEqualTo "")then {
+										_newInventory pushBack [_x,1];
+									};
+								};
+							}forEach _weaponItems;
+						};
+					}forEach weaponsItemsCargo _searchContainer;
+				}forEach (everyContainer _container);
+
+				//Search all magazines
+				{
+					if(_x#0 call BIS_fnc_isThrowable) then {
+						_newInventory pushBack [_x#0,1];
+					}else{
+						_newInventoryAmmo pushBack [_x#0,_x#1];
+					};
+				}forEach magazinesAmmoCargo _container;
+
+				//Search all items,vests, and uniforms
+				{
+					//Sets inventory as [class,amount] only good for vests,uniforms,and items
+					_newInventory pushBack [_x,((getItemCargo _container)#1)#_forEachIndex];
+				}forEach (getItemCargo _container)#0;
+
+				//Search for all backpacks
+				{
+					_newInventoryBackpacks pushBack [_x call BIS_fnc_basicBackpack,1];
+				}forEach backpackCargo _container;
+
+				//Search through all weapons
+				{
+					_newInventoryWeapons pushBack _x#0;
+					_weaponItems = _x select [1,6];
+					_compare = ["","","",[],[],""];
+					if!(_weaponItems isEqualTo _compare) then {
+						{
+							if (typeName _x isEqualTo "ARRAY") then {
+								if!(_x isEqualTo [])then {
+									_newInventoryAmmo pushBack [_x#0,_x#1];
+								};
+							}else{
+								if!(_x isEqualTo "")then {
+									_newInventory pushBack [_x,1];
+								};
+							};
+						}forEach _weaponItems;
+					};
+				}forEach weaponsItemsCargo _container;
+
+				clearItemCargoGlobal _container;
+				clearMagazineCargoGlobal _container;
+				clearWeaponCargoGlobal _container;
+				clearBackpackCargoGlobal _container;
+				{
+					_container addItemCargoGlobal [_x#0,_x#1];
+				}forEach _newInventory;
+				{
+					_container addBackpackCargoGlobal [_x#0,_x#1];
+				}forEach _newInventoryBackpacks;
+				{
+					_container addMagazineAmmoCargo [_x#0,1,_x#1];
+				}forEach _newInventoryAmmo;
+				{
+					_container addWeaponWithAttachmentsCargoGlobal [[_x, "", "", "", [], [], ""], 1];
+				}forEach _newInventoryWeapons;
+
+				true
+			};
+			
+			if _isPerson then
+			{
+				_containers =
+				[
+					uniformContainer _unit,
+					vestContainer _unit,
+					backpackContainer _unit
+				];
+			};
+
+			{_x call _fnc_sortContainer}forEach _containers; 
+		};
+
+		switch (true) do {
+			case _isPerson: {["characters","update",_unit] remoteExec ["extremo_fnc_database_client2server", 2]};
+			case _isVehicle: {["vehicles","update",_unit] remoteExec ["extremo_fnc_database_client2server", 2]};
+		};
+	};
+};
+
+//--- Extremo_fnc_event_take
+if(isNil "Extremo_fnc_event_take")then
+{
+	Extremo_fnc_event_take = {
+		params ["_unit", "_container", "_item"];
+
+		["characters","update",_unit] remoteExec ["extremo_fnc_database_client2server", 2];
+	};
+};
