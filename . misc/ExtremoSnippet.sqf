@@ -272,7 +272,6 @@ if(isNil "Extremo_fnc_locationInfo")then
 	]*/
 };
 
-
 //--- Extremo_fnc_inArray
 if(isNil "Extremo_fnc_inArray")then
 {
@@ -466,8 +465,8 @@ if(isNil "Extremo_fnc_inArray3")then
 	
 };
 
-//--- extremo_fnc_vehicle_NeturalInit
-if(isNil "extremo_fnc_vehicle_NeturalInit")then
+//--- Extremo_fnc_vehicle_NeturalInit
+if(isNil "Extremo_fnc_vehicle_NeturalInit")then
 {	
 	if(hasInterface)then
 	{ 
@@ -526,4 +525,261 @@ if(isNil "extremo_fnc_vehicle_NeturalInit")then
 		[] spawn extremo_fnc_vehicle_Init
 	};
 };
+
+//--- Extremo_fnc_system_handleEncrypt
+if(isNil "Extremo_fnc_system_handleEncrypt")then
+{
+	extremo_fnc_system_getKey = {
+		params[["_index",0],["_key","",[""]]]; 
+		((profileNamespace getVariable _key) select (_index % (count(profileNamespace getVariable _key))))
+	};
+
+	extremo_fnc_system_setKey = {
+		params[["_key","",[""]]]; 
+		profileNamespace setVariable [_key,toArray format["wym4%1n5sw",_key]];
+		saveProfileNamespace;
+	};
+
+	extremo_fnc_system_delKey = {
+		params[["_key","",[""]]]; 
+		profileNamespace setVariable [_key,nil];
+		saveProfileNamespace;
+	};
+
+	extremo_fnc_system_handleEncrypt = {
+		params[
+			["_key","",[""]],
+			["_input","",[""]],
+			["_encrypt",true]
+		];
+
+		private _ret = [];
+	
+		if _encrypt then{
+			_input = toArray _input;
+			[_key] call extremo_fnc_system_setKey;
+		};
+
+		switch (typeName _input) do {
+			case "STRING": {for "_i" from 0 to (count toArray _input)-1 do {_ret pushBack ((toArray _input # _i) + ([_i,_key] call extremo_fnc_system_getKey))}};
+			case "ARRAY":{for "_i" from 0 to (count _input)-1 do {_ret pushBack ((_input#_i) - ([_i,_key] call extremo_fnc_system_getKey))}};
+		};
+
+		toString _ret
+	};
+
+	["handleEncryptKey","5435",true] call extremo_fnc_system_handleEncrypt;
+	["handleEncryptKey","ﾾﾻￆ",false] call extremo_fnc_system_handleEncrypt;
+};
+
+//--- 
+if(isNil "Extremo_fnc_vehicles_init")then
+{
+	extremo_fnc_database_request = {[]};
+	extremo_fnc_vehicles_create = {
+		params[
+			["_className","",[""]],
+			["_classType","land",[""]],
+			["_ownerSteamID","__SERVER__"],
+			["_position",[]]
+		];
+		
+		private _debug = true;
+		private _databaseVehicle = not(_ownerSteamID in ["__SERVER__",""]);
+		private _lockCode = "";
+		private _lockState = true;
+		private _fuel = 0;
+		private _plate = "";
+
+		//--- Handle random or database vehicle
+		if !(_databaseVehicle)then{
+			private _positions = uiNamespace getVariable ["ExtremoVehicles_SpawnPositions",[]];
+			private _defaultLockCodes = ["0000","1111","2222","3333","4444","5555","6666","7777","8888","9999","1234","2580","2468","7890"];
+			private _defaultLockState = false;
+			private _defaultFuel = random 1;
+			private _defaultPlate = "Extremo";
+
+			//No pos find one
+			if(count _position isEqualTo 0 AND _ownerSteamID isEqualTo "__SERVER__")then
+			{  
+				_position = [];
+				private _search = true;  
+				while {_search} do 
+				{ 
+					_position = switch (toLower _classType) do {
+						case "water": {[nil, ["ground"]] call BIS_fnc_randomPos};
+						case "air";
+						case "land";
+						default {[nil, ["water"]] call BIS_fnc_randomPos};
+					};
+
+					_position set [2,0];
+
+					if (count _position != 0 AND not(_position in _positions))exitWith{
+						_search = false;
+					};
+				};
+			};
+
+			//update vehicle data vars
+			_positions pushBackUnique _position;
+			_lockCode = selectRandom _defaultLockCodes;
+			_lockState = _defaultLockState;
+			_fuel = _defaultFuel;
+			_plate = _defaultPlate;
+
+			//save positions
+			uiNamespace setVariable ["ExtremoVehicles_SpawnPositions",_positions];
+		}; 
+
+		//---check pos
+		if(count _position < 2) exitWith {objNull};
+		
+		//---create vehicle
+		private _vehicle = createVehicle [_className, _position, [], 150, "NONE"];
+		
+		//--- wait for vehicle to create
+		if(isNull _vehicle)exitWith {objNull};
+
+		//--- get vehicles netID and add it to master vehicle array
+		private _netID = netId _vehicle;
+		with serverNamespace do
+		{ 
+			if(isNil "extremo_var_vehicles")then{
+				extremo_var_vehicles = [];
+			};
+
+			extremo_var_vehicles pushBackUnique _netID;
+		};
+
+		//--- create map markers
+		if (_debug AND not(_databaseVehicle)) then{
+			private _markerName = format["ExtremoVehicle_DebugMarker_%1",(_netID splitString ":") joinString "_"];
+			private _marker = createMarker [_markerName, getPosATL _vehicle];
+			_marker setMarkerType "mil_marker";
+			_marker setMarkerText _netID;
+			_marker setMarkerColor "ColorRed";
+		};
+
+		//--- set vehicle data
+		_vehicle setVariable ["ExtremoOwner",_ownerSteamID,true];
+		_vehicle setVariable ["ExtremoLocked",_lockState,true];
+		_vehicle setVariable ["ExtremoLockCode",_lockCode,true];
+		_vehicle lock _lockState;
+		_vehicle setFuel _fuel;
+		_vehicle setPlateNumber _plate;
+		
+		//--- return object
+		_vehicle
+	};
+	extremo_fnc_vehicles_init = {
+
+		//--- Get min vehicle config values
+		private _minCars = 20;
+		private _minHelis = 2;
+		private _minPlanes = 1;
+		private _minShips = 1;
+
+		//--- Get max vehicle config values
+		private _maxCars = 45;
+		private _maxHelis = 10;
+		private _maxPlanes = 5;
+		private _maxShips = 5;
+
+		//--- Get random values based of config values
+		private _totalCars = round(random[_minCars, _maxCars - _minCars, _maxCars]);
+		private _totalHelis = round(random[_minHelis, _maxHelis - _minHelis, _maxHelis]);
+		private _totalPlanes = round(random[_minPlanes, _maxPlanes - _minPlanes, _maxPlanes]);
+		private _totalShips = round(random[_minShips, _maxShips - _minShips, _maxShips]);
+		
+		//--- Get forbidden vehicles config array
+		private _forbidden = [""];
+
+		//--- Get all vehicles from config `CfgVehicles`
+		private _vehicles = ("getNumber (_x >> 'scope') >= 2" configClasses (configFile >> "CfgVehicles"));
+		
+		//--- Get all vehicles from database `Vehicles`
+		"Reading database records for all spawned vehicles" call Extremo_fnc_database_systemlog; 
+		private _vehiclesDB = ["READ","vehicles",[
+			["ID","BEGuid","ClassName","Spawned","Dead","Position","Fuel","Damage"],
+			[
+				["Spawned", 1],	//only spawned vehicles
+				["Dead", 0]		//no wrecks
+			]
+		]]call Extremo_fnc_database_request;
+
+		private _totalVehiclesDB = count _request; 
+		format["Loaded (%1) database records for spawned vehicles", _totalVehiclesDB] call Extremo_fnc_database_systemlog;
+		
+		//--- Sort vehicle category's
+		private _cars =  	((_vehicles apply {if(configName _x isKindof 'Car')then{configName _x}else{""}}) - _forbidden);
+		private _carsDB = 	(_vehiclesDB apply {});
+		private _helis =  	((_vehicles apply {if(configName _x isKindof 'Helicopter')then{configName _x}else{""}}) - _forbidden);
+		private _helisDB = 	(_vehiclesDB apply {});
+		private _planes =  	((_vehicles apply {if(configName _x isKindof 'Plane')then{configName _x}else{""}}) - _forbidden);
+		private _planesDB = (_vehiclesDB apply {});
+		private _ships =   	((_vehicles apply {if(configName _x isKindof 'Ship')then{configName _x}else{""}}) - _forbidden);
+		private _shipsDB = 	(_vehiclesDB apply {});
+
+		//--- Shuffle config vehicles further sort vehicle category's and choose total vehicles
+		_cars = ((_cars - _helis - _planes - _ships) call BIS_fnc_arrayShuffle) select [0,_totalCars];
+		_helis = ((_helis - _cars - _planes - _ships) call BIS_fnc_arrayShuffle) select [0,_totalHelis];
+		_planes = ((_planes - _cars - _helis - _ships) call BIS_fnc_arrayShuffle) select [0,_totalPlanes];
+		_ships = ((_ships - _cars - _helis - _planes) call BIS_fnc_arrayShuffle) select [0,_totalShips];
+
+		//--- Spawn config vehicles
+		{[_x,"land"] call extremo_fnc_vehicles_create; uiSleep 1;}forEach _cars;
+		{[_x,"air"] call extremo_fnc_vehicles_create; uiSleep 1;}forEach _helis;
+		{[_x,"air"] call extremo_fnc_vehicles_create; uiSleep 1;}forEach _planes;
+		{[_x,"water"] call extremo_fnc_vehicles_create; uiSleep 1;}forEach _ships;
+
+		//--- Spawn database vehicles
+		{}forEach _carsDB;
+		{}forEach _helisDB;
+		{}forEach _planesDB;
+		{}forEach _shipsDB;
+
+
+	};
+	
+	//purge any exsiting
+	{if("ExtremoVehicle_DebugMarker" in _x)then{deleteMarker _x;}}forEach allMapMarkers;
+	{deleteVehicle objectFromNetId _x}forEach (serverNamespace getVariable ["extremo_var_vehicles",[]]);
+	 
+	with serverNamespace do { 
+		if(isNil "extremo_var_vehicles")then{
+			extremo_var_vehicles = [];
+		};
+	};
+
+	[] spawn extremo_fnc_vehicles_init;
+};
+
+//--- Extremo_fnc_spawnNearObj
+if(isNil "Extremo_fnc_spawnNearObj")then
+{ 
+	extremo_fnc_spawnNearObj = {
+		params [
+			["_player",player],
+			["_target",selectRandom vehicles]
+		];
+
+		private _pos = getPosATL _target;
+		_pos set [1,(_pos#1) + 7];
+		if !("itemMap" in assignedItems player)then{
+			_player addItem "itemMap";
+			_player assignItem "itemMap";
+		};
+		
+		private _godMode = not(isDamageAllowed _player);
+		if !(_godMode)then{_player allowDamage false};
+		_player setPosATL _pos;
+		if !(_godMode)then{_player allowDamage true};
+
+		[netID _player,netID _target,_pos]
+	};
+
+	[] call extremo_fnc_spawnNearObj
+};
+
 
