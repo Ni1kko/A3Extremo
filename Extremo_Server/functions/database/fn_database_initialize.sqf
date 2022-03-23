@@ -106,7 +106,7 @@ try {
 	format ["%1 V%2 System: Connected using profile: (%3)",DLL,extdb_var_database_version,_profile] call Extremo_fnc_database_systemlog;
 
 	//--- Cache variables incase mission ends or restarts
-	{uiNamespace setVariable [(_x#0),(missionNamespace getVariable [(_x#0), nil])]}forEach [
+	{uiNamespace setVariable [_x,missionNamespace getVariable [_x,nil]]}forEach [
 		"extdb_var_database_error",
 		"extdb_var_database_key",
 		"extdb_var_database_version",
