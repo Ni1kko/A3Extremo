@@ -122,7 +122,7 @@ if(count _LastPosition isEqualTo 3)then{
 	_respawn = false;
 }else{ 
 	_newcharacter setPosATL _spawnIslandPos;
-	["characters","update",_newcharacter] remoteExec ["extremo_fnc_database_client2server", 2];
+	["characters","update",_newcharacter] remoteExec ["extremo_fnc_database_server", 2];
 };
 
 //---

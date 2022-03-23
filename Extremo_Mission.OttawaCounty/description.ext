@@ -432,7 +432,7 @@ class CfgFunctions
         class Database
         {
             file = "core\database"; 
-            class database_client2server {}; 
+            class database_client {}; 
         };
 
         //--- DIK
@@ -491,6 +491,7 @@ class CfgFunctions
             class system_animationSync {};
             class system_destroyLayer {};
             class system_deathType {};
+            class system_directionInfo {};
             class system_itemDetails {};
             class system_replacmentCallback {};
             class system_locationInfo {};
@@ -525,9 +526,9 @@ class CfgRemoteExec
         ExtremoRE_Client(extremo_fnc_medical_revive);
         ExtremoRE_Client(extremo_fnc_medical_revived);
         ExtremoRE_Client(extremo_fnc_medical_createRevivedEffects);
-        ExtremoRE_Client(extremo_fnc_database_server2client);
+        ExtremoRE_Client(extremo_fnc_database_client);
         //////////////// SERVER Whitelist ////////////////
-        ExtremoRE_Server(extremo_fnc_database_client2server);
+        ExtremoRE_Server(extremo_fnc_database_server);
     };
 
     class Commands 

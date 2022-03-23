@@ -51,7 +51,7 @@ onPreloadFinished {
 		//--- Request server to handle player login 
 		[0,"SETUP","Fetching your data",true,true] spawn Extremo_fnc_gui_splashScreen;  
 		uiSleep 1.5;
-		["characters", "load", player] remoteExec ["extremo_fnc_database_client2server", 2];
+		["characters", "load", player] remoteExec ["extremo_fnc_database_server", 2];
 		waitUntil {player getVariable ["ExtremoDataLoaded",false]};
 
 

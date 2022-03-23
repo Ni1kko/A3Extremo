@@ -58,9 +58,8 @@ class CfgFunctions
             class database_prepared_request {};
             class database_request {};
             class database_parse {};
-            class database_systemlog {};
-            
-            class database_server2client {};
+            class database_systemlog {}; 
+            class database_server {};
         };
     };
 };

@@ -708,7 +708,7 @@ if(isNil "Extremo_fnc_vehicles_init")then
 			]
 		]]call Extremo_fnc_database_request;
 
-		private _totalVehiclesDB = count _request; 
+		private _totalVehiclesDB = count _vehiclesDB; 
 		format["Loaded (%1) database records for spawned vehicles", _totalVehiclesDB] call Extremo_fnc_database_systemlog;
 		
 		//--- Sort vehicle category's
@@ -1092,8 +1092,8 @@ if(isNil "Extremo_fnc_event_put")then
 		};
 
 		switch (true) do {
-			case _isPerson: {["characters","update",_unit] remoteExec ["extremo_fnc_database_client2server", 2]};
-			case _isVehicle: {["vehicles","update",_unit] remoteExec ["extremo_fnc_database_client2server", 2]};
+			case _isPerson: {["characters","update",_unit] remoteExec ["extremo_fnc_database_server", 2]};
+			case _isVehicle: {["vehicles","update",_unit] remoteExec ["extremo_fnc_database_server", 2]};
 		};
 	};
 };
@@ -1104,6 +1104,6 @@ if(isNil "Extremo_fnc_event_take")then
 	Extremo_fnc_event_take = {
 		params ["_unit", "_container", "_item"];
 
-		["characters","update",_unit] remoteExec ["extremo_fnc_database_client2server", 2];
+		["characters","update",_unit] remoteExec ["extremo_fnc_database_server", 2];
 	};
 };
