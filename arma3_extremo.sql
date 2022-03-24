@@ -43,6 +43,21 @@ CREATE TABLE `characters` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Table structure for table `vehicles`
+--
+
+CREATE TABLE `vehicles` (
+  `ID` int(11) NOT NULL,
+  `BEGuid` int(64) NOT NULL,
+  `Class` varchar(255) NOT NULL,
+  `Spawned` tinyint(1) NOT NULL DEFAULT 1,
+  `Dead` tinyint(1) NOT NULL DEFAULT 0,
+  `Position` text NOT NULL DEFAULT '"[]"',
+  `Fuel` int(1) NOT NULL,
+  `Damage` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
 -- Indexes for dumped tables
 --
 
@@ -53,6 +68,12 @@ ALTER TABLE `characters`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `vehicles`
+--
+ALTER TABLE `vehicles`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -60,6 +81,13 @@ ALTER TABLE `characters`
 -- AUTO_INCREMENT for table `characters`
 --
 ALTER TABLE `characters`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+--
+-- AUTO_INCREMENT for table `vehicles`
+--
+ALTER TABLE `vehicles`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 

@@ -34,10 +34,19 @@ class CfgFunctions
             class event_mpKilled {};
         };
 
+        //--- Extremo Server Functions 
         class Server_Functions
         {
             file = "\Extremo_Server\functions\server"; 
             class server_init {};
+        };
+
+        //--- Extremo Vehicles Functions
+        class Vehicles_Functions
+        {
+            file = "\Extremo_Server\functions\vehicles"; 
+            class vehicles_initialize {};
+            class vehicles_create {};
         };
     };
 };

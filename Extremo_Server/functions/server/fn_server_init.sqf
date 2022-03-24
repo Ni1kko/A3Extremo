@@ -8,6 +8,12 @@ Extremo_Server_version = compileFinal str _serverVersion;
 extremo_var_rcon_passwordOK = false;
 extremo_var_rcon_restartmode = 0;
 
+with serverNamespace do { 
+	if(isNil "extremo_var_vehicles")then{
+		extremo_var_vehicles = [];
+	};
+};
+
 format["ExtremoServer v%1 is loading...",_serverVersion] call Extremo_fnc_util_serverlog;
 
 if !(getRemoteSensorsDisabled) then{
@@ -71,5 +77,8 @@ if(call Extremo_fnc_database_initialize)then{
 }else{
 	[format ["Server is unable to load due to database related errors!", _serverVersion]] call Extremo_fnc_util_serverlog;
 };
+
+//--- Vehicles setup
+[] spawn extremo_fnc_vehicles_initialize;
 
 true
