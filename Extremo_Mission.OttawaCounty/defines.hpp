@@ -3,6 +3,9 @@
 	## Nikko Renolds
 */
 
+//--- BASE
+#include "\a3\ui_f\hpp\definedikcodes.inc"
+
 //--- SYSTEM
 #define true 1
 #define false 0
