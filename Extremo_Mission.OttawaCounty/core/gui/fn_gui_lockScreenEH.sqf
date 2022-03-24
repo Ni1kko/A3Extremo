@@ -163,7 +163,7 @@ private _fnc_confirmButton = {
 	private _validCode = count Extremo_inputCode >= 4;
 	private _correctCode = (_validCode AND Extremo_inputCode isEqualTo Extremo_lockCode);
 	Extremo_inputCode = ["",Extremo_inputCode] select _correctCode;
-	_controlScreen ctrlSetText toUpper ["Authorised",["Invalid Code",""] select (Extremo_inputCode isEqualTo "")] select _correctCode;
+	_controlScreen ctrlSetText toUpper([["Invalid Code",""] select _validCode,"Authorised"] select _correctCode);
 	[] spawn _fnc_confirmAnim;
 };
 
