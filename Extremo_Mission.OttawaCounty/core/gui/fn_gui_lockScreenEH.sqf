@@ -64,14 +64,9 @@ private _controls = [
 //--
 private _fnc_updateLockCode = {
 	params [["_number",-1,[0]]];
-	if(_number < 0 OR _number > 9)exitWith{ false };
-	
-	if(isNil "Extremo_inputCodeBlocked")then{Extremo_inputCodeBlocked = false};
-	if(Extremo_inputCodeBlocked)exitWith{ false };
-
-	if(isNil "Extremo_inputCode")then{Extremo_inputCode = ""};
-	Extremo_inputCode = format["%1%2",Extremo_inputCode,_number];
-	
+	if(_number < 0 OR _number > 9)exitWith{ false }; 
+	if(extremo_var_gui_inputBusy)exitWith{ false };
+	extremo_var_gui_inputString = format["%1%2",extremo_var_gui_inputString,_number];
 	true
 }; 
 
@@ -86,9 +81,9 @@ private _fnc_updateScreen = {
 	 
 	if !_updated exitWith { false }; 
 	ctrlSetFocus _controlNumFake;
-	_controlScreen ctrlSetText (if _streamFriendly then {toString (toArray Extremo_inputCode apply {42})}else{Extremo_inputCode});
-	_controlConfirm ctrlEnable (count Extremo_inputCode >= 4);
-	_controlCancel ctrlEnable not(Extremo_cancelCodeBlocked);
+	_controlScreen ctrlSetText (if _streamFriendly then {toString (toArray extremo_var_gui_inputString apply {42})}else{extremo_var_gui_inputString});
+	_controlConfirm ctrlEnable (count extremo_var_gui_inputString >= 4);
+	_controlCancel ctrlEnable not(extremo_var_gui_inputESCLock);
 
 	true
 };
@@ -99,20 +94,17 @@ private _fnc_deleteButton = {
 		["_override",false]
 	];
 
-	if(isNil "Extremo_inputCode")then{Extremo_inputCode = ""};
-	if(isNil "Extremo_inputCodeAnim")then{Extremo_inputCodeAnim = ""};
-	if(isNil "Extremo_inputCodeBlocked")then{Extremo_inputCodeBlocked = false};
-	if(isNull _display OR (Extremo_inputCodeBlocked AND !_override))exitWith{false};
+	if(isNull _display OR (extremo_var_gui_inputBusy AND !_override))exitWith{false};
 
 	if _override then {
-		Extremo_inputCodeAnim = if(_singleNum AND count Extremo_inputCodeAnim >= 1)then{Extremo_inputCodeAnim select [0,(count Extremo_inputCodeAnim) -1]}else{""};
+		extremo_var_gui_inputStringAnim = if(_singleNum AND count extremo_var_gui_inputStringAnim >= 1)then{extremo_var_gui_inputStringAnim select [0,(count extremo_var_gui_inputStringAnim) -1]}else{""};
 	}else{
-		Extremo_inputCode = if(_singleNum AND count Extremo_inputCode >= 1)then{Extremo_inputCode select [0,(count Extremo_inputCode) -1]}else{""};
+		extremo_var_gui_inputString = if(_singleNum AND count extremo_var_gui_inputString >= 1)then{extremo_var_gui_inputString select [0,(count extremo_var_gui_inputString) -1]}else{""};
 	};
 	
 	ctrlSetFocus _controlNumFake;
-	_controlScreen ctrlSetText ([Extremo_inputCode,Extremo_inputCodeAnim] select _override);
-	_controlConfirm ctrlEnable (count Extremo_inputCode >= 4);
+	_controlScreen ctrlSetText ([extremo_var_gui_inputString,extremo_var_gui_inputStringAnim] select _override);
+	_controlConfirm ctrlEnable (count extremo_var_gui_inputString >= 4);
 
 	true
 };
@@ -138,56 +130,65 @@ private _fnc_confirmAnim = compile (
 			['_controlScreen',controlNull,[controlNull]]
 		];
 				
-		Extremo_inputCodeBlocked = true;
-		Extremo_inputCodeAnim = ctrlText _controlScreen;
+		extremo_var_gui_inputBusy = true;
+		extremo_var_gui_inputStringAnim = ctrlText _controlScreen;
 		ctrlSetFocus _controlNumFake;
 
+		for '_i' from 0 to 3 do { 
+			uiSleep 0.70;
+			_controlScreen ctrlSetText '';
+			uiSleep 0.70;
+			_controlScreen ctrlSetText extremo_var_gui_inputStringAnim;
+		};
+
 		waitUntil {
-			uiSleep 0.45;
+			uiSleep 0.30;
 			if(not([true,true] call "+str _fnc_deleteButton+"))exitWith{true};
-			if(count Extremo_inputCodeAnim isEqualTo 0)exitWith{true};
+			if(count extremo_var_gui_inputStringAnim isEqualTo 0)exitWith{true};
 			false
 		};
 
 		uiSleep 0.20;	
-		Extremo_inputCodeBlocked = false;
+		extremo_var_gui_inputBusy = false;
 		_display closeDisplay 1;
 	"
 );
 
-private _fnc_confirmButton = {
-	if(isNil "Extremo_lockCode")then{[[_display],'onSetPin',""] call Extremo_fnc_gui_lockScreenEH;};
-	if(isNil "Extremo_inputCode")then{Extremo_inputCode = ""};
-	if(isNil "Extremo_inputCodeBlocked")then{Extremo_inputCodeBlocked = false};
-	if(Extremo_inputCodeBlocked)exitWith{false};
-	private _validCode = count Extremo_inputCode >= 4;
-	private _correctCode = (_validCode AND Extremo_inputCode isEqualTo Extremo_lockCode);
-	Extremo_inputCode = ["",Extremo_inputCode] select _correctCode;
-	_controlScreen ctrlSetText toUpper([["Invalid Code",""] select _validCode,"Authorised"] select _correctCode);
+private _fnc_confirmButton = { 
+	if(extremo_var_gui_inputBusy)exitWith{false};
+	private _validCode = count extremo_var_gui_inputString >= 4;
+	extremo_var_gui_inputLockCodeCorrect = (_validCode AND extremo_var_gui_inputString isEqualTo extremo_var_gui_inputLockCode);
+	extremo_var_gui_inputString = ["",extremo_var_gui_inputString] select extremo_var_gui_inputLockCodeCorrect;
+	_controlScreen ctrlSetText toUpper([["Invalid","Denied"] select _validCode,"Authorised"] select extremo_var_gui_inputLockCodeCorrect);
 	[] spawn _fnc_confirmAnim;
 };
 
-private _fnc_cancelButton = {
-	if(isNil "Extremo_inputCodeBlocked")then{Extremo_inputCodeBlocked = false};
-	if(isNil "Extremo_cancelCodeBlocked")then{Extremo_cancelCodeBlocked = false};
-	if(Extremo_inputCodeBlocked || Extremo_cancelCodeBlocked)exitWith{false};
-	Extremo_inputCode = "";
+private _fnc_cancelButton = { 
+	if(extremo_var_gui_inputBusy || extremo_var_gui_inputESCLock)exitWith{false};
+	extremo_var_gui_inputString = "";
 	_display closeDisplay 2;
+	true
 };
 
 //--- Handle  input
 switch (typeName _keypadInput) do {
 	case "BOOL": 
 	{
-		if(_event isEqualTo "onMouseButtonClick")then{ 
-			_keypadInput = [-999,999] select _keypadInput;//(confirm\cancel)	
-		};
+		_keypadInput = (if(_event isEqualTo "onMouseButtonClick")then{
+			[
+				-999,//cancel
+				999  //confirm
+			] select _keypadInput;
+		}else{
+			-1//undefined
+		});
 	}; 
-	case "STRING": 
+	case "STRING":
 	{
 		if(_event isEqualTo "onSetPin")then{ 
-			_lockCode = _keypadInput;
+			_lockCode = _keypadInput;//switch vars
 		};
+		_keypadInput = -1;//undefined
 	};
 };
 	
@@ -195,27 +196,33 @@ switch (typeName _keypadInput) do {
 switch _event do {
 	case "onLoad":
 	{ 
+		//register display into uiNamespace
 		uiNameSpace setVariable [_displayClass,_display];
-		Extremo_inputCode = "";
+		
+		//update controls
 		_controlScreen ctrlSetText "ENTER LOCKCODE";
 		_controlConfirm ctrlEnable false; 
-		_controlCancel ctrlEnable not(Extremo_cancelCodeBlocked);
+		_controlCancel ctrlEnable not(extremo_var_gui_inputESCLock);
 		ctrlSetFocus _controlNumFake;
+
+		//clear capture var
+		extremo_var_gui_inputString = "";
+		extremo_var_gui_inputLockCodeCorrect = false;
 	};
 	case "onUnLoad":
 	{  
-		uiNameSpace setVariable [_displayClass,displayNull]; 
-		Extremo_cancelCodeBlocked = false;
+		//un-register display from uiNamespace
+		uiNameSpace setVariable [_displayClass,displayNull];
 		[[_display],'onUnsetPin',""] call Extremo_fnc_gui_lockScreenEH;
+		
+		//reset input vars
+		extremo_var_gui_inputESCLock = false;
+		extremo_var_gui_inputBusy = false;
+		extremo_var_gui_inputESCLock = false; 
 	};
 	case "onSetPin":
 	{
-		Extremo_lockCode = _lockCode;
-	};
-	case "onUnsetPin":
-	{
-		Extremo_inputCodeBlocked = false;
-		Extremo_lockCode = nil;
+		extremo_var_gui_inputLockCode = _lockCode;
 	};
 	case "onKeyUp":	
 	{ 
@@ -256,11 +263,22 @@ switch _event do {
 			//Cancel
 			case DIK_ESCAPE: 
 			{  
-				[] call _fnc_cancelButton;
-				_stopPropagation = true; 
+				_stopPropagation = [] call _fnc_cancelButton;
 			}; 
 		};
 		_stopPropagation 
+	};
+	case "onKeyDown":	
+	{ 
+		_data params [
+			["_control",displayNull,[displayNull,controlNull]], 
+			["_dik",0,[0]],
+			["_shift",false,[false]],  
+			["_ctrl",false,[false]], 
+			["_alt",false,[false]]
+		];
+
+		extremo_var_gui_inputESCLock
 	};
 	case "onMouseButtonClick":
 	{ 

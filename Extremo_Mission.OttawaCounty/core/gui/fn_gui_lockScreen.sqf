@@ -17,9 +17,9 @@ private _display = uiNameSpace getVariable [_displayClass,displayNull];
 
 if (isNull _display)then{
 	_display = createDialog [_displayClass,true];
+	//if _blockCancel then{[_display,["KeyDown"],true] call extremo_fnc_dik_initEventHandlers};
+	extremo_var_gui_inputESCLock = _blockCancel;
 };
-
-Extremo_cancelCodeBlocked = _blockCancel;
 
 [[_display],'onSetPin',_lockCode] call Extremo_fnc_gui_lockScreenEH;
 

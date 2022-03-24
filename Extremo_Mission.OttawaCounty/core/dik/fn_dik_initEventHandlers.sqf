@@ -1,6 +1,7 @@
 params [
 	["_display",displayNull,[displayNull]],
-	["_events",[],[[]]]
+	["_events",[],[[]]],
+	["_blockOnly",false]
 ];
 
 private _cfgKeyHandler = missionConfigFile >> "CfgKeyHandler";
@@ -209,20 +210,27 @@ if !(true in (_events apply {isClass(_cfgKeyHandler >> "Extremo" >> _x)})) exitW
 
 	if(count _keyHandlerFunctions > 0)then
 	{
-		private _keyEVH = (findDisplay 46) displayAddEventHandler [_event,"
-			private _handled = false; 
-			private _find = "+str _keyHandlerFunctions+" findIf {_x#1 isEqualTo (_this select [1, 4])};
-			if(_find != -1) then {
-				private _key = "+str _keyHandlerFunctions+"#_find;
-				private _code = missionNamespace getVariable [_key#0,{}]; 
-				nul = switch (_key#2) do {
+		private _keyEVH = _display displayAddEventHandler [_event," 
+			if(((_x#1) isEqualTo 0x01) AND extremo_var_dik_blockESC)exitWith{true};
+			if("+str _blockOnly+")exitWith{false};
+			
+			private _functionIndex = "+str _keyHandlerFunctions+" findIf {_x#1 isEqualTo (_this select [1, 4])};
+ 
+			if(_functionIndex isNotEqualTo -1) exitWith { 
+				private _function = "+str _keyHandlerFunctions+"#_functionIndex;
+				private _code = missionNamespace getVariable [_function#0,{}]; 
+				private _handled = switch (_function#2) do {
 					case 'CALL': {[] call _code};
-					case 'SPAWN': {[] spawn _code};
-					default {scriptNull};
+					case 'SPAWN': {[] spawn _code;true};
+					default {false};
 				};
-				_handled = true;
+				if(isNil '_handled' OR {typeName _handled isNotEqualTo 'BOOL'})then{
+					_handled = false;
+				};
+				_handled
 			};
-			_handled
+
+			false
 		"];
 		
 		if(_keyEVH isNotEqualTo -1)then{

@@ -8,6 +8,13 @@ params [
 
 BEGuid = compileFinal str _BEGuid;
 extremo_var_dik_eventhandlers = [];
+extremo_var_dik_blockESC = false;
+extremo_var_gui_inputBusy = false;
+extremo_var_gui_inputESCLock = false;
+extremo_var_gui_inputString = "";
+extremo_var_gui_inputStringAnim = "";
+extremo_var_gui_inputLockCode = "";
+extremo_var_gui_inputLockCodeCorrect = false;
 
 onPreloadFinished {
 	onPreloadFinished { };

@@ -49,12 +49,7 @@ if (Extremo_var_splashTimer - diag_ticktime < 0 || isNull _display) then
 {
 	removeMissionEventHandler ["EachFrame", Extremo_var_splashTimerEVH];
 	
-	if !(_keepOpen)then{ 
-		if(!isNil "Extremo_var_splashKeydownEVH")then{ 
-			_display displayRemoveEventHandler ["keyDown",Extremo_var_splashKeydownEVH];
-			Extremo_var_splashKeydownEVH = nil;
-		};
-
+	if !(_keepOpen)then{
 		if _background then{ 
 			["RscExtremo_SplashScreenBlackoutLayer", "", "BLACK IN", 3] call Extremo_fnc_system_destroyLayer;
 			["RscExtremo_SplashScreenNoiseLayer", "", "BLACK IN", 0.00001] call Extremo_fnc_system_destroyLayer; 

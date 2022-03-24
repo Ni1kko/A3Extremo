@@ -180,6 +180,10 @@ class CfgSpawn
                 {"extremo_marker_spawnzone_cityisle",        "textures\icon.paa"},
                 {"extremo_marker_spawnzone_mistyfarms",      "textures\icon.paa"}
             };
+            protectedZones[] = { 
+                {"extremo_marker_spawnzone_city",            "241115"},
+                {"extremo_marker_spawnzone_mistyfarms",      "185932"}
+            };
         };
     };
 };
@@ -292,6 +296,7 @@ class RscExtremo_LockScreen
 	onLoad="[_this,'onLoad'] call Extremo_fnc_gui_lockScreenEH";
 	onUnload="[_this,'onUnload'] call Extremo_fnc_gui_lockScreenEH";
 	onKeyUp="[_this,'onKeyUp'] call Extremo_fnc_gui_lockScreenEH";
+	onKeyDown="[_this,'onKeyDown'] call Extremo_fnc_gui_lockScreenEH";
 	class controlsBackground
 	{
 		class Background: RscPicture

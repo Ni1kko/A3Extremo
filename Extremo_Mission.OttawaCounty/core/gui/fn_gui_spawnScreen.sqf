@@ -28,9 +28,8 @@ if (count _markers <= 0) exitWith {
 
 [0,"SETUP", "Loading spawn options",true,true] spawn Extremo_fnc_gui_splashScreen;
 uiSleep 1.5;
-
 private _displayClass = "RscExtremo_SpawnScreen";
-private _display = createDialog [_displayClass, true];
+private _display = uiNamespace getVariable [_displayClass,displayNull];
 private _controls = [
 	["controlsBackground","Background"],
 	["controlsBackground","Header"],
@@ -39,8 +38,9 @@ private _controls = [
 	["controls","Confirm"]
 ];
 
-//--- Block escKey
-_display displayAddEventhandler ["KeyDown", {(_this#1) isEqualTo DIK_ESCAPE}];
+if (isNull _display)then{
+	_display = createDialog [_displayClass, true]; 
+};
 
 //--- Load controls
 (

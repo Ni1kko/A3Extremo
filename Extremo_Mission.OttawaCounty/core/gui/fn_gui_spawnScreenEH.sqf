@@ -13,6 +13,12 @@ params [
 
 private _displayClass = "RscExtremo_SpawnScreen";
 private _display = displayNull;
+private _config = missionConfigFile >> "CfgSpawn";
+private _template = getText(_config >> "activeTemplate");
+private _configTemplate = _config >> _template;
+private _configWorld = _configTemplate >> worldName;
+private _markers = getArray(_configWorld >> "zones");
+private _protectedMarkers = getArray(_configWorld >> "protectedZones");
 
 if(typeName _object isEqualTo "CONTROL")then{
 	_display = ctrlParent _object;
@@ -22,6 +28,7 @@ if(typeName _object isEqualTo "CONTROL")then{
 
 if(isNull _display)then{
 	_display = uiNameSpace getVariable [_displayClass,_display];
+	[_display,["KeyDown"],true] call extremo_fnc_dik_initEventHandlers;
 };
 
 private _controls = [
@@ -46,13 +53,15 @@ private _controls = [
 //systemChat format [(if(count _data == 0)then{"%1: %2"}else{"%1: %2 (_data = %3)"}),_displayClass,_event,_data];
 
 switch _event do {
-	case "onLoad": 		   {uiNameSpace setVariable [_displayClass,_object]};
-	case "onUnLoad": 	   {uiNameSpace setVariable [_displayClass,displayNull]};
+	case "onLoad": 		   {uiNameSpace setVariable [_displayClass,_object]; extremo_var_dik_blockESC = true;};
+	case "onUnLoad": 	   {uiNameSpace setVariable [_displayClass,displayNull]; extremo_var_dik_blockESC = false;};
 	case "onLBSelChanged": 
 	{ 
 		_data params [
 			["_selection",-1]
 		];
+		
+		if(_selection isEqualTo -1)exitWith{};
 
 		private _markerName = _object lnbData [_selection,0];
 		private _markerText = markerText _markerName;
@@ -80,27 +89,66 @@ switch _event do {
 		private _markerText = markerText _markerName;
 		private _markerPosition = getMarkerPos _markerName;
 		
-		//-- Close menu
+		//--- Close menu
 		_display closeDisplay IDC_OK;
-
-		//---
-		_markerText = if(tolower(_markerText select [0,9]) == "spawnzone")then{_markerText select [10,(count _markerText) - 10]}else{""}; 
-		if(_markerText isEqualTo "")then{
-			_markerText = ([player] call Extremo_fnc_system_locationInfo) param [2,"the chosen location",[""]];
-		};
 		
-		extremo_var_testdata = [_display,_controlSelection,_selection,_markerName,_markerText,_markerPosition];
- 
-		//--- 
-		player setVariable ["ExtremoLastSpawnZone",_markerName];
-		player setPosATL _markerPosition;
+		private _canSpawn = true;
+		{
+			if(_markerName isEqualTo (_x#0))exitWith{ 
+				[0,"Protected Spawn","Password required",true,true] spawn Extremo_fnc_gui_splashScreen;
+				_display = ([_x#1,true] call Extremo_fnc_gui_lockScreen) param [0,displayNull];
+				uiSleep 1.5;
+				[0,"Protected Spawn","Waiting for user input",true,true] spawn Extremo_fnc_gui_splashScreen;
+				waitUntil{isNull _display};
+				 
+				if (extremo_var_gui_inputLockCodeCorrect)then{
+					[0,"Protected Spawn","Password accepted",true,true] spawn Extremo_fnc_gui_splashScreen; 
+				}else{
+					_canSpawn = false;
+					[0,"Protected Spawn","Password mismatch",true,true] spawn Extremo_fnc_gui_splashScreen;	
+				};
+
+				uiSleep 3;
+			};
+		}forEach _protectedMarkers;
+
+		//--- Reload menu
+		if !(_canSpawn)exitWith{[player] spawn Extremo_fnc_gui_spawnScreen};
+	
+		//--- Spawn player at position
+		[0,"SPAWNING","",true,true] spawn Extremo_fnc_gui_splashScreen;
+		player setVariable ["ExtremoLastSpawnZone",_markerName,true];
+		player setVariable ["ExtremoLastSpawnTime",systemTimeUTC,true];
+		player allowDamage false;
+		player setPosATL _markerPosition; 
+		uiSleep 0.5;
 
 		//--- Preloader
-		waitUntil {2500 preloadObject typeName player};
-		waitUntil {player nearObjectsReady 2500};
+		{
+			if !(isNull _x)then{
+				private _model = ((str _x) splitString ":") param [1,"error"];
+				private _modelGrid = mapGridPosition _x;
+				[0,"Preloader",format ["Preloading: %1-%2",_modelGrid,_model],true,true] spawn Extremo_fnc_gui_splashScreen;
+				waitUntil {round(player distance2D _x) preloadObject typeName _x};
+			};
+		}forEach nearestTerrainObjects [
+			player, 
+			["BUILDING", "HOUSE", "HOSPITAL", "WATERTOWER", "LIGHTHOUSE", "CHURCH", "CHAPEL", "BUNKER", "WALL" ], 
+			1500,
+			true,
+			true
+		];
+		waitUntil {player nearObjectsReady 500};
+		player allowDamage true;
 
-		[0,"SPAWNING","",true,true] spawn Extremo_fnc_gui_splashScreen;
-		uiSleep 2.5;
-		[7,"SPAWNED", format ["You have spawned at %1",_markerText],false,false] spawn Extremo_fnc_gui_splashScreen;
+		//--- 
+		_markerText = if(tolower(_markerText select [0,9]) == "spawnzone")then{_markerText select [10,(count _markerText) - 10]}else{""}; 
+
+		//--- 
+		[7,"SPAWNED", format ["You have spawned at %1",(if(_markerText isEqualTo "")then{
+			([player] call Extremo_fnc_system_locationInfo) param [2,"the chosen location",[""]]
+		}else{
+			_markerText
+		})],false,false] spawn Extremo_fnc_gui_splashScreen;
 	};
 };
