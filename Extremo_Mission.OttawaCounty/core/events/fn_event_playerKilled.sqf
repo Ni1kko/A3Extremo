@@ -10,7 +10,7 @@ params [
 	["_respawnDelay",0,[0]]
 ];
 
-switch (missionNamespace getVariable ["Extremo_var_healthState",0]) do {
+switch (missionNamespace getVariable ["Extremo_var_medical_healthState",0]) do {
 	case 0: 
 	{  
 		player setDamage 0.99;
@@ -28,15 +28,15 @@ switch (missionNamespace getVariable ["Extremo_var_healthState",0]) do {
 		//Bypass incapacitated system and skip to respawn timer
 		/*
 			[]spawn{
-				waitUntil{Extremo_var_healthState isEqualTo 1};
-				Extremo_var_healthState = 3;
+				waitUntil{Extremo_var_medical_healthState isEqualTo 1};
+				Extremo_var_medical_healthState = 3;
 			};
 		*/
 	};
 	case 1: 
 	{ 
 		//Allows user to force respawn whilst incapacitated
-		Extremo_var_healthState = 3;
+		Extremo_var_medical_healthState = 3;
 	};
 };
 

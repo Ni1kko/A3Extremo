@@ -18,8 +18,8 @@ private _vehicle = vehicle _source;
 
 if (_player getVariable ["extremo_var_incapacitated", false]) exitWith {
 	if (!(isNull _source) && {!(_source isEqualTo _player)}) then {
-		Extremo_var_healthState = 2;
-		Extremo_var_executer = _source;
+		Extremo_var_medical_healthState = 2;
+		Extremo_var_medical_executer = _source;
 	};
 };
 

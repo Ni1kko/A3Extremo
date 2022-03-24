@@ -97,10 +97,7 @@ wreckRemovalMaxTime = 360;
 minPlayerDistance = 50; // meters. Default: 0
 ///////////////////////////////////////////////
 
-welcomeMessages[] = {
-    "Welcome %SteamName%, have fun and respect the rules...",
-    "%Website%"
-};
+
 
 class CfgKeyHandler 
 {
@@ -199,6 +196,10 @@ class CfgPlayer
         };
         forbiddenPositions[] = {
             //{"marker", distance}
+        };
+        welcomeMessages[] = {
+            "Welcome %SteamName%, have fun and respect the rules...",
+            "%Website%"
         };
 	};
 };
@@ -625,7 +626,14 @@ class RscTitles
 class CfgFunctions
 {
     class Extremo
-    {
+    { 
+        //--- Client
+        class Client
+        {
+            file = "core\client";
+            class client_init {};
+        };
+
         //--- Database
         class Database
         {
@@ -645,8 +653,10 @@ class CfgFunctions
         {
             file = "core\events"; 
             class event_handleDamage {};
+            class event_map {};
             class event_playerKilled {};
             class event_playerRespawned {};
+            class event_preloadFinished {};
         };
 
         //--- GUI
@@ -682,6 +692,7 @@ class CfgFunctions
             file = "core\player";
             class player_init {};
             class player_login {};
+            class player_preloader {};
         };
 
         //--- System
@@ -722,7 +733,7 @@ class CfgRemoteExec
         ExtremoRE_GlobalJIP(bis_fnc_execvm);
         ExtremoRE_GlobalJIP(extremo_fnc_system_animationSync);
         //////////////// CLIENT Whitelist ////////////////
-        ExtremoRE_Client(extremo_fnc_player_init);
+        ExtremoRE_Client(extremo_fnc_client_init);
         ExtremoRE_Client(extremo_fnc_medical_revive);
         ExtremoRE_Client(extremo_fnc_medical_revived);
         ExtremoRE_Client(extremo_fnc_medical_createRevivedEffects);

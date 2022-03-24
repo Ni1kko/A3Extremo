@@ -11,11 +11,12 @@ params [
 	["_Wallet",nil]
 ];
 
-[0,"LOGIN", "%Loading%",true,true] spawn Extremo_fnc_gui_splashScreen;
+[0,"LOGIN", "%Loading%",true,true] call Extremo_fnc_gui_splashScreen;
 uiSleep 1.5;
 
-Extremo_var_healthState = 0;
-Extremo_var_executer = objNull;
+Extremo_var_medical_healthState = 0;
+Extremo_var_medical_executer = objNull;
+extremo_var_gui_playerSpawned = compile str(false);
 setGroupIconsVisible [false, false];
 
 //--- Close Briefing 
@@ -31,14 +32,14 @@ private _group = group player;
 if(_group isEqualTo grpNull)then{_group = createGroup independent};
 
 
-[0,"LOGIN", "Requesting character",true,true] spawn Extremo_fnc_gui_splashScreen;
+[0,"LOGIN", "Requesting character",true,true] call Extremo_fnc_gui_splashScreen;
 uiSleep 2.5;
 
 //
 private _spawnIslandMarker = [missionConfigFile >> "CfgSpawn" >> "Extremo" >> worldName, "spawnIsland", []] call BIS_fnc_returnConfigEntry;
 private _spawnIslandPos = getMarkerPos _spawnIslandMarker;
 if(count _spawnIslandPos < 2)exitWith{
-	[0,"ERROR","An config error occured whilst setting characters position",true,true] spawn Extremo_fnc_gui_splashScreen;
+	[0,"ERROR","An config error occured whilst setting characters position",true,true] call Extremo_fnc_gui_splashScreen;
 	uiSleep 3;
 	"extremoError" call BIS_fnc_endMission;
 };
@@ -97,10 +98,10 @@ _newcharacter setVariable ["ExtremoWallet", _Wallet, true];
 if (count _LastLoadout > 0) then {
 	_oldcharacter setUnitLoadout (configFile >> "EmptyLoadout"); 
 	_newcharacter setUnitLoadout [_LastLoadout, false];
-	[0,"LOGIN", "Your previous loadout has been loaded",true,true] spawn Extremo_fnc_gui_splashScreen;
+	[0,"LOGIN", "Your previous loadout has been loaded",true,true] call Extremo_fnc_gui_splashScreen;
 	uiSleep 1.5;
 }else{
-	[0,"LOGIN", "Getting default loadout",true,true] spawn Extremo_fnc_gui_splashScreen;
+	[0,"LOGIN", "Getting default loadout",true,true] call Extremo_fnc_gui_splashScreen;
 	uiSleep 1.5;
 	_newcharacter setUnitLoadout [
 		/* primary weapon */	[],
@@ -136,6 +137,8 @@ if(_deleteoldcharacter)then{
 };
 
 //--- Setup character events
+[0,"LOGIN","Registering (player) event handlers",true,true] call Extremo_fnc_gui_splashScreen;  
+uiSleep 1.5;
 {_newcharacter call compile ("_this addEventHandler ['"+_x+"', {_this call " + str(missionNamespace getVariable [format ["extremo_fnc_event_%1",tolower _x], {}]) + "}]; nil");}forEach[
 	"Fired",
 	"FiredNear",
@@ -148,24 +151,20 @@ if(_deleteoldcharacter)then{
 	"handleDamage"
 ];
 
-
 //---Tell all system players data is loaded
 _newcharacter setVariable ["ExtremoDataLoaded",true,true];
 
 //--- Spawn menu
-[0,"SETUP", "Preparing player spawn",true,true] spawn Extremo_fnc_gui_splashScreen;
+[0,"SETUP", "Preparing player spawn",true,true] call Extremo_fnc_gui_splashScreen;
 uiSleep 3;
 if _respawn then{
-	[_newcharacter] spawn Extremo_fnc_gui_spawnScreen;
+	waitUntil Extremo_fnc_gui_spawnScreen;//open spawn
+	waitUntil extremo_var_gui_playerSpawned;//spawn done
 }else{
-	//--- Preloader
-	waitUntil {_newcharacter nearObjectsReady 2500};
-	waitUntil {50 preloadObject "SoldierW"};
-
-	//--- 
-	[7,"SPAWNED", "You have spawned at your old location",false,false] spawn Extremo_fnc_gui_splashScreen;
+	waitUntil Extremo_fnc_player_preloader;
+	extremo_var_gui_playerSpawned = compile str(true);
+	[7,"SPAWNED", "You have spawned at your old location",false,false] call Extremo_fnc_gui_splashScreen;
 };
-
 
 //---  Force showing the chat. Sometimes Arma resets this
 showChat true;

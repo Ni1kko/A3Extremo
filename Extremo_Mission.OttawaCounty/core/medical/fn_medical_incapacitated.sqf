@@ -12,8 +12,8 @@ if (_player getVariable ["extremo_var_incapacitated", false]) exitWith {};
 
 //--
 private _broadcast = format ["%1 has been seriously wounded", name _player];
-Extremo_var_healthState = 1;
-Extremo_var_executer = objNull;
+Extremo_var_medical_healthState = 1;
+Extremo_var_medical_executer = objNull;
 Extremo_var_remainingBlood = [missionConfigFile >> "CfgRespawnTemplates" >> "Extremo", "bleedoutDuration", 60] call BIS_fnc_returnConfigEntry;
 Extremo_var_incapacitateInitTime = diag_tickTime;
 
@@ -137,9 +137,9 @@ escKeyEH = (uiNamespace getVariable "RscExtremo_BleedoutScreen") displayAddEvent
 	};
 
 	//--- Deteminate state
-	private _bledout =  (Extremo_var_healthState isEqualTo 1) AND (_progress >= 1);
-	private _executed = (Extremo_var_healthState isEqualTo 2);
-	private _suicide =  (Extremo_var_healthState isEqualTo 3);
+	private _bledout =  (Extremo_var_medical_healthState isEqualTo 1) AND (_progress >= 1);
+	private _executed = (Extremo_var_medical_healthState isEqualTo 2);
+	private _suicide =  (Extremo_var_medical_healthState isEqualTo 3);
 	private _revived =  not(_player getVariable ["extremo_var_incapacitated", false]) AND not(_progress >= 1);
 
 	//--- Handle states
@@ -169,11 +169,11 @@ escKeyEH = (uiNamespace getVariable "RscExtremo_BleedoutScreen") displayAddEvent
 			_titleColor = [0, 1, 0, 1];
 			_subtitle = "%<U>ProfileName% You may need medical supplies";
 			_blockEscapeKey = true;
-			[_timer,[_title,_titleColor],_subtitle,true,_blockEscapeKey] spawn Extremo_fnc_gui_splashScreen;
+			[_timer,[_title,_titleColor],_subtitle,true,_blockEscapeKey] call Extremo_fnc_gui_splashScreen;
 		};
 
 		//--- Other states
-		switch (Extremo_var_healthState) do {
+		switch (Extremo_var_medical_healthState) do {
 			case 1: 
 			{ 	//Bleedout state
 				
@@ -187,8 +187,8 @@ escKeyEH = (uiNamespace getVariable "RscExtremo_BleedoutScreen") displayAddEvent
 
 				_timer = [_configTimers, "Executed", 60] call BIS_fnc_returnConfigEntry;
 				_title = "YOU HAVE BEEN EXECUTED";
-				if (!isNull Extremo_var_executer) then {
-					_broadcast = format ["%1 has been executed by %2", name _player, Extremo_var_executer];
+				if (!isNull Extremo_var_medical_executer) then {
+					_broadcast = format ["%1 has been executed by %2", name _player, Extremo_var_medical_executer];
 				};
 				_blockEscapeKey = true;
 			}; 
@@ -203,7 +203,7 @@ escKeyEH = (uiNamespace getVariable "RscExtremo_BleedoutScreen") displayAddEvent
 		};
 
 		//--- Create splash
-		[_timer,[_title,_titleColor],_subtitle,true,_blockEscapeKey,true] spawn Extremo_fnc_gui_splashScreen;
+		[_timer,[_title,_titleColor],_subtitle,true,_blockEscapeKey,true] call Extremo_fnc_gui_splashScreen;
 
 		//--- Hide body
 		if _hideBody then{

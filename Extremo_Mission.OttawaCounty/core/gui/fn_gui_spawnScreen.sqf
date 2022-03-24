@@ -3,14 +3,11 @@
 /*
 	## EXTREMO
 	## Nikko Renolds
+
+	waitUntil Extremo_fnc_gui_spawnScreen;
 */
 
 disableSerialization;
-params [
-	["_character",player,[objNull]]
-];
-
-if(!canSuspend) exitWith {_this spawn Extremo_fnc_gui_spawnScreen; true};
 
 private _config = missionConfigFile >> "CfgSpawn";
 private _template = getText(_config >> "activeTemplate");
@@ -18,15 +15,17 @@ private _configTemplate = _config >> _template;
 private _configWorld = _configTemplate >> worldName;
 private _markers = getArray(_configWorld >> "zones");
 
-if (isNull _character) exitWith {false};
+extremo_var_gui_playerSpawned = compile str(false);
+
+if (isNull player) exitWith {false};
 if (count _markers <= 0) exitWith {
-	[0,"ERROR","An error occured ('CfgSpawn' >> '"+_template+"' >> '"+worldName+"' >> 'zones') is empty...",true,true] spawn Extremo_fnc_gui_splashScreen;
+	[0,"ERROR","An error occured ('CfgSpawn' >> '"+_template+"' >> '"+worldName+"' >> 'zones') is empty...",true,true] call Extremo_fnc_gui_splashScreen;
 	uiSleep 1.5;
 	"extremoError" call BIS_fnc_endMission;
 	false
 };
 
-[0,"SETUP", "Loading spawn options",true,true] spawn Extremo_fnc_gui_splashScreen;
+[0,"SETUP", "Loading spawn options",true,true] call Extremo_fnc_gui_splashScreen;
 uiSleep 1.5;
 private _displayClass = "RscExtremo_SpawnScreen";
 private _display = uiNamespace getVariable [_displayClass,displayNull];

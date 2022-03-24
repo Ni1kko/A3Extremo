@@ -45,7 +45,7 @@ if(_subtitle isEqualTo _dynamicTextCallback)then{
 	_displayCtrlSubtitle ctrlSetText _subtitle;
 };
 
-if (Extremo_var_splashTimer - diag_ticktime < 0 || isNull _display) then 
+if (Extremo_var_splashTimer - diag_ticktime < 0 || isNull _display || isNil "Extremo_var_splashTimer") then 
 {
 	removeMissionEventHandler ["EachFrame", Extremo_var_splashTimerEVH];
 	

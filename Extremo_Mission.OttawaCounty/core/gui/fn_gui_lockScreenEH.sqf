@@ -204,7 +204,8 @@ switch _event do {
 		_controlConfirm ctrlEnable false; 
 		_controlCancel ctrlEnable not(extremo_var_gui_inputESCLock);
 		ctrlSetFocus _controlNumFake;
-
+		setMousePosition [0.5,0.5];
+		
 		//clear capture var
 		extremo_var_gui_inputString = "";
 		extremo_var_gui_inputLockCodeCorrect = false;

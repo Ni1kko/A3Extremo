@@ -34,7 +34,8 @@ switch (true) do
 
         if _BEGuidNotCalculated exitWith{[_characterOwnerID,"<extremo_fnc_event_player_connected> Error calculating players BEGuid"] call Extremo_fnc_rcon_kick};
         if _BEGuidNotCached then{ExtremoBeGuidHashmap set [_characterSteamID, _BEGuid]};
-
-        [_BEGuid] remoteExec ['extremo_fnc_player_init', _characterOwnerID];
+         
+        //[0,"LOADING",_BEGuid] remoteExec ['Extremo_fnc_gui_splashScreen', _characterOwnerID]; 
+        [_BEGuid] remoteExec ['extremo_fnc_client_init', _characterOwnerID];
     };
 };

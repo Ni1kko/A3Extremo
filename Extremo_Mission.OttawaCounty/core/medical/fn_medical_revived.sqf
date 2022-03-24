@@ -19,8 +19,8 @@ _target setVariable ["extremo_var_incapacitated", false, true];
 _target setUnconscious false;
 _target allowDamage true;
 
-Extremo_var_healthState = 0;
-Extremo_var_executer = objNull;
+Extremo_var_medical_healthState = 0;
+Extremo_var_medical_executer = objNull;
 
 //-- destoy effects first
 ppEffectDestroy Extremo_var_death_blurEffect;

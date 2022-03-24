@@ -84,3 +84,5 @@ if(_displayTime <= 0)then{
 		[_title,_titleColor,_subtitle,_background,_keepOpen]
 	];
 };
+
+true

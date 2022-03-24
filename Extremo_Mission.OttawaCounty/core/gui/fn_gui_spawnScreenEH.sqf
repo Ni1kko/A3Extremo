@@ -53,7 +53,7 @@ private _controls = [
 //systemChat format [(if(count _data == 0)then{"%1: %2"}else{"%1: %2 (_data = %3)"}),_displayClass,_event,_data];
 
 switch _event do {
-	case "onLoad": 		   {uiNameSpace setVariable [_displayClass,_object]; extremo_var_dik_blockESC = true;};
+	case "onLoad": 		   {uiNameSpace setVariable [_displayClass,_object]; extremo_var_dik_blockESC = true; setMousePosition [0.5,0.5]};
 	case "onUnLoad": 	   {uiNameSpace setVariable [_displayClass,displayNull]; extremo_var_dik_blockESC = false;};
 	case "onLBSelChanged": 
 	{ 
@@ -75,12 +75,12 @@ switch _event do {
 		
 		//--- Marker missing
 		if(count _markerPosition isNotEqualTo 3)exitWith{
-			[0,"ERROR",format["An error occured with spawn position (%1)",_markerText],true,true] spawn Extremo_fnc_gui_splashScreen;
+			[0,"ERROR",format["An error occured with spawn position (%1)",_markerText],true,true] call Extremo_fnc_gui_splashScreen;
 			uiSleep 2;
 			"extremoError" call BIS_fnc_endMission;
 		};
 
-		[0,"Current Spawn Zone",_markerText,true,true] spawn Extremo_fnc_gui_splashScreen;
+		[0,"Current Spawn Zone",_markerText,true,true] call Extremo_fnc_gui_splashScreen;
 	};
 	case "onConfirmClick": 
 	{  
@@ -95,17 +95,15 @@ switch _event do {
 		private _canSpawn = true;
 		{
 			if(_markerName isEqualTo (_x#0))exitWith{ 
-				[0,"Protected Spawn","Password required",true,true] spawn Extremo_fnc_gui_splashScreen;
+				[0,"Protected Spawn","Password required",true,true] call Extremo_fnc_gui_splashScreen;
 				_display = ([_x#1,true] call Extremo_fnc_gui_lockScreen) param [0,displayNull];
-				uiSleep 1.5;
-				[0,"Protected Spawn","Waiting for user input",true,true] spawn Extremo_fnc_gui_splashScreen;
 				waitUntil{isNull _display};
 				 
 				if (extremo_var_gui_inputLockCodeCorrect)then{
-					[0,"Protected Spawn","Password accepted",true,true] spawn Extremo_fnc_gui_splashScreen; 
+					[0,"Protected Spawn","Password accepted",true,true] call Extremo_fnc_gui_splashScreen; 
 				}else{
 					_canSpawn = false;
-					[0,"Protected Spawn","Password mismatch",true,true] spawn Extremo_fnc_gui_splashScreen;	
+					[0,"Protected Spawn","Password mismatch",true,true] call Extremo_fnc_gui_splashScreen;	
 				};
 
 				uiSleep 3;
@@ -113,10 +111,12 @@ switch _event do {
 		}forEach _protectedMarkers;
 
 		//--- Reload menu
-		if !(_canSpawn)exitWith{[player] spawn Extremo_fnc_gui_spawnScreen};
+		if !(_canSpawn)exitWith{
+			waitUntil Extremo_fnc_gui_spawnScreen;
+		};
 	
 		//--- Spawn player at position
-		[0,"SPAWNING","",true,true] spawn Extremo_fnc_gui_splashScreen;
+		[0,"SPAWNING","",true,true] call Extremo_fnc_gui_splashScreen;
 		player setVariable ["ExtremoLastSpawnZone",_markerName,true];
 		player setVariable ["ExtremoLastSpawnTime",systemTimeUTC,true];
 		player allowDamage false;
@@ -124,21 +124,8 @@ switch _event do {
 		uiSleep 0.5;
 
 		//--- Preloader
-		{
-			if !(isNull _x)then{
-				private _model = ((str _x) splitString ":") param [1,"error"];
-				private _modelGrid = mapGridPosition _x;
-				[0,"Preloader",format ["Preloading: %1-%2",_modelGrid,_model],true,true] spawn Extremo_fnc_gui_splashScreen;
-				waitUntil {round(player distance2D _x) preloadObject typeName _x};
-			};
-		}forEach nearestTerrainObjects [
-			player, 
-			["BUILDING", "HOUSE", "HOSPITAL", "WATERTOWER", "LIGHTHOUSE", "CHURCH", "CHAPEL", "BUNKER", "WALL" ], 
-			1500,
-			true,
-			true
-		];
-		waitUntil {player nearObjectsReady 500};
+		waitUntil Extremo_fnc_player_preloader;
+		extremo_var_gui_playerSpawned = compile str(true);
 		player allowDamage true;
 
 		//--- 
@@ -149,6 +136,6 @@ switch _event do {
 			([player] call Extremo_fnc_system_locationInfo) param [2,"the chosen location",[""]]
 		}else{
 			_markerText
-		})],false,false] spawn Extremo_fnc_gui_splashScreen;
+		})],false,false] call Extremo_fnc_gui_splashScreen;
 	};
 };
