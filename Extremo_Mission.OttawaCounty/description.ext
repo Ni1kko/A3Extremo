@@ -648,6 +648,8 @@ class CfgFunctions
         class Gui
         {
             file = "core\gui"; 
+            class gui_lockScreen {};
+            class gui_lockScreenEH {};
             class gui_spawnScreen {};
             class gui_spawnScreenEH {};
             class gui_splashScreen {};
