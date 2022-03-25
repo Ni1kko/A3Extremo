@@ -7,6 +7,13 @@ params [
 	["_BEGuid","",[""]]
 ];
 
+if(isFinal "extremo_var_player_beguid")exitWith{
+	[0,"ERROR","An error occured (fn_player_init.sqf) ran twice"] call Extremo_fnc_gui_splashScreen; uiSleep 5;
+	"extremoError" call BIS_fnc_endMission;
+	false
+};
+
+extremo_var_player_beguid = compileFinal str(_BEGuid);  //--- Conatins players battleEye Guid
 waitUntil{!isNull player};	//--- Make sure player object is loaded before any requests
 
 //--- Register key handlers

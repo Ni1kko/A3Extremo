@@ -137,19 +137,8 @@ if(_deleteoldcharacter)then{
 };
 
 //--- Setup character events
-[0,"LOGIN","Registering (player) event handlers",true,true] call Extremo_fnc_gui_splashScreen;  
-uiSleep 1.5;
-{_newcharacter call compile ("_this addEventHandler ['"+_x+"', {_this call " + str(missionNamespace getVariable [format ["extremo_fnc_event_%1",tolower _x], {}]) + "}]; nil");}forEach[
-	"Fired",
-	"FiredNear",
-	"Explosion",
-	"Hit",
-	"Put",
-	"Take",
-	"InventoryClosed", 
-	"InventoryOpened", 
-	"handleDamage"
-];
+[0,"LOGIN","Registering (player) event handlers",true,true] call Extremo_fnc_gui_splashScreen; uiSleep 1.5;
+waitUntil Extremo_fnc_player_initEventhandlers;
 
 //---Tell all system players data is loaded
 _newcharacter setVariable ["ExtremoDataLoaded",true,true];
