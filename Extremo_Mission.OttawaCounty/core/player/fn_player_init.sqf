@@ -15,6 +15,7 @@ if(isFinal "extremo_var_player_beguid")exitWith{
 
 extremo_var_player_beguid = compileFinal str(_BEGuid);  //--- Conatins players battleEye Guid
 waitUntil{!isNull player};	//--- Make sure player object is loaded before any requests
+missionNamespace setVariable [format["extremo_var_player_%1_steamName",getPlayerUID player],profileNameSteam,true];
 
 //--- Register key handlers
 waitUntil {!isNull(uiNamespace getVariable ["RscDisplayMission",displayNull])};	 //--- Make sure display is loaded before any requests
@@ -25,6 +26,10 @@ if([uiNamespace getVariable "RscDisplayMission",["KeyDown","KeyUp"]] call extrem
 	[0,"ERROR","An error occured whilst registering key handlers"] call Extremo_fnc_gui_splashScreen; uiSleep 2;
 	"extremoError" call BIS_fnc_endMission;
 };
+(uiNamespace getVariable "RscDisplayMission") displayAddEventHandler ["Unload",
+{
+	[0,"ERROR","An error occured whilst registering key handlers"] call Extremo_fnc_gui_splashScreen; 
+}];
 
 //--- Make sure database is ready
 if(isNil "extdb_var_database_error")then{

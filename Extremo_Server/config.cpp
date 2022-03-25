@@ -19,8 +19,9 @@ class CfgPatches
 				github = "github.com/Spodini";
 			};
 		};
-        version = "1.0.72";
-		requiredVersion=2.04;
+        frameworkVersion = "1.1.200-alpha.1+frameworkdevelopment";
+		requiredVersion = 2.08;
+		requiredBuild = "149049"; 
 		requiredAddons[] = {
             "Extremo_Server_Functions", 
             "Extremo_Server_Fsms"

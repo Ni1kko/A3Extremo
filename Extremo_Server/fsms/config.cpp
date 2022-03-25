@@ -12,7 +12,6 @@ class CfgPatches
 				github = "github.com/Ni1kko";
 			};
 		};
-        version = "1.0.72";
 		requiredVersion=2.04;
 		requiredAddons[] = {};
 		units[] = {};

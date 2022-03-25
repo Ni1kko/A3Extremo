@@ -1,6 +1,8 @@
 /*
 	## EXTREMO
 	## Nikko Renolds
+
+    https://community.bistudio.com/wiki/Description.ext
 */
 
 #include "defines.hpp"
@@ -26,8 +28,7 @@ class CfgPatches
 				github = "github.com/Spodini";
 			};
 		};
-        version = "1.0.72";
-		armaVersion= "2.04";
+        frameworkVersion = "1.1.200-alpha.1+frameworkdevelopment";
 	};
 };
 
@@ -42,50 +43,56 @@ class Header
 author = "Nikko";
 onLoadName = "Extremo Survival";
 loadScreen = "textures\logo.paa";
-scriptedPlayer = true;
-disableRandomization[] = {"All"};
-enableDebugConsole[] = {"76561199109931625", "76561198147157388"}; 
-showWatch = false;
-allowProfileGlasses = false;
-joinUnassigned = false;
-skipLobby = true; // bypassing role selection screen
-OnLoadIntro = "";
-OnLoadIntroTime = 0;
-OnLoadMissionTime = 0;
-allowFunctionsRecompile = true;
-disabledAI = true;
-showSquadRadar = false;
-showUAVFeed = false;
-showCompass = false;
-showGPS = true;
-showGroupIndicator = true;
-enableItemsDropping = false;// Disable dropping items while swimming
-briefing = false;// Briefing will still be displayed until all clients are connected and done loading :(
-debriefing = false;// Defines if the debriefing is shown or not at the end of the mission. 
-allowFunctionsLog = true;// Allow RPT loging
-forceRotorLibSimulation = 2;// https://community.bistudio.com/wiki/Description.ext#forceRotorLibSimulation
-disableChannels[] = {0, 2};// https://community.bistudio.com/wiki/Description.ext#disableChannels
-showHUD[] = {
-	true, // Scripted HUD (same as showHUD command)
-	false, // Vehicle and unit info
-	false, // Vehicle radar [HIDDEN]
-	false, // Vehicle compass [HIDDEN]
-	false, // Tank direction indicator
-	false, // Commanding menu
-	false, // Group info bar
-	true, // HUD weapon cursors
-	false, // Vehicle display panels
-	false, // "x killed by y" systemChat messages
-	true  // force show drawIcon3D icons
+
+OnLoadIntro = "";                           //--- 
+OnLoadIntroTime = 0;                        //--- 
+OnLoadMissionTime = 0;                      //--- 
+briefing = false;                           //--- Briefing will still be displayed until all clients are connected and done loading :(
+debriefing = false;                         //--- Defines if the debriefing is shown or not at the end of the mission. 
+skipLobby = true;                           //---  bypassing role selection screen
+joinUnassigned = false;                     //--- 
+scriptedPlayer = true; 
+disabledAI = true;                          //--- 
+forceRotorLibSimulation = 2;                //--- https://community.bistudio.com/wiki/Description.ext#forceRotorLibSimulation
+disableRandomization[] = {"All"};           //---
+showGroupIndicator = true;                  //--- 
+enableItemsDropping = false;                //--- Disable dropping items while swimming
+allowProfileGlasses = false;                //--- 
+showWatch = false;                          //--- 
+showCompass = false;                        //--- 
+showGPS = true;                             //--- 
+showUAVFeed = false;                        //--- 
+showSquadRadar = false;                     //--- 
+disableChannels[] = {0, 2};                 //--- https://community.bistudio.com/wiki/Description.ext#disableChannels 
+showHUD[] = {                               //--- Scripted HUD (same as showHUD command)
+	true,                                   //--- ^^^^^^^^^^^^ 
+	false,                                  //--- ^^^^^^^^^^^^ Vehicle and unit info
+	false,                                  //--- ^^^^^^^^^^^^ Vehicle radar [HIDDEN]
+	false,                                  //--- ^^^^^^^^^^^^ Vehicle compass [HIDDEN]
+	false,                                  //--- ^^^^^^^^^^^^ Tank direction indicator
+	false,                                  //--- ^^^^^^^^^^^^ Commanding menu
+	false,                                  //--- ^^^^^^^^^^^^ Group info bar
+	true,                                   //--- ^^^^^^^^^^^^ HUD weapon cursors
+	false,                                  //--- ^^^^^^^^^^^^ Vehicle display panels
+	false,                                  //--- ^^^^^^^^^^^^ "x killed by y" systemChat messages
+	true                                    //--- ^^^^^^^^^^^^ force show drawIcon3D icons
 };
-respawn = "BASE";
-respawnDialog = false;
-respawnOnStart = disabled;
-respawnButton = true;
-respawnTemplates[] = {"Extremo"};
+allowFunctionsRecompile = true;             //--- bypassing final functions (should be false on an active server)
+allowFunctionsLog = true;                   //--- Allow RPT loging
+enableDebugConsole[] = {                    //---  Debug Console Users with accses without admin password
+    "76561199109931625",                    //--- ^^^^^^^^^^^^^^ Ni1kko  (TᕼᗩT ᑎOᖇTᕼGᑌY#5537)
+    "76561198147157388"                     //--- ^^^^^^^^^^^^^^ Spodini (ScubaMoFuckingSteve#2999)
+};
 
 ///////////////////////////////////////////////
-// These are broken as fuck, do not use them!
+//--- ArmaRespawn
+respawn = "BASE";                           //--- Sets respawn type. `BASE` uses these markers for respawning (['respawn_west','respawn_east','respawn_guerrila','respawn_civilian'])
+respawnDialog = false;                      //--- Show the scoreboard and respawn countdown timer for a player if he is killed with respawn type 3. 
+respawnOnStart = disabled;                  //--- Respawn player when he joins the game. Available only for INSTANT and BASE
+respawnButton = true;                       //--- Enable or disable the respawn button in the menu for INSTANT and BASE respawn types. 
+respawnTemplates[] = {"Extremo"};           //--- Respawn templates from `CfgRespawnTemplates`. (May not work with extremo due to our system see: `CfgSpawn`)
+///////////////////////////////////////////////
+//--- ArmaCorpse (These are broken as fuck, do not use them!) 
 corpseManagerMode = 0;
 corpseLimit = 20;//max dead bodys
 corpseRemovalMinTime = 1800;
@@ -96,8 +103,6 @@ wreckRemovalMinTime = 60;
 wreckRemovalMaxTime = 360;
 minPlayerDistance = 50; // meters. Default: 0
 ///////////////////////////////////////////////
-
-
 
 class CfgKeyHandler 
 {
@@ -191,14 +196,16 @@ class CfgPlayer
 	{
         startCash = 100;
         startBank = 10000;
-	    respawnUnits[] = {
+	    unitClassNames[] = {
             "C_Man_casual_6_F"
         };
         forbiddenPositions[] = {
             //{"marker", distance}
         };
         welcomeMessages[] = {
-            "Welcome %SteamName%, have fun and respect the rules...",
+            "Hi %SteamName%, you can visit our forums here: %Website%",
+            "Have fun & be respectful of each other",
+            "Thanks for spending your time on (%FrameworkName%)",
             "%Website%"
         };
 	};
@@ -655,6 +662,7 @@ class CfgFunctions
         {
             file = "core\events"; 
             class event_handleDamage {};
+            class event_handleChatMessage {};
             class event_map {};
             class event_playerKilled {};
             class event_playerRespawned {};

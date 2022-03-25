@@ -15,12 +15,15 @@ private _callbacks = [
 	//--- System
 	["%SplashTimer%", str(round((missionNamespace getVariable ["Extremo_var_splashTimer",diag_tickTime]) - diag_ticktime))],
 	["%RespawnTimer%", str(round((missionNamespace getVariable ["Extremo_var_respawnTimer",diag_tickTime]) - diag_ticktime))],
+	["%FrameworkName%", "Extremo"],
 	["%FrameworkVersion%", "Extremo v1.0"],
+	["%FrameworkGithub%", "github.com/Ni1kko/A3Extremo"],
 	["%Website%", "www.extremo.co.uk"],
 	["%Loading%", "please wait..."],
 
 	//--- player
 	["%SteamID%", getPlayerUID player],
+	["%SteamIDShort%",(getPlayerUID player) select [12,5]],
 	["%SteamName%", profileNameSteam],
 	["%ProfileName%", profileName]
 ];

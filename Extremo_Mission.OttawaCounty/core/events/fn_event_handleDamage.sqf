@@ -15,6 +15,7 @@ params [
 
 private _handled = false;
 private _vehicle = vehicle _source;
+private _isVehicle = ((_vehicle isKindOf "Air" OR _vehicle isKindOf "Car" OR _vehicle isKindOf "Ship") AND _projectile isEqualTo "");
 
 if (_player getVariable ["extremo_var_incapacitated", false]) exitWith {
 	if (!(isNull _source) && {!(_source isEqualTo _player)}) then {
@@ -33,8 +34,8 @@ if (!isNull _source && {_source isNotEqualTo _player}) then
 	if !(_selectionName in ["","body", "head"]) exitWith {_currentDamage};
 
 	//--- VDM
-	if (((_vehicle isKindOf "Air" || _vehicle isKindOf "Car" || _vehicle isKindOf "Ship")) && (_projectile isEqualTo "")) then {
-
+	if (_isVehicle AND count(getPlayerUID(driver(_vehicle))) isEqualTo 17) then 
+	{
 		private _playerName = name _player;
 		private _playerUID = getPlayerUID _player;
 		private _playerNET = netID _player;
@@ -71,15 +72,34 @@ if (!isNull _source && {_source isNotEqualTo _player}) then
 			format (["%1:%2"] + (systemTimeUTC select [3,3])),
 			format (["%3/%2/%1"] + (systemTimeUTC select [0,3]))
 		];
+		
+		_vehicle setVariable ["ExtremoIncidents", _vehicleReports, true];
 
-		if(_playerUID isNotEqualTo _driverUID)then
-		{
-			_vehicle setVariable ["ExtremoIncidents", _vehicleReports, true];
-			hint parseText format["<t color='#ff0000' size='2' align='center'>VDM Report</t><br /><br/><t color='' size='1.2' align='center'>You have just been ran over by: %1</t></t>", _driverName];	
-		};
+		_playerUID = "2"; _driverUID = _playerUID;_driverName = "name";
+	 
+		private _message = parseText (if(_playerUID isNotEqualTo _driverUID)then { 
+		 	format["
+				<t color='#ff0000' size='1.5' align='center'>VDM Report</t>
+				<br/>
+				<br/>
+				<t size='1' align='center'>You have just been ran over by: %1</t> 
+			", _driverName];
+		}else{
+			"
+				<t color='#ff0000' size='1.5' align='center'>VDM Report</t>
+				<br/>
+				<br/>
+				<t size='1' align='center'>You have just been arma`d</t> 
+			"
+		});
 
+		//hint _message;
+		systemChat (((str(_message)regexReplace["\ ", "^"])splitString"^")joinString" ");
+		 
 		_damage = _currentDamage;
-	};
+	}else{
+
+	}
 };
 
 private _canDie = [_player,_selectionName,_damage,_source,_projectile,_hitPartIndex,_instigator] call extremo_fnc_medical_canDie;

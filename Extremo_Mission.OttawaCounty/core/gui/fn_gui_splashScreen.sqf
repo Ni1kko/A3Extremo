@@ -48,10 +48,9 @@ private _display = compile 'uiNamespace getVariable ["RscExtremo_SplashScreen",d
 private _layer1 = ["RscExtremo_SplashScreenBlackoutLayer"] call BIS_fnc_rscLayer;
 private _layer2 = ["RscExtremo_SplashScreenNoiseLayer"] call BIS_fnc_rscLayer;
 private _layer3 = ["RscExtremo_SplashScreenLayer"] call BIS_fnc_rscLayer;
-
 private _staticBGActive = not(false in ([_layer1,_layer2] apply {_x in allActiveTitleEffects}));
 
-//--Toggle background overlay
+//--- toggle background overlay
 if _staticBGActive then{
 	if !_background then{
 		[_layer1, "", "BLACK IN", 0.00001] call Extremo_fnc_system_destroyLayer;
@@ -64,16 +63,19 @@ if _staticBGActive then{
 	};
 };
 
-//--Create overlay
+//--- create overlay
 if(isNull(call _display))then{
 	_layer3 cutRsc ["RscExtremo_SplashScreen", "PLAIN"];
 };
 
-if(_displayTime <= 0)then{
-	if(!isNil "Extremo_var_splashTimerEVH")then{ 
-		removeMissionEventHandler ["EachFrame", Extremo_var_splashTimerEVH];
-		Extremo_var_splashTimerEVH = nil;
-	};
+//--- terminate any running events 
+if(!isNil "Extremo_var_splashTimerEVH")then{ 
+	removeMissionEventHandler ["EachFrame", Extremo_var_splashTimerEVH];
+	Extremo_var_splashTimerEVH = nil;
+};
+
+//--- call\register update event
+if(_displayTime <= 0)then{ 
 	Extremo_var_splashTimer = diag_tickTime + 99999;
 	[_title,_titleColor,_subtitle,false] call Extremo_fnc_gui_splashScreenEH;
 }else{

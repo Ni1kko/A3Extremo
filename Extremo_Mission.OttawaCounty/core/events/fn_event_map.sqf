@@ -8,4 +8,6 @@ params [
 	["_mapIsForced",false]
 ];
 
-[3,"LOADING","%Loading%",true,true] call Extremo_fnc_gui_splashScreen;
+private _mapIsOpening = not(_mapIsOpened);
+
+[2,["LOADING MAP","EXITING MAP"] select _mapIsOpening,"%Loading%"] call Extremo_fnc_gui_splashScreen;

@@ -17,6 +17,13 @@ uiSleep 1.5;
 Extremo_var_medical_healthState = 0;
 Extremo_var_medical_executer = objNull;
 extremo_var_gui_playerSpawned = compile str(false);
+
+//--- 
+3 fadeSound 0;
+showChat false;
+enableRadio false;
+showSubtitles false;
+enableSentences false;
 setGroupIconsVisible [false, false];
 
 //--- Close Briefing 
@@ -55,11 +62,6 @@ player reveal [_newcharacter, 4];
 //
 selectPlayer _newcharacter; 
 setStaminaScheme "Normal";//"Normal", "FastDrain", "Exhausted" or "Default"
-enableSentences false;
-enableRadio false;
-showSubtitles false;
-showChat false;
-0 fadeSound 0;
 
 //--- 
 { 
@@ -157,6 +159,10 @@ if _respawn then{
 
 //---  Force showing the chat. Sometimes Arma resets this
 showChat true;
+enableRadio true;
+showSubtitles true; 
+enableSentences true; 
 setGroupIconsVisible [true, true];
+10 fadeSound 1;
 
 true

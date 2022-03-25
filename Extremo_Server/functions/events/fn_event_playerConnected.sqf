@@ -22,7 +22,7 @@ switch (true) do
     case _server: 
     { 
         finishMissionInit;
-        [] call extremo_fnc_server_init;
+        try (extremo_fnc_server_init) catch {_exception call Extremo_fnc_system_log};
     };
     
     //--- Load Client
@@ -32,7 +32,7 @@ switch (true) do
         private _BEGuidNotCached = not(_characterSteamID in keys ExtremoBeGuidHashmap);
         private _BEGuidNotCalculated = _BEGuid isEqualTo "";
 
-        if _BEGuidNotCalculated exitWith{[_characterOwnerID,"<extremo_fnc_event_player_connected> Error calculating players BEGuid"] call Extremo_fnc_rcon_kick};
+        if _BEGuidNotCalculated exitWith{[_characterOwnerID,"<extremo_fnc_event_player_connected> Error calculating players BEGuid"] call Extremo_fnc_system_kick};
         if _BEGuidNotCached then{ExtremoBeGuidHashmap set [_characterSteamID, _BEGuid]};
          
         //[0,"LOADING",_BEGuid] remoteExec ['Extremo_fnc_gui_splashScreen', _characterOwnerID]; 

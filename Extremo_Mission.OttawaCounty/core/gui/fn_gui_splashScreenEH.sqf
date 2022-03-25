@@ -9,6 +9,10 @@ params [
 private _display = uiNamespace getVariable ["RscExtremo_SplashScreen",displayNull];
 private _displayCtrlTitle = _display displayCtrl 1;
 private _displayCtrlSubtitle = _display displayCtrl 2;
+private _layer1 = ["RscExtremo_SplashScreenBlackoutLayer"] call BIS_fnc_rscLayer;
+private _layer2 = ["RscExtremo_SplashScreenNoiseLayer"] call BIS_fnc_rscLayer;
+private _layer3 = ["RscExtremo_SplashScreenLayer"] call BIS_fnc_rscLayer;
+private _staticBGActive = not(false in ([_layer1,_layer2] apply {_x in allActiveTitleEffects}));
 private _dynamicTextCallback = "%Loading%";
 
 //--- Handle callbacks
@@ -45,22 +49,34 @@ if(_subtitle isEqualTo _dynamicTextCallback)then{
 	_displayCtrlSubtitle ctrlSetText _subtitle;
 };
 
+//-- Toggle background overlay
+if !_staticBGActive then{
+	if _background then{
+		_layer1 cutText ["", "BLACK OUT", 0.00001];
+		_layer2 cutRsc ["SPLASHNOISE", "PLAIN",3];
+	};
+};
+
+//--- Timer
 if (Extremo_var_splashTimer - diag_ticktime < 0 || isNull _display || isNil "Extremo_var_splashTimer") then 
 {
 	removeMissionEventHandler ["EachFrame", Extremo_var_splashTimerEVH];
 	
-	if !(_keepOpen)then{
-		if _background then{ 
-			["RscExtremo_SplashScreenBlackoutLayer", "", "BLACK IN", 3] call Extremo_fnc_system_destroyLayer;
-			["RscExtremo_SplashScreenNoiseLayer", "", "BLACK IN", 0.00001] call Extremo_fnc_system_destroyLayer; 
+	if _keepOpen then{
+		_displayCtrlTitle ctrlSetText ""; 
+		_displayCtrlSubtitle ctrlSetText "";
+	}else{
+		if _background then { 
+			[_layer1, "", "BLACK IN", 3] call Extremo_fnc_system_destroyLayer;
+			[_layer2, "", "BLACK IN", 0.00001] call Extremo_fnc_system_destroyLayer; 
 		};
 		
-		["RscExtremo_SplashScreenLayer", 2] call Extremo_fnc_system_destroyLayer;
-	}else{
-		_displayCtrlTitle ctrlSetText ""; 
-		_displayCtrlSubtitle ctrlSetText ""; 
+		[_layer3, 2] call Extremo_fnc_system_destroyLayer;
 	};
 
 	Extremo_var_splashTimer = nil;
 	Extremo_var_splashTimerEVH = nil;
 };
+
+//--- 
+true

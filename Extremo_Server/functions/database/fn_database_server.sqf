@@ -27,7 +27,7 @@ switch _table do {
 				["BEGuid",str _BEGuid]
 			];
 
-			if _BEGuidNotCalculated exitWith{[_rexecID,"<extremo_fnc_event_databse_server2client> Error calculating players BEGuid"] call Extremo_fnc_rcon_kick};
+			if _BEGuidNotCalculated exitWith{[_rexecID,"<extremo_fnc_event_databse_server2client> Error calculating players BEGuid"] call Extremo_fnc_system_kick};
 			if _BEGuidNotCached then {
 				ExtremoBeGuidHashmap set [_steamID, _BEGuid];
 				_whereClause pushBackUnique ["S64ID", ["DB","STRING", _steamID] call Extremo_fnc_database_parse];
@@ -39,13 +39,13 @@ switch _table do {
 				case "load": 
 				{ 
 					private _spawnIsland = [missionConfigFile >> "CfgSpawn" >> "Extremo" >> worldName, "spawnIsland", ""] call BIS_fnc_returnConfigEntry;
-					private _classes = [missionConfigFile >> "CfgPlayer" >> "Extremo", "respawnUnits", ["C_Man_casual_6_F"]] call BIS_fnc_returnConfigEntry;
+					private _classes = [missionConfigFile >> "CfgPlayer" >> "Extremo", "unitClassNames", ["C_Man_casual_6_F"]] call BIS_fnc_returnConfigEntry;
 					private _startcash = [missionConfigFile >> "CfgPlayer" >> "Extremo", "startCash", 0] call BIS_fnc_returnConfigEntry;
 					private _forbiddenPositions = [missionConfigFile >> "CfgPlayer" >> "Extremo", "forbiddenPositions", []] call BIS_fnc_returnConfigEntry;
 					private _useLatestRecord = true;
 
 					if(_attempts > 5) exitWith {
-						[_rexecID, format["Warning unable to load database records for BEGuid: %1", _BEGuid]] call Extremo_fnc_rcon_kick;
+						[_rexecID, format["Warning unable to load database records for BEGuid: %1", _BEGuid]] call Extremo_fnc_system_kick;
 					};
 
 					format["Reading database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
@@ -53,7 +53,7 @@ switch _table do {
 
 					//--- DB Down...
 					if("DB:Task-failure" in _request)exitWith {
-						[_rexecID, "Warning error occured with database"] call Extremo_fnc_rcon_kick;
+						[_rexecID, "Warning error occured with database"] call Extremo_fnc_system_kick;
 					};
 
 					//--- Bad.. fail safe
@@ -79,7 +79,7 @@ switch _table do {
 						]call Extremo_fnc_database_request;
 
 						if("DB:Task-failure" in _request)exitWith {
-							[_rexecID, "Warning error occured with database"] call Extremo_fnc_rcon_kick;
+							[_rexecID, "Warning error occured with database"] call Extremo_fnc_system_kick;
 						};
 						
 						format["Inserted database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
@@ -96,7 +96,7 @@ switch _table do {
 
 					//--- 
 					if(_BEGuid isNotEqualTo ([_request] call BIS_fnc_arrayShift))exitWith{
-						[_rexecID, format["Warning unable to load database records for BEGuid: %1", _BEGuid]] call Extremo_fnc_rcon_kick;
+						[_rexecID, format["Warning unable to load database records for BEGuid: %1", _BEGuid]] call Extremo_fnc_system_kick;
 					};
 
 					//--- 
@@ -119,7 +119,7 @@ switch _table do {
 						["_Class","",[""]],//4
 						["_Wallet",0,[0]]//5
 					])exitWith{
-						[_rexecID, format["Warning unable parse database record for BEGuid: %1", _BEGuid]] call Extremo_fnc_rcon_kick;
+						[_rexecID, format["Warning unable parse database record for BEGuid: %1", _BEGuid]] call Extremo_fnc_system_kick;
 					};
 
 					//--- Update name

@@ -12,7 +12,6 @@ class CfgPatches
 				github = "github.com/Ni1kko";
 			};
 		};
-        version = "1.0.72";
 		requiredVersion=2.04;
 		requiredAddons[] = {};
 		units[] = {};
@@ -39,6 +38,13 @@ class CfgFunctions
         {
             file = "\Extremo_Server\functions\server"; 
             class server_init {};
+        };
+
+        //--- Extremo System Functions 
+        class System_Functions
+        {
+            file = "\Extremo_Server\functions\system"; 
+            class system_versionInfo {};
         };
 
         //--- Extremo Vehicles Functions

@@ -6,6 +6,7 @@
 extremo_var_dik_eventhandlers = [];						//--- Conatins array of added eventhandlers [['onKeyDown'123],[onKeyUp'345]]
 extremo_var_dik_blockESC = false;				    	//--- DIK bock for `RscDisplayMission`
 Extremo_var_event_mapEH = -1;							//--- ID of registered map event handler
+Extremo_var_event_handleChatMessageEH = -1;				//--- ID of registered handlechat message event handler
 Extremo_var_event_preloadFinishedEH = -1;				//--- ID of registered map event handler
 extremo_var_gui_inputBusy = false;				    	//--- Cancel block for `input ui's` (don't use in other scripts)
 extremo_var_gui_inputESCLock = false;					//--- DIK block for `input ui's` (don't use in other scripts)
