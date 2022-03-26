@@ -22,7 +22,9 @@ Extremo_var_system_versionOK = (_clientVersionInfo != "" AND _serverVersionInfo 
 //--- Broadcast version
 {publicVariable _x}forEach [
 	"Extremo_var_system_version",
-	"Extremo_var_system_versionOK"
+	"Extremo_var_system_versionOK",
+	"Extremo_var_system_versionInfo",
+	"Extremo_fnc_system_versionInfo"
 ];
 
 //--- Don't start server if different version
