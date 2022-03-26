@@ -132,10 +132,10 @@ switch _event do {
 		_markerText = if(tolower(_markerText select [0,9]) == "spawnzone")then{_markerText select [10,(count _markerText) - 10]}else{""}; 
 
 		//--- 
-		[7,"SPAWNED", format ["You have spawned at %1",(if(_markerText isEqualTo "")then{
+		[3,"Extremo", format ["Spawning at %1 in %SplashTimer%",(if(_markerText isEqualTo "")then{
 			([player] call Extremo_fnc_system_locationInfo) param [2,"the chosen location",[""]]
 		}else{
 			_markerText
-		})],false,false] call Extremo_fnc_gui_splashScreen;
+		})]] call Extremo_fnc_gui_splashScreen;
 	};
 };
