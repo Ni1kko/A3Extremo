@@ -16,7 +16,7 @@ private _callbacks = [
 	["%SplashTimer%", str(round((missionNamespace getVariable ["Extremo_var_splashTimer",diag_tickTime]) - diag_ticktime))],
 	["%RespawnTimer%", str(round((missionNamespace getVariable ["Extremo_var_respawnTimer",diag_tickTime]) - diag_ticktime))],
 	["%FrameworkName%", "Extremo"],
-	["%FrameworkVersion%", "Extremo v1.0"],
+	["%FrameworkVersion%", format["Extremo %1",(call(missionNamespace getVariable ["extremo_fnc_system_versionInfo",{}])) param[1,"v0.0"]],
 	["%FrameworkGithub%", "github.com/Ni1kko/A3Extremo"],
 	["%Website%", "www.extremo.co.uk"],
 	["%Loading%", "please wait..."],
