@@ -86,9 +86,23 @@ switch _event do {
 	{  
 		private _selection = lnbCurSelRow _controlSelection;
 		private _markerName = _controlSelection lnbData [_selection,0];
+		private _markerPrefix = tolower(_markerText select [0,9]);
 		private _markerText = markerText _markerName;
 		private _markerPosition = getMarkerPos _markerName;
-		
+		private _locationInfo = [_markerPosition] call Extremo_fnc_system_locationInfo;
+
+		_locationInfo params [
+			["_dirName",""],
+			["_nearLocationName",""],
+			["_nearLocationNameOf",""],
+			["_nearLocation",locationNull],
+			["_position",[]],
+			["_dir",0],
+			["_nearMapMarkers",[]],
+			["_nearPlayers",[]],
+			["_nearVehicles",[]]
+		];
+
 		//--- Close menu
 		_display closeDisplay IDC_OK;
 		
@@ -117,10 +131,11 @@ switch _event do {
 	
 		//--- Spawn player at position
 		[0,"SPAWNING","",true,true] call Extremo_fnc_gui_splashScreen;
-		player setVariable ["ExtremoLastSpawnZone",_markerName,true];
+		player setVariable ["ExtremoLastSpawnZone",[_markerName,_locationInfo],true];
 		player setVariable ["ExtremoLastSpawnTime",systemTimeUTC,true];
 		player allowDamage false;
 		player setPosATL _markerPosition; 
+		player setDir _dir;
 		uiSleep 0.5;
 
 		//--- Preloader
@@ -128,14 +143,12 @@ switch _event do {
 		extremo_var_gui_playerSpawned = compile str(true);
 		player allowDamage true;
 
-		//--- 
-		_markerText = if(tolower(_markerText select [0,9]) == "spawnzone")then{_markerText select [10,(count _markerText) - 10]}else{""}; 
+		//--- Use custom name
+		if(_markerPrefix isEqualTo "spawnzone")then{
+			_nearLocationNameOf = format["%1 of %2",_dirName,_markerText select [10,(count _markerText) - 10]];
+		};
 
 		//--- 
-		[3,"Extremo", format ["Spawning at %1 in %SplashTimer%",(if(_markerText isEqualTo "")then{
-			([player] call Extremo_fnc_system_locationInfo) param [2,"the chosen location",[""]]
-		}else{
-			_markerText
-		})]] call Extremo_fnc_gui_splashScreen;
+		[3,"Extremo", "Spawning at "+_nearLocationNameOf+" in %SplashTimer%"] call Extremo_fnc_gui_splashScreen;
 	};
 };

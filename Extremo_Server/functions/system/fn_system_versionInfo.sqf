@@ -16,15 +16,16 @@
  
 */
 private _defaultFormat = "0.0.0-error.0+bad input";
+private _systemVersion = missionNamespace getVariable ["Extremo_var_system_versionInfo",_defaultFormat];
 
 params [
-	["_version",(missionNamespace getVariable ["Extremo_var_system_versionInfo",_defaultFormat]),["",{}]]
+	["_version",_systemVersion,["",{}]]
 ];
 
 //--- Input was compiled
 if(typeName _version isEqualTo "CODE")then{
 	private _temp = call _version;
-	_version = if(typeName _temp isEqualTo "STRING")then{_temp}else{_defaultFormat};
+	_version = if(typeName _temp isEqualTo "STRING")then{_temp}else{_systemVersion};
 };
 
 private _verArray = toArray _version;
