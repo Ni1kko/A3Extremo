@@ -18,7 +18,7 @@
 private _defaultFormat = "0.0.0-error.0+bad input";
 
 params [
-	["_version",_defaultFormat,["",{}]]
+	["_version",(missionNamespace getVariable ["Extremo_var_system_versionInfo",_defaultFormat]),["",{}]]
 ];
 
 //--- Input was compiled
