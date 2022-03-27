@@ -32,8 +32,8 @@ namespace StayALiVE.Core
             CopiedFromTemp = false;
 
             //Copy framwork
-            Core.Helpers.CopyFilesRecursively(Path.Combine(MainDirectory, $"Extremo_Mission.World"), BinMissionDirectory);
-            Core.Helpers.CopyFilesRecursively(Path.Combine(MainDirectory, "Extremo_Server"), BinServerDirectory);
+            Helpers.CopyFilesRecursively(Path.Combine(MainDirectory, $"Extremo_Mission.World"), BinMissionDirectory);
+            Helpers.CopyFilesRecursively(Path.Combine(MainDirectory, "Extremo_Server"), BinServerDirectory);
 
             //Copy SQM into temp framework folder
             File.Copy(GetSQMFilePath(), Path.Combine(BinMissionDirectory, "mission.sqm"));
@@ -44,8 +44,8 @@ namespace StayALiVE.Core
         internal bool PackAndPrepare()
         {
             if (!CopiedToTemp || IsPacked) return false;
-            Core.Helpers.PackPBO(BinMissionDirectory);
-            Core.Helpers.PackPBO(BinServerDirectory);
+            Helpers.PackPBO(BinMissionDirectory);
+            Helpers.PackPBO(BinServerDirectory);
 
             IsPacked = File.Exists($"{BinMissionDirectory}.pbo") && File.Exists($"{BinMissionDirectory}.pbo");
             return IsPacked;
