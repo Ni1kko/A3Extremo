@@ -188,6 +188,7 @@ namespace StayALiVE.Core
                                                       $"-cfg={Path.Combine(CfgsPath(), CfgPerformance())} " +
                                                       $"-config={Path.Combine(CfgsPath(), CfgDedicatedServer())} ";
                 if (svrmods.Length > 0)     output += $"-servermod=@ExtremoServer;{svrmods} ";
+                else                        output += $"-servermod=@ExtremoServer ";
                 if (clientmods.Length > 0)  output += $"-mod={clientmods} ";
                 if (EnableHyperThreading)   output += $"-enableHT ";
                 if (EnableLargePage)        output += $"-hugepages ";
