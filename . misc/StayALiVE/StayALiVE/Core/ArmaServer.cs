@@ -16,16 +16,7 @@ namespace StayALiVE.Core
         private int ProcID { get; set; } = -1;
         private bool Toggle { get; set; } = false;
         private string CMDLine { get; set; } = string.Empty;
-        private bool IsRunning
-        {
-            get
-            {
-                try { Process.GetProcessById(ProcID); }
-                catch (InvalidOperationException) { return false; }
-                catch (ArgumentException) { return false; }
-                return true;
-            }
-        }
+        private bool IsRunning { get => Helpers.ApplicationRunning(ProcID); }
 
         /// <summary>
         /// Constructor
