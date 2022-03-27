@@ -79,6 +79,7 @@
     <Compile Include="Core\PBO\PboResolver.cs" />
     <Compile Include="Core\ProgramConfig.cs" />
     <Compile Include="Core\ProgramAssembly.cs" />
+    <Compile Include="Core\TempFolder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ui\Home.cs">
