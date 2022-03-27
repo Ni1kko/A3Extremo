@@ -47,14 +47,13 @@ namespace StayALiVE.Core
 
             foreach (string path in Directory.GetFiles(target, "*", SearchOption.AllDirectories))
             {
-                string pathNew = path.Replace(target, "");
-                string file = File.ReadAllText(path);
-                byte[] fileBytes = Encoding.UTF8.GetBytes(file);
+                string pathNew = path.Replace(target, ""); 
                 string filePath = pathNew.StartsWith(@"\") ? pathNew.Substring(1) : pathNew;
-                pbo.AddEntry(filePath, fileBytes);
+                pbo.AddEntry(filePath, Encoding.UTF8.GetBytes(File.ReadAllText(path)));
             }
 
-            pbo.Save($"{target}.pbo"); 
+            pbo.Save($"{target}.pbo");
+            pbo.Dispose();
         } 
     }
 }

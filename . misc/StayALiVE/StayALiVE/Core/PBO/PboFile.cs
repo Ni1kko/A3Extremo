@@ -422,6 +422,13 @@ namespace StayALiVE.Core.PBO
         ~PboFile() {
             _stream.Dispose();
         }
+
+        public void Dispose()
+        {
+            _stream.Dispose();
+            // Suppress finalization.
+            GC.SuppressFinalize(this);
+        }
         #endregion
     }
 }

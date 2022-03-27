@@ -3,14 +3,16 @@
   "ProfileName": "Admin",
   "ServerDirectory": "D:\\SteamLibrary\\steamapps\\common\\Arma3Server",
   "FrameworkDirectory": "D:\\GitHub\\Repos\\Ni1kko\\A3Extremo",
-  "MissionFile": 1,
+  "MissionFile": 2,
   "MissionFiles": [
     "Altis",
     "VR",
     "OttawaCounty"
   ],
   "ServerMods": [],
-  "ClientMods": [],
+  "ClientMods": [
+    "@ExtremoClient"
+  ],
   "EnableHyperThreading": false,
   "EnableLargePage": false,
   "EnableExperimentalAlg": true,

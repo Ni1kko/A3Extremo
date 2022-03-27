@@ -43,6 +43,68 @@ namespace StayALiVE
             Program.Config.Save(Program.Config.Settings);
         }
 
+        internal class TempFolder
+        {
+            internal string SelectedWorld { get; private set; }
+            internal string MainDirectory { get; private set; }
+            internal TempFolder(string directory,string selectedWorld)
+            {
+                MainDirectory = directory;
+                SelectedWorld = selectedWorld;
+            }
+            internal string RootDirectory => Path.Combine(MainDirectory, "Missions", SelectedWorld); 
+            internal string GetConfigFilePath() => Path.Combine(RootDirectory, Program.Config.Settings.CfgDedicatedServer());
+            internal string GetSQMFilePath() =>    Path.Combine(RootDirectory, "mission.sqm");
+
+            internal string BinDirectory => Path.Combine(RootDirectory, "Bin");
+            internal string BinMissionDirectory => Path.Combine(BinDirectory, $"Extremo_Mission.{SelectedWorld}");
+            internal string BinServerDirectory => Path.Combine(BinDirectory, "Extremo_Server");
+
+            internal bool CopyToTemp()
+            {
+                //Purge old temp framwork folder
+                if (Directory.Exists(BinDirectory)) Directory.Delete(BinDirectory, true);
+                Directory.CreateDirectory(BinDirectory);
+
+                //Copy framwork
+                Core.Helpers.CopyFilesRecursively(Path.Combine(MainDirectory, $"Extremo_Mission.World"), BinMissionDirectory);
+                Core.Helpers.CopyFilesRecursively(Path.Combine(MainDirectory, "Extremo_Server"), BinServerDirectory);
+
+                //Copy SQM into temp framework folder
+                File.Copy(GetSQMFilePath(), Path.Combine(BinMissionDirectory, "mission.sqm"));
+
+                return File.Exists(Path.Combine(BinMissionDirectory, "description.ext"));
+            }
+
+            internal bool PackAndPrepare()
+            {
+                Core.Helpers.PackPBO(BinMissionDirectory);
+                Core.Helpers.PackPBO(BinServerDirectory);
+
+                return File.Exists($"{BinMissionDirectory}.pbo") && File.Exists($"{BinMissionDirectory}.pbo");
+            }
+
+            internal bool CopyFromTemp()
+            {
+                //Copy mission.pbo from temp folder to server direcrtory
+                string newMission = Path.Combine(Program.Config.Settings.ServerDirectory, $"mpmissions\\Extremo_Mission.{SelectedWorld}.pbo.pending");
+                if (File.Exists(newMission)) File.Delete(newMission);
+                File.Copy(BinMissionDirectory + ".pbo", newMission);
+
+                //Copy server.pbo from temp folder to server direcrtory
+                string newServer = Path.Combine(Program.Config.Settings.ServerDirectory, "@ExtremoServer\\addons\\Extremo_Server.pbo.pending");
+                if (File.Exists(newServer)) File.Delete(newServer);
+                File.Copy(BinServerDirectory + ".pbo", newServer);
+
+                //Copy server.cfg from temp folder to server direcrtory
+                string newConfig = Path.Combine(Program.Config.Settings.CfgsPath(), Program.Config.Settings.CfgDedicatedServer() + ".pending");
+                if (File.Exists(newConfig)) File.Delete(newConfig);
+                File.Copy(GetConfigFilePath(), newConfig);
+
+                return File.Exists(newMission) && File.Exists(newServer) && File.Exists(newConfig);
+            }
+        }
+
         private void RepackAll_Tile_Click(object sender, EventArgs e)
         {
             if(Core.Helpers.ApplicationRunning("arma3server_x64.exe") || Core.Helpers.ApplicationRunning("arma3server.exe"))
@@ -51,43 +113,20 @@ namespace StayALiVE
                 return;
             }
 
-            string selectedWorld = MissionFiles_ComboBox.Items[Program.Config.Settings.MissionFile].ToString(); 
-            string missionsPath = Path.Combine(Program.Config.Settings.FrameworkDirectory, $"Missions");
-            string BinPath = Path.Combine(missionsPath, $"Bin");
-            string TempMissionPath = Path.Combine(BinPath,  $"Extremo_Mission.{selectedWorld}");
-            string TempServerPath = Path.Combine(BinPath, "Extremo_Server");
-            string TempConfigPath = Path.Combine(missionsPath, selectedWorld, Program.Config.Settings.CfgDedicatedServer());
-            string TempSQMPath = Path.Combine(missionsPath, selectedWorld, $"mission.sqm");
+            var Temp = new TempFolder(Program.Config.Settings.FrameworkDirectory,
+                MissionFiles_ComboBox.Items[Program.Config.Settings.MissionFile].ToString()
+            );
 
-            //Purge old folder
-            if (Directory.Exists(TempMissionPath)) Directory.Delete(TempMissionPath, true);
-            Directory.CreateDirectory(TempMissionPath);
-
-            //Copy Framwork
-            Core.Helpers.CopyFilesRecursively(Path.Combine(Program.Config.Settings.FrameworkDirectory, $"Extremo_Mission.World"), TempMissionPath);
-            Core.Helpers.CopyFilesRecursively(Path.Combine(Program.Config.Settings.FrameworkDirectory, "Extremo_Server"), TempServerPath);
-
-            //Copy Mission SQM into temp mission folder
-            File.Copy(TempSQMPath, Path.Combine(TempMissionPath, $"mission.sqm"));
-
-            //Pack Framework in Temp folder
-            Core.Helpers.PackPBO(TempMissionPath);
-            Core.Helpers.PackPBO(TempServerPath);
-
-            //Move Framework from Temp folder to server
-            string newMission = Path.Combine(Program.Config.Settings.ServerDirectory, $"mpmissions\\Extremo_Mission.{selectedWorld}.pbo.pending");
-            if (File.Exists(newMission)) File.Delete(newMission);
-            File.Copy(TempMissionPath + ".pbo", newMission);
-
-            string newServer = Path.Combine(Program.Config.Settings.ServerDirectory, "@ExtremoServer\\addons\\Extremo_Server.pbo.pending");
-            if (File.Exists(newServer)) File.Delete(newServer);
-            File.Copy(TempServerPath + ".pbo", newServer);
-
-            string newConfig = Path.Combine(Program.Config.Settings.CfgsPath(), Program.Config.Settings.CfgDedicatedServer() + ".pending");
-            if (File.Exists(newConfig)) File.Delete(newConfig);
-            File.Copy(TempConfigPath, newConfig);
-
-            MessageBox.Show("Repack complete!");
+            if (Temp.CopyToTemp())
+            {
+                if (Temp.PackAndPrepare())
+                {
+                    if (Temp.CopyFromTemp())
+                    {
+                        MessageBox.Show("Repack complete!");
+                    }
+                }
+            }
         }
 
         private void RPT_Tile_Click(object sender, EventArgs e)
