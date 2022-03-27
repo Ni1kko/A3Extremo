@@ -24,12 +24,16 @@ namespace StayALiVE.Core
         internal string GetSQMFilePath() => Path.Combine(RootDirectory, "mission.sqm");
 
         internal bool CopyToTemp()
-        {
-            //Purge old temp framwork folder
-            if (Directory.Exists(BinDirectory)) Directory.Delete(BinDirectory, true);
-            Directory.CreateDirectory(BinDirectory);
+        { 
             IsPacked = false;
             CopiedFromTemp = false;
+
+            //Create workspace bin
+            if (!Directory.Exists(BinDirectory)) Directory.CreateDirectory(BinDirectory);
+
+            //Purge old temp framwork folder
+            if (Directory.Exists(BinMissionDirectory)) Directory.Delete(BinMissionDirectory, true);
+            if(Directory.Exists(BinServerDirectory)) Directory.Delete(BinServerDirectory, true);
 
             //Copy framwork
             Helpers.CopyFilesRecursively(Path.Combine(MainDirectory, $"Extremo_Mission.World"), BinMissionDirectory);
