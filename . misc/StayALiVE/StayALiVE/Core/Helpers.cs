@@ -47,18 +47,45 @@ namespace StayALiVE.Core
         internal static string OneLine(string source) => RemoveComments(source).Replace("\n", " ").Replace("\r", "");
         internal static void PackPBO(string target)
         {  
+            //New instance of PBO packer
             var pboPacker = new PBO.PboFile();
-            if (File.Exists($"{target}.pbo")) File.Delete($"{target}.pbo");
+
+            //Create Backup
+            if (File.Exists($"{target}.pbo")) File.Move($"{target}.pbo", $"{target}_" + DateTime.Now.ToString("MM-dd-yyyy_hh-mm-ss-tt") + ".pbo");
+
+            //Build PBO
             foreach (string originalPath in Directory.GetFiles(target, "*", SearchOption.AllDirectories))
             {
+                //Fix output name (remove spaces from file path)
                 string newPath = originalPath.Replace(target, "");
+                
+                //Fix output name (remove start slash from file path)
                 string fileName = newPath.StartsWith(@"\") ? newPath.Substring(1) : newPath;
+                
+                //Convert SQM (we do this due to `PboFile`s horrible behaviour)
+                if (originalPath.EndsWith(".sqm"))
+                {
+                    //TO BE ADDED
+                }
+
+                //Read file contents
                 string fileContents = File.ReadAllText(originalPath);
+
+                //One line and remove comments from each packed text file (sqf,hpp,cpp,ext... plus more)
                 if (IsTextFile(fileName)) fileContents = OneLine(fileContents);
+
+                //Add file to stream
                 pboPacker.AddEntry(fileName, Encoding.UTF8.GetBytes(fileContents));
             }
+
+            //Save PBO
             pboPacker.Save($"{target}.pbo");
+
+            //Dispose PBO file stream
             pboPacker.Dispose();
+
+            //Purge directory if created
+            if (File.Exists($"{target}.pbo")) Directory.Delete(target, true);
         }
     }
 }
