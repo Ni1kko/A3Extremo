@@ -40,7 +40,6 @@
             this.MissionFiles_ComboBox = new MetroFramework.Controls.MetroComboBox();
             this.World = new System.Windows.Forms.Label();
             this.RPT_Tile = new MetroFramework.Controls.MetroTile();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SidePanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -168,23 +167,12 @@
             this.RPT_Tile.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.RPT_Tile.Click += new System.EventHandler(this.RPT_Tile_Click);
             // 
-            // listBox1
-            // 
-            this.listBox1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(241, 12);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 91);
-            this.listBox1.TabIndex = 8;
-            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ClientSize = new System.Drawing.Size(373, 160);
-            this.Controls.Add(this.listBox1);
+            this.ClientSize = new System.Drawing.Size(217, 160);
             this.Controls.Add(this.RPT_Tile);
             this.Controls.Add(this.World);
             this.Controls.Add(this.MissionFiles_ComboBox);
@@ -218,6 +206,5 @@
         internal MetroFramework.Controls.MetroComboBox MissionFiles_ComboBox;
         internal System.Windows.Forms.Label World;
         internal MetroFramework.Controls.MetroTile RPT_Tile;
-        private System.Windows.Forms.ListBox listBox1;
     }
 }
