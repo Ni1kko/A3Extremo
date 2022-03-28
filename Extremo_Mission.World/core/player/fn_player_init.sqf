@@ -39,7 +39,7 @@ if(isNil "extdb_var_database_error")then{
 		[0,"ERROR","An server-side error occured whilst loading database"] call Extremo_fnc_gui_splashScreen; uiSleep 5;
 		"extremoError" call BIS_fnc_endMission;
 	}else{
-		[0,"SETUP","Database online"] call Extremo_fnc_gui_splashScreen; uiSleep round(random [1,2,5]);
+		[0,"SETUP","Database online"] call Extremo_fnc_gui_splashScreen; uiSleep 2;
 	};
 };
 
