@@ -11,12 +11,26 @@ params[
 	["_variable","",[""]]
 ];
 
+(getText(missionConfigFile >> "CfgPatches" >> "Extremo_Mission" >> "frameworkVersion") call extremo_fnc_system_versionInfo)params[
+	["_clientVersionFull",""],
+	["_clientVersionShort",""],
+	["_clientVerMajor",0],
+	["_clientVerMinor",0],
+	["_clientVerPatch","0"],
+	["_clientPreReleaseFull",""], 
+	["_clientPreReleaseShort",""],
+	["_clientPreReleaseBuild",0],
+	["_clientMeta",""]
+];
+
+private _frameworkName = "Extremo";
+
 private _callbacks = [
 	//--- System
 	["%SplashTimer%", str(round((missionNamespace getVariable ["Extremo_var_splashTimer",diag_tickTime]) - diag_ticktime))],
 	["%RespawnTimer%", str(round((missionNamespace getVariable ["Extremo_var_respawnTimer",diag_tickTime]) - diag_ticktime))],
-	["%FrameworkName%", "Extremo"],
-	["%FrameworkVersion%", format["Extremo %1",(call(missionNamespace getVariable ["extremo_fnc_system_versionInfo",{}])) param[1,"v0.0"]]],
+	["%FrameworkName%", _frameworkName],
+	["%FrameworkVersion%", format["%1 %2",_frameworkName,_clientVersionShort]],
 	["%FrameworkGithub%", "github.com/Ni1kko/A3Extremo"],
 	["%Website%", "www.extremo.co.uk"],
 	["%Loading%", "please wait..."],

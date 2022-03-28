@@ -2,7 +2,7 @@
 	## EXTREMO
 	## Nikko Renolds
 
-	try extremo_fnc_server_init catch {_exception call Extremo_fnc_system_log};
+	try extremo_fnc_server_init catch {_exception call Extremo_fnc_server_log};
 */
 
 //--- Get version info
@@ -29,11 +29,11 @@ Extremo_var_system_versionOK = (_clientVersionInfo != "" AND _serverVersionInfo 
 
 //--- Don't start server if different version
 if !Extremo_var_system_versionOK exitWith {
-	"Server failed to load..." call Extremo_fnc_system_log;
+	"Server failed to load..." call Extremo_fnc_server_log;
 };
 
 //--- 
-"Server loading..." call Extremo_fnc_system_log;
+"Server loading..." call Extremo_fnc_server_log;
 extremo_var_rcon_restartmode = 0;
 extremo_var_rcon_passwordOK = false;
 
@@ -86,7 +86,7 @@ Extremo_HandleDisconnect = addMissionEventHandler ["HandleDisconnect", Extremo_f
 							_vehicleType, 
 							_time, 
 							_date
-						]] call Extremo_fnc_system_log;
+						]] call Extremo_fnc_server_log;
 					}forEach _vehicleReports;
 					_x setVariable ["ExtremoIncidents", [], true];
 				};
@@ -95,4 +95,4 @@ Extremo_HandleDisconnect = addMissionEventHandler ["HandleDisconnect", Extremo_f
 	};
 };
 
-"Server running!" call Extremo_fnc_system_log;
+"Server running!" call Extremo_fnc_server_log;

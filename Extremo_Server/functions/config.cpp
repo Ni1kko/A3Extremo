@@ -38,6 +38,7 @@ class CfgFunctions
         {
             file = "\Extremo_Server\functions\server"; 
             class server_init {};
+            class server_log {};
         };
 
         //--- Extremo System Functions 

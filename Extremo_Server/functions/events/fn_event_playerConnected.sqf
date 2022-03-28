@@ -22,7 +22,7 @@ switch (true) do
     case _server: 
     { 
         finishMissionInit;
-        try (extremo_fnc_server_init) catch {_exception call Extremo_fnc_system_log};
+        try (extremo_fnc_server_init) catch {_exception call Extremo_fnc_server_log};
     };
     
     //--- Load Client

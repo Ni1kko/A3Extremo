@@ -88,7 +88,7 @@ _vehicle lock _lockState;
 _vehicle setFuel _fuel;
 _vehicle setPlateNumber _plate;
 
-format["Spawned: %1 | owner: %2 | grid: %3 | netID: %4 | lockCode: %5", _className, _ownerSteamID, mapGridPosition _vehicle,_netID,_lockCode] call Extremo_fnc_system_log;
+format["Spawned: %1 | owner: %2 | grid: %3 | netID: %4 | lockCode: %5", _className, _ownerSteamID, mapGridPosition _vehicle,_netID,_lockCode] call Extremo_fnc_server_log;
 
 //--- return object
 _vehicle

@@ -31,10 +31,10 @@ private _totalShips = round(random[_minShips, _maxShips - _minShips, _maxShips])
 private _forbidden = [""];
 
 //--- Get all vehicles from config `CfgVehicles`
-"Reading configs for all vehicles" call Extremo_fnc_system_log; 
+"Reading configs for all vehicles" call Extremo_fnc_server_log; 
 private _vehicles = ("getNumber (_x >> 'scope') >= 2" configClasses (configFile >> "CfgVehicles"));
 private _totalVehicles = count _vehicles; 
-format["Loaded (%1) vehicle configs", _totalVehicles] call Extremo_fnc_system_log;
+format["Loaded (%1) vehicle configs", _totalVehicles] call Extremo_fnc_server_log;
 
 //--- Get all vehicles from database `Vehicles`
 "Reading database records for all spawned vehicles" call Extremo_fnc_database_systemlog; 

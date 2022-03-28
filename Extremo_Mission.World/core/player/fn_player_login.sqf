@@ -131,19 +131,24 @@ if(_deleteoldcharacter)then{
 
 //--- Setup character events
 [0,"LOGIN","Registering (player) event handlers",true,true] call Extremo_fnc_gui_splashScreen; uiSleep 1.5;
+"(fn_player_login.sqf) Waiting for event handlers" call Extremo_fnc_client_log;
 waitUntil Extremo_fnc_player_initEventhandlers;
 
 //---Tell all system players data is loaded
 _newcharacter setVariable ["ExtremoDataLoaded",true,true];
 
 //--- Spawn menu
-[0,"SETUP", "Preparing player spawn",true,true] call Extremo_fnc_gui_splashScreen;
-uiSleep 3;
+[0,"SETUP", "Preparing player spawn",true,true] call Extremo_fnc_gui_splashScreen; uiSleep 3;
+"(fn_player_login.sqf) Requesting `Extremo_fnc_gui_spawnScreen` to handle player spawn" call Extremo_fnc_client_log;
 _newcharacter setVariable ["ExtremoSpawnData", (if(count _LastPosition == 0)then{[true]}else{[false,_LastPosition,_LastDir]}),true];
-waitUntil Extremo_fnc_gui_spawnScreen;//open spawn
-waitUntil extremo_var_gui_playerSpawned;//spawn done
+waitUntil Extremo_fnc_gui_spawnScreen;
+
+//--- Player spawn completed
+"(fn_player_login.sqf) Waiting for player spawn" call Extremo_fnc_client_log;
+waitUntil {call extremo_var_gui_playerSpawned};
 
 //---  Force showing the chat. Sometimes Arma resets this
+"(fn_player_login.sqf) Force showing the chat" call Extremo_fnc_client_log;
 showChat true;
 enableRadio true;
 showSubtitles true; 

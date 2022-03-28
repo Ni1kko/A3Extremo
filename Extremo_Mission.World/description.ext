@@ -658,6 +658,8 @@ class CfgFunctions
             class client_init {};
             class client_initEventhandlers {};
             class client_initVariables {};
+            class client_log {};
+            class client_messages {};
         };
 
         //--- Database
@@ -766,8 +768,10 @@ class CfgRemoteExec
         ExtremoRE_Client(extremo_fnc_medical_revived);
         ExtremoRE_Client(extremo_fnc_medical_createRevivedEffects);
         ExtremoRE_Client(extremo_fnc_database_client);
+        ExtremoRE_Client(Extremo_fnc_client_log);
         //////////////// SERVER Whitelist ////////////////
         ExtremoRE_Server(extremo_fnc_database_server);
+        ExtremoRE_Server(Extremo_fnc_server_log);
     };
 
     class Commands 
