@@ -654,7 +654,7 @@ class CfgFunctions
         //--- Client
         class Client
         {
-            file = "core\client";
+            file = "functions\client";
             class client_init {};
             class client_initEventhandlers {};
             class client_initVariables {};
@@ -665,21 +665,21 @@ class CfgFunctions
         //--- Database
         class Database
         {
-            file = "core\database"; 
+            file = "functions\database"; 
             class database_client {}; 
         };
 
         //--- DIK
         class Dik
         {
-            file = "core\dik"; 
+            file = "functions\dik"; 
             class dik_initEventHandlers {}; 
         };
 
         //--- Events
         class Events
         {
-            file = "core\events"; 
+            file = "functions\events"; 
             class event_handleDamage {};
             class event_handleChatMessage {};
             class event_map {};
@@ -691,7 +691,7 @@ class CfgFunctions
         //--- GUI
         class Gui
         {
-            file = "core\gui"; 
+            file = "functions\gui"; 
             class gui_lockScreen {};
             class gui_lockScreenEH {};
             class gui_spawnScreen {};
@@ -703,7 +703,7 @@ class CfgFunctions
         //--- Medical
         class Medical
         {
-            file = "core\medical";
+            file = "functions\medical";
             class medical_bledout {};
             class medical_bledoutEVH {};
             class medical_canDie {};
@@ -718,7 +718,7 @@ class CfgFunctions
         //--- Player
         class Player
         {
-            file = "core\player";
+            file = "functions\player";
             class player_init {};
             class player_initEventhandlers {};
             class player_login {};
@@ -728,7 +728,7 @@ class CfgFunctions
         //--- System
         class System
         {
-            file = "core\system"; 
+            file = "functions\system"; 
             class system_animationSync {};
             class system_destroyLayer {};
             class system_deathType {};
