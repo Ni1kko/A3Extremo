@@ -25,7 +25,7 @@ Extremo_ClientDisconnected = addMissionEventHandler ["PlayerDisconnected",   Ext
 
 //---
 Extremo_var_system_version = compileFinal str format["%1.%2%3",_versionShort,_verPatch,[" ("+_preReleaseShort+")",""]select(_preReleaseShort isEqualTo "")," "];
-Extremo_var_system_versionInfo = _versionFull;
+Extremo_var_system_versionInfo = _versionFull select [1, count _versionFull];
 
 //--- temp
 Extremo_fnc_netidFromOwner = compileFinal ("((allPlayers apply {if((param [0,""]) isEqualTo owner _x)then{netID _x}else{''}}) - ['']) param [0,""]");

@@ -25,12 +25,12 @@ params [
 //--- Input was compiled
 if(typeName _version isEqualTo "CODE")then{
 	private _temp = call _version;
-	_version = if(typeName _temp isEqualTo "STRING")then{_temp}else{_systemVersion};
+	_version = if(typeName _temp isEqualTo "STRING")then{_temp}else{_defaultFormat};
 };
 
 private _verArray = toArray _version;
 private _verError = (false in ([[43,1],[45,1],[46,3]] apply {_x params ["_char","_count"];({_x isEqualTo _char} count _verArray) isEqualTo _count}));
-private _verReturn = [format["v%1",_version],"",parseNumber _version,0,"0","","",0,""];
+private _verReturn = ["v0.0.0","v0.0",0,0,"0","","",0,""];
 
 if _verError exitWith { _verReturn };
 
