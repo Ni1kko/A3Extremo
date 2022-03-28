@@ -72,7 +72,7 @@ namespace StayALiVE.Core
                 string fileContents = File.ReadAllText(originalPath);
 
                 //One line and remove comments from each packed text file (sqf,hpp,cpp,ext... plus more)
-                if (IsTextFile(fileName)) fileContents = OneLine(fileContents);
+                if (IsTextFile(originalPath)) fileContents = (!fileContents.Contains("#define") && !fileContents.Contains("#include")) ? OneLine(fileContents) : RemoveComments(fileContents);
 
                 //Add file to stream
                 pboPacker.AddEntry(fileName, Encoding.UTF8.GetBytes(fileContents));
