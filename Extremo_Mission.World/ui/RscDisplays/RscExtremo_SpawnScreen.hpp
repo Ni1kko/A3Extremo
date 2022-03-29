@@ -13,7 +13,7 @@ class RscExtremo_SpawnScreen
     
 	class controlsBackground
 	{
-		class Background: Extremo_RscText
+		class Background: RscText
 		{
 			idc = 1;
 			x = 0.4175 * safezoneW + safezoneX;
@@ -33,7 +33,7 @@ class RscExtremo_SpawnScreen
     
 	class controls
 	{ 
-		class Info: Extremo_RscText
+		class Info: RscText
 		{
 			idc = 3;
 			text = "";
@@ -43,7 +43,7 @@ class RscExtremo_SpawnScreen
 			h = 0.022 * safezoneH;
 			colorBackground[] = {0,0,0,0};
 		};
-		class Selection: Extremo_RscListNBox
+		class Selection: RscListNBox
 		{
 			idc = 4;
 			text = "";

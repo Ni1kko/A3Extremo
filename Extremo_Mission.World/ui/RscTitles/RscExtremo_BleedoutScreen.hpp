@@ -44,7 +44,7 @@ class RscExtremo_BleedoutScreen
 
 	class controlsBackground 
 	{
-		class background: IGUIBack
+		class background: RscGuiBack
 		{
 			idc = -1;
 			x = GUI_GRID_X(-28.5);

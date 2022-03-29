@@ -10,7 +10,7 @@ class RscExtremo_SplashScreen
 	onUnLoad = "uiNameSpace setVariable ['RscExtremo_SplashScreen', displayNull]";
 	duration = 10e10;
 	class controls {
-		class Title: Extremo_ctrlStatic {
+		class Title: RscStatic {
 			idc            = 1;
 			text           = "";
 			x              = "safezoneX";
@@ -21,7 +21,7 @@ class RscExtremo_SplashScreen
 			sizeEx         = "0.04 * safezoneH";
 			style          = 0x01;
 		};
-		class Subtitle: TITLE {
+		class Subtitle: Title {
 			idc            = 2;
 			y              = "0.911941 * safezoneH + safezoneY";
 			h              = "0.0418 * safezoneH";
