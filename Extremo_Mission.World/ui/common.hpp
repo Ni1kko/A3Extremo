@@ -5020,3 +5020,10 @@ class Extremo_RscListNBox
 	class ListScrollBar: Extremo_RscScrollBar{};
 	class ScrollBar: Extremo_RscScrollBar{};
 };
+
+#include "displays.hpp"
+
+class RscTitles 
+{
+	#include "titles.hpp"
+};

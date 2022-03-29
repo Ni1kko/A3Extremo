@@ -4,40 +4,8 @@
 
     https://community.bistudio.com/wiki/Description.ext
 */
-
 #include "defines.hpp"
-
-class CfgPatches
-{
-    class Extremo_Mission
-	{
-        class authors_info
-		{
-			class author_0
-			{
-				name = "Nikko";
-				uid = "76561199109931625";
-				email = "Ni1kko@outlook.com";
-				github = "github.com/Ni1kko";
-			};	
-			class author_1
-			{
-				name = "HappyFeet";
-				uid = "76561198147157388";
-				email = "Stephenallen1414@gmail.com";
-				github = "github.com/Spodini";
-			};
-		};
-        frameworkVersion = "1.3.059-alpha.0+server laucher development";
-	};
-};
-
-class Header
-{
-	gameType="Survive";
-	minPlayers=1;
-	maxPlayers=150;
-};
+#include "ui\common.hpp"
 
 //--- Arma Settings
 author = "Nikko";
@@ -103,6 +71,38 @@ wreckRemovalMinTime = 60;
 wreckRemovalMaxTime = 360;
 minPlayerDistance = 50; // meters. Default: 0
 ///////////////////////////////////////////////
+
+class Header
+{
+	gameType="Survive";
+	minPlayers=1;
+	maxPlayers=150;
+};
+
+class CfgPatches
+{
+    class Extremo_Mission
+	{
+        class authors_info
+		{
+			class author_0
+			{
+				name = "Nikko";
+				uid = "76561199109931625";
+				email = "Ni1kko@outlook.com";
+				github = "github.com/Ni1kko";
+			};	
+			class author_1
+			{
+				name = "HappyFeet";
+				uid = "76561198147157388";
+				email = "Stephenallen1414@gmail.com";
+				github = "github.com/Spodini";
+			};
+		};
+        frameworkVersion = "1.3.059-alpha.0+server laucher development";
+	};
+};
 
 class CfgKeyHandler 
 {
@@ -234,417 +234,6 @@ class CfgDebriefing
     DBRIEF(extremoAnticheat,   "Anticheat!",   "Extremo anti-cheat has flagged you.",              "Goodday, your antics have been logged and will be dealt with.");
     DBRIEF(extremoError,       "Error!",       "An error has occured!",                            "An error occured please report this to the server owner.");
     DBRIEF(extremoAborted,     "Goodbye!",     "Your data has been sent to the server!",           "www.extremo.co.uk #1 Survival Framework in the UK and Europe.");
-};
-
-#include "ui\common.hpp"
-
-class RscExtremo_SpawnScreen 
-{
-	idd = 1000;
-	movingEnabled = 0;
-	enableSimulation = 1;
-    onLoad = "[_this#0,'onLoad'] call extremo_fnc_gui_spawnScreenEH";
-    onUnLoad = "[_this#0,'onUnLoad'] call extremo_fnc_gui_spawnScreenEH";
-    
-	class controlsBackground
-	{
-		class Background: Extremo_RscText
-		{
-			idc = 1;
-			x = 0.4175 * safezoneW + safezoneX;
-			y = 0.379 * safezoneH + safezoneY;
-			w = 0.165 * safezoneW;
-			h = 0.308 * safezoneH;
-			colorBackground[] = {0, 0, 0, 0.8};
-		};
-		class Header: Background
-		{
-            idc = 2;
-			text = "Available Spawns";
-			h = 0.022 * safezoneH;
-			colorBackground[] = {0,0,0,1};
-		};
-  	};
-    
-	class controls
-	{ 
-		class Info: Extremo_RscText
-		{
-			idc = 3;
-			text = "";
-			x = 0.4175 * safezoneW + safezoneX;
-			y = 0.401 * safezoneH + safezoneY;
-			w = 0.165 * safezoneW;
-			h = 0.022 * safezoneH;
-			colorBackground[] = {0,0,0,0};
-		};
-		class Selection: Extremo_RscListNBox
-		{
-			idc = 4;
-			text = "";
-			sizeEx = 0.041;
-			coloumns[] = {0,0,0.9};
-			drawSideArrows = false;
-			idcLeft = -1;
-			idcRight = -1;
-			rowHeight = 0.050;
-			x = 0.422657 * safezoneW + safezoneX;
-			y = 0.423 * safezoneH + safezoneY;
-			w = 0.154687 * safezoneW;
-			h = 0.22 * safezoneH;
-			onLBSelChanged = "[_this#0,'onLBSelChanged',_this select [1, count _this]] spawn extremo_fnc_gui_spawnScreenEH";
-		};
-		class Confirm: RscButton
-		{
-			idc = 5;
-			text = "Spawn";
-			x = 0.45875 * safezoneW + safezoneX;
-			y = 0.654 * safezoneH + safezoneY;
-			w = 0.0825 * safezoneW;
-			h = 0.022 * safezoneH;
-			onButtonClick = "[_this#0,'onConfirmClick'] spawn extremo_fnc_gui_spawnScreenEH";
-			class Attributes
-			{
-				align = "center";
-			};
-		};
-	};
-};
-
-class RscExtremo_LockScreen
-{
-	idd=1100;
-	movingEnabled = 0;
-	enableSimulation = 1;
-    
-    //https://community.bistudio.com/wiki/User_Interface_Event_Handlers#onLoad
-	onLoad="[_this,'onLoad'] call Extremo_fnc_gui_lockScreenEH";
-	onUnload="[_this,'onUnload'] call Extremo_fnc_gui_lockScreenEH";
-	onKeyUp="[_this,'onKeyUp'] call Extremo_fnc_gui_lockScreenEH";
-	onKeyDown="[_this,'onKeyDown'] call Extremo_fnc_gui_lockScreenEH";
-	class controlsBackground
-	{
-		class Background: RscPicture
-		{
-			text="textures\ui\lockscreen\background.paa";
-			x="0.322396 * safezoneW + safezoneX";
-			y="0.225 * safezoneH + safezoneY";
-			w="0.355208 * safezoneW";
-			h="0.55 * safezoneH";
-		};
-	};
-	class controls
-	{
-		class NumFake: RscButton
-		{
-			idc=4013;
-			x="1 * safezoneW + safezoneX";
-			y="1 * safezoneH + safezoneY";
-			w="0 * safezoneW";
-			h="0 * safezoneH";
-		};
-		class Num0: RscButton
-		{
-			idc=4003;
-			x="0.399167 * safezoneW + safezoneX";
-			y="0.6694 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',0] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Num1: RscButton
-		{
-			idc=4004;
-			x="0.351042 * safezoneW + safezoneX";
-			y="0.4494 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',1] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Num2: RscButton
-		{
-			idc=4005;
-			x="0.399167 * safezoneW + safezoneX";
-			y="0.4494 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',2] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Num3: RscButton
-		{
-			idc=4006;
-			x="0.447291 * safezoneW + safezoneX";
-			y="0.4494 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',3] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Num4: RscButton
-		{
-			idc=4007;
-			x="0.351042 * safezoneW + safezoneX";
-			y="0.5242 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',4] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Num5: RscButton
-		{
-			idc=4008;
-			x="0.399167 * safezoneW + safezoneX";
-			y="0.5242 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',5] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Num6: RscButton
-		{
-			idc=4009;
-			x="0.446145 * safezoneW + safezoneX";
-			y="0.5242 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',6] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Num7: RscButton
-		{
-			idc=4010;
-			x="0.351042 * safezoneW + safezoneX";
-			y="0.5968 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',7] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Num8: RscButton
-		{
-			idc=4011;
-			x="0.399167 * safezoneW + safezoneX";
-			y="0.5968 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',8] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Num9: RscButton
-		{
-			idc=4012;
-			x="0.446145 * safezoneW + safezoneX";
-			y="0.5968 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',9] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Confirm: RscButton
-		{
-			idc=4000;
-			x="0.351042 * safezoneW + safezoneX";
-			y="0.6694 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			colorDisabled[]={1,1,1,0.40000001};
-			onMouseButtonClick="[_this,'onMouseButtonClick',true] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Cancel: RscButton
-		{
-			idc=4002;
-			x="0.446145 * safezoneW + safezoneX";
-			y="0.6694 * safezoneH + safezoneY";
-			w="0.0378126 * safezoneW";
-			h="0.0572 * safezoneH";
-			colorBackground[]={0.098039202,0.098039202,0.098039202,0};
-			colorBackgroundActive[]={0.098039202,0.098039202,0.098039202,0.60000002};
-            colorFocused[]= {0, 0, 0, 0};
-			onMouseButtonClick="[_this,'onMouseButtonClick',false] call Extremo_fnc_gui_lockScreenEH";
-		};
-		class Screen: RscText
-		{
-			idc=4001;
-			text="";
-			colorText[]={0.070588201,0.133333,0.094117597,0.80000001};
-			font="RobotoCondensed";
-			style=2;
-			x="0 * (0.025) + (0)";
-			y="1.5 * (0.04) + (0)";
-			w="40 * (0.025)";
-			h="6 * (0.04)";
-			sizeEx="2 * (0.04)";
-			shadow=0;
-		};
-	};
-};
-
-class RscTitles
-{
-    class RscExtremo_BleedoutScreen 
-    {
-        idd = 10;
-        fadein = 1;
-        fadeout = 1;
-        name = "RscExtremo_BleedoutScreen";
-        onLoad = "uiNameSpace setVariable ['RscExtremo_BleedoutScreen', _this select 0]";
-        onUnLoad = "uiNameSpace setVariable ['RscExtremo_BleedoutScreen', displayNull]";
-        duration = 10e100;
-
-        class controls 
-        {
-            class progressbar: RscProgress
-            {
-                idc = 1;
-                x = GUI_GRID_X(7);
-                y = GUI_GRID_Y(30.5);
-                w = GUI_GRID_W(25.5);
-                h = GUI_GRID_H(1.5);
-                colorBackground[] = {0,0,0,0.5};
-            };
-            class title: RscStructuredText
-            {
-                idc = 2;
-                x = GUI_GRID_X(5.5);
-                y = GUI_GRID_Y(28.5);
-                w = GUI_GRID_W(28.5);
-                h = GUI_GRID_H(1.5);
-            };
-            class medic: RscStructuredText
-            {
-                idc = 3;
-                x = GUI_GRID_X(42.5);
-                y = GUI_GRID_Y(-10);
-                w = GUI_GRID_W(25.5);
-                h = GUI_GRID_H(1.5);
-            };
-        };
-
-        class controlsBackground 
-        {
-            class background: IGUIBack
-            {
-                idc = -1;
-                x = GUI_GRID_X(-28.5);
-                y = GUI_GRID_Y(27);
-                w = GUI_GRID_W(97);
-                h = GUI_GRID_H(6.5);
-                colorBackground[] = {0.3, 0.3, 0.3, 0.3};
-            };
-        };
-    };
-    class RscExtremo_ProgressScreen 
-    {
-        name = "RscExtremo_ProgressScreen";
-        idd = 11;
-        fadein = 1;
-        duration = 99999999999;
-        fadeout = 1;
-        movingEnable = 0;
-        onLoad="uiNamespace setVariable ['RscExtremo_ProgressScreen',_this select 0]";
-        
-        class controls {
-            class actionTitle: RscStructuredText
-            {
-                idc = 3391;
-                text = "<t align='center'>Loading...</t>";
-                x = 0.360781 * safezoneW + safezoneX;
-                y = 0.687 * safezoneH + safezoneY;
-                w = 0.283594 * safezoneW;
-                h = 0.022 * safezoneH;
-            };
-            class progress: RscProgress
-            {
-                idc = 3390;
-                x = 0.350469 * safezoneW + safezoneX;
-                y = 0.709 * safezoneH + safezoneY;
-                w = 0.304219 * safezoneW;
-                h = 0.022 * safezoneH;
-                colorFrame[] = {0, 0, 0, 0};
-            };
-            class progressTextBackground: RscStructuredText
-            {
-                idc = 3393;
-                x = 0.350469 * safezoneW + safezoneX;
-                y = 0.709 * safezoneH + safezoneY;
-                w = 0.304219 * safezoneW;
-                h = 0.022 * safezoneH;
-                //colorBackground[] = {0, 0, 0, 0.3};
-            };
-            class actionTitleProgress: RscStructuredText
-            {
-                idc = 3392;
-                text = "<t align='center'>100%</t>";
-                x = 0.350469 * safezoneW + safezoneX;
-                y = 0.709 * safezoneH + safezoneY;
-                w = 0.304219 * safezoneW;
-                h = 0.022 * safezoneH;
-            };
-            class cancelInfo: RscStructuredText
-            {
-                idc = 1102;
-                text = "<t align='center'>Press </t><t color='#C478DB' align='center'> [SPACE] </t><t align='center'> to cancel</t>";
-                x = 0.360781 * safezoneW + safezoneX;
-                y = 0.731 * safezoneH + safezoneY;
-                w = 0.283594 * safezoneW;
-                h = 0.022 * safezoneH;
-            };
-        };
-    };
-    class RscExtremo_SplashScreen 
-    {
-        idd = 12;
-        onLoad = "uiNameSpace setVariable ['RscExtremo_SplashScreen', _this select 0]";
-        onUnLoad = "uiNameSpace setVariable ['RscExtremo_SplashScreen', displayNull]";
-        duration = 10e10;
-        class controls {
-            class Title: Extremo_ctrlStatic {
-                idc            = 1;
-                text           = "";
-                x              = "safezoneX";
-                y              = "0.881986 * safezoneH + safezoneY";
-                w              = "safezoneW";
-                h              = "0.0506 * safezoneH";
-                font           = "RobotoCondensedBold";
-                sizeEx         = "0.04 * safezoneH";
-                style          = 0x01;
-            };
-            class Subtitle: TITLE {
-                idc            = 2;
-                y              = "0.911941 * safezoneH + safezoneY";
-                h              = "0.0418 * safezoneH";
-                font           = "RobotoCondensed";
-                sizeEx         = "0.025 * safezoneH";
-            };
-        };
-        class controlsBackground {};
-    };
 };
 
 class CfgFunctions
