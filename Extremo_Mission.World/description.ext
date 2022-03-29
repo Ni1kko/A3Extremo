@@ -142,12 +142,6 @@ class CfgPlayer
         forbiddenPositions[] = {
             //{"marker", distance}
         };
-        welcomeMessages[] = {
-            "Hi %SteamName%, you can visit our forums here: %Website%",
-            "Have fun & be respectful of each other",
-            "Thanks for spending your time on (%FrameworkName%)",
-            "%Website%"
-        };
 	};
 };
 
