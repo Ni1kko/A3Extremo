@@ -50,15 +50,13 @@ waitUntil {player getVariable ["ExtremoDataLoaded",false]};
 
 //--- Data sync
 [] spawn {
-	while {true} do {
-		private _nextSyncAt = round random [5 * 60, 10 * 60, 15 * 60];
+	private _newRandomTime = compile "round(random[5 * 60, 10 * 60, 15 * 60])";
+	private _nextSyncAt = call _newRandomTime;
+	while {!extdb_var_database_error} do {
 		uiSleep _nextSyncAt;
 		if(player getVariable ["ExtremoDataLoaded",false])then{
-			if(["characters", "update", false] call extremo_fnc_database_client)then{
-				uiSleep 5;
-				[5,"SYNC", format ["Next sync in (%1)mins",round(_nextSyncAt / 60)],false,false] call Extremo_fnc_gui_splashScreen
-				//
-			}
+			_nextSyncAt = call _newRandomTime;
+			[5,"SYNC", format ["Next sync in (%1)mins",round(_nextSyncAt / 60)],false,false] call Extremo_fnc_gui_splashScreen 
 		};
 	};
 };
