@@ -173,8 +173,12 @@ class CfgSpawn
         {
             spawnIsland = "extremo_marker_spawnisland";
             zones[] = {
-                {"extremo_marker_spawnzone_kavala",     "textures\icon.paa"},
-                {"extremo_marker_spawnzone_atheria",    "textures\icon.paa"}
+                {"extremo_marker_spawnzone_kavala",         "textures\icon.paa"},
+                {"extremo_marker_spawnzone_atheria",        "textures\icon.paa"},
+                {"extremo_marker_spawnzone_oreokastro",     "textures\icon.paa"},
+                {"extremo_marker_spawnzone_molos",          "textures\icon.paa"},
+                {"extremo_marker_spawnzone_chalkeia",       "textures\icon.paa"},
+                {"extremo_marker_spawnzone_agela",          "textures\icon.paa"}
             };
             protectedZones[] = {
                 //{"extremo_marker_spawnzone_atheria",    "1234"}
