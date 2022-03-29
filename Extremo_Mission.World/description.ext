@@ -184,6 +184,19 @@ class CfgSpawn
                 //{"extremo_marker_spawnzone_atheria",    "1234"}
             };
         };
+        class Enoch 
+        {
+            spawnIsland = "extremo_marker_spawnisland";
+            zones[] = {
+                {"extremo_marker_spawnzone_nadbór",             "textures\icon.paa"},
+                {"extremo_marker_spawnzone_topolin",            "textures\icon.paa"},
+                {"extremo_marker_spawnzone_lukow",              "textures\icon.paa"},
+                {"extremo_marker_spawnzone_lukow_airfield",     "textures\icon.paa"}
+            };
+            protectedZones[] = {
+                //{"extremo_marker_spawnzone_lukow_airfield",    "1234"}
+            };
+        };
         class VR 
         {
             spawnIsland = "extremo_marker_spawnisland";
