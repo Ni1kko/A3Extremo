@@ -4,36 +4,35 @@
 */
 
 params [
-	["_player", objNull, [objNull]],
-	["_selectionName", "", [""]],
-	["_damage", 0, [0]],
-	["_source", objNull, [objNull]],
-	["_projectile", "", [""]],
-	["_hitPartIndex", -1, [-1]],
-	["_instigator", objNull, [objNull]]
+	["_player",objNull,[objNull]],
+	["_selectionName","",[""]],
+	["_damage",0,[0]],
+	["_source",objNull,[objNull]],
+	["_projectile","",[""]],
+	["_hitPartIndex",-1,[-1]],
+	["_instigator",objNull,[objNull]]
 ];
 
-private _handled = false;
+private _execute = false;
+private _exit = false;
 private _vehicle = vehicle _source;
 private _isVehicle = ((_vehicle isKindOf "Air" OR _vehicle isKindOf "Car" OR _vehicle isKindOf "Ship") AND _projectile isEqualTo "");
-
-if (_player getVariable ["extremo_var_incapacitated", false]) exitWith {
-	if (!(isNull _source) && {!(_source isEqualTo _player)}) then {
-		Extremo_var_medical_healthState = 2;
-		Extremo_var_medical_executer = _source;
-	};
-};
-
-private _currentDamage = [
-	_player getHit _selectionName,
-	damage _player
-] select (_selectionName isEqualTo "");
+private _currentDamage = [_player getHit _selectionName,damage _player] select (_selectionName isEqualTo "");
+private _incapacitated = _player getVariable ["extremo_var_incapacitated", false];
 
 if (!isNull _source && {_source isNotEqualTo _player}) then 
 {
+	//--- Already Incapacitated and something executed our player
+	if _incapacitated exitWith {
+		_exit = true; 
+		Extremo_var_medical_healthState = 2;
+		Extremo_var_medical_executer = _source; 
+	};
+
+	//--- We dont handle damage to these part in this scope
 	if !(_selectionName in ["","body", "head"]) exitWith {_currentDamage};
 
-	//--- VDM
+	//--- Handle player being ran over
 	if (_isVehicle AND count(getPlayerUID(driver(_vehicle))) isEqualTo 17) then 
 	{
 		private _playerName = name _player;
@@ -74,9 +73,7 @@ if (!isNull _source && {_source isNotEqualTo _player}) then
 		];
 		
 		_vehicle setVariable ["ExtremoIncidents", _vehicleReports, true];
-
-		_playerUID = "2"; _driverUID = _playerUID;_driverName = "name";
-	 
+	
 		private _message = parseText (if(_playerUID isNotEqualTo _driverUID)then { 
 		 	format["
 				<t color='#ff0000' size='1.5' align='center'>VDM Report</t>
@@ -97,43 +94,22 @@ if (!isNull _source && {_source isNotEqualTo _player}) then
 		systemChat (((str(_message)regexReplace["\ ", "^"])splitString"^")joinString" ");
 		 
 		_damage = _currentDamage;
-	}else{
-
-	}
-};
-
-private _canDie = [_player,_selectionName,_damage,_source,_projectile,_hitPartIndex,_instigator] call extremo_fnc_medical_canDie;
-private _execute = false;
-
-if (_canDie) then {
-	private _returnDamage = _currentDamage;
-	if (_handled) exitWith {_returnDamage};
-
-	if (diag_tickTime - ((_player getVariable ["extremo_var_lastHandledDMG", 0])) > .2) then {
-		_player setVariable ["extremo_var_lastHandledDMG", diag_tickTime, true];
-
-		if ((_player getVariable ["extremo_var_incapacitated", false]) AND (_player getVariable ["extremo_var_canExecute", false]) AND !(_projectile isEqualTo "") AND !(currentWeapon _source isEqualTo "")) then 
-		{
-			if (_source distance _player > 50) exitWith {_returnDamage};
-			_returnDamage = _damage;
-			_execute = true;
-		} 
-		else 
-		{
-			if (!(_player getVariable ["extremo_var_incapacitated", false])) then 
-			{
-				_player setVariable ["extremo_var_canExecute", false, true];
-				[_source,_player] spawn extremo_fnc_medical_incapacitated;
-
-				[_player] spawn {
-					params ["_player"];
-					sleep 2;
-					_player setVariable ["extremo_var_canExecute", true, true];
-				};
-			};
-		};
 	};
-	_currentDamage;
 };
 
+//--- Handled in other system
+if _exit exitWith {};
+
+//--- Can our player die
+if (_this call extremo_fnc_medical_canDie) then {
+	
+	//--- Incapacitate or Execute
+	if !_incapacitated then {
+		[_source,_player] spawn extremo_fnc_medical_incapacitated;
+	} else {
+		_execute = true;
+	};
+};
+
+//--- Adjust damage to prevent death
 [_damage min 0.99, _damage] select _execute

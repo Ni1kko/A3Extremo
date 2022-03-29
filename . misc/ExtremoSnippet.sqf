@@ -1492,3 +1492,33 @@ if(isNil "extremo_fnc_system_versionInfo")then
 	];
 
 };
+
+//--- extremo_fnc_system_changePos
+if(isNil "extremo_fnc_system_changePos")then
+{
+	extremo_fnc_system_changePos = {
+		params [
+			["_object",cursorObject],
+			["_distance",nil],
+			["_elevation",nil]
+		];
+		
+		if(isNull _object)exitWith{[0,0,0]};
+		if(isNil "_distance")then{_distance = 0};
+		if(isNil "_elevation")then{_elevation = 0};
+
+		(getPosATL _object) params [
+			["_currentPosX",0],
+			["_currentPosY",0],
+			["_currentPosZ",0]
+		];
+
+		private _newPos = [_currentPosX + (_distance / 2),_currentPosY + (_distance / 2),_currentPosZ + _elevation];
+		
+		_object SetPosATL _newPos;
+
+		_newPos
+	};
+
+	[player,nil,2] call extremo_fnc_system_changePos;
+};

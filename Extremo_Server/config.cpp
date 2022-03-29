@@ -19,7 +19,7 @@ class CfgPatches
 				github = "github.com/Spodini";
 			};
 		};
-        frameworkVersion = "1.3.059-alpha.0+server laucher development";
+        frameworkVersion = "1.3.100-alpha.0+framework development";
 		requiredVersion = 2.08;
 		requiredBuild = "149049"; 
 		requiredAddons[] = {

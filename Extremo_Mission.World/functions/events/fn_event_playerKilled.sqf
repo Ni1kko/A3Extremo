@@ -20,7 +20,7 @@ switch (missionNamespace getVariable ["Extremo_var_medical_healthState",0]) do {
 		//Start incapacitated system
 		["respawned",player] spawn extremo_fnc_medical_incapacitated;
 
-		[_corpse, false] remoteExec ["hideObjectGlobal", 2];
+		[_corpse, true] remoteExec ["hideObjectGlobal", 2];
 		player setPosATL _pos;
 		{player setVariable [_x, _corpse getVariable _x]} forEach allVariables _corpse;
 		_corpse remoteExec ["deleteVehicle", 2];

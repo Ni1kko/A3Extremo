@@ -207,7 +207,7 @@ escKeyEH = (uiNamespace getVariable "RscExtremo_BleedoutScreen") displayAddEvent
 
 		//--- Hide body
 		if _hideBody then{
-			[_player, false] remoteExec ["hideObjectGlobal", 2];
+			[_player, true] remoteExec ["hideObjectGlobal", 2];
 		};
 
 		//--- Respawn

@@ -78,7 +78,7 @@ setStaminaScheme "Normal";//"Normal", "FastDrain", "Exhausted" or "Default"
 	_x setVariable ["BIS_noCoreConversations", true];
 	_x disableConversation true;
 	_x setSpeaker "NoVoice";
-	_x enableFatigue true;
+	_x enableFatigue false;
 	_x enableStamina true;
 	_x enableSimulation true;
 	_x addRating 1e12; //Set our rating to a high value, this is for a ARMA engine thing.	
