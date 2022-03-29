@@ -149,10 +149,10 @@ waitUntil {call extremo_var_gui_playerSpawned};
 
 //---  Force showing the chat. Sometimes Arma resets this
 "(fn_player_login.sqf) Force showing the chat" call Extremo_fnc_client_log;
-showChat true;
-enableRadio true;
-showSubtitles true; 
 enableSentences true; 
+enableRadio true;
+showChat true;
+showSubtitles true; 
 setGroupIconsVisible [true, true];
 10 fadeSound 1;
 

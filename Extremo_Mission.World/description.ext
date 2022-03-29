@@ -110,6 +110,7 @@ class CfgMessages
     /*
         class Example
         {
+            enabled = true;        //--- Toggle system
             delay = 5;             //--- X mins between messages
             randomOrder = true;    //--- Show messages in random a order eachtime
             messages[] = {
@@ -119,6 +120,7 @@ class CfgMessages
     */
 	class Extremo
 	{
+        enabled = true;         //--- Toggle system
         delay = 30;             //--- X mins between messages
         randomOrder = false;    //--- Show messages in random a order eachtime
         messages[] = {
