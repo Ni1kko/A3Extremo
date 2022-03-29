@@ -6,25 +6,52 @@
 if (!hasInterface) exitWith {};
 
 private _table = [_this] call BIS_fnc_arrayShift;
-private _action = [_this] call BIS_fnc_arrayShift;//not used client side
+private _action = [_this] call BIS_fnc_arrayShift;
 
 switch _table do 
-{
+{  
 	case "characters": 
 	{
-		params [
-			["_BEGuid","",[""]],
-			["_Class","",[""]],
-			["_LastLoadout",[],[[]]],
-			["_LastPosition",[],[[]]],
-			["_Wallet",0,[0]]
-		];
-		missionNamespace setVariable ["extremo_var_playerclass", compileFinal str _Class];
-		[0,"LOADED", "Your data has been loaded",true,true] call Extremo_fnc_gui_splashScreen;
-		[player,true,_LastLoadout,_LastPosition,_Wallet] call Extremo_fnc_player_login;
+		switch _action do 
+		{
+			case "load": 
+			{
+				params [
+					["_BEGuid","",[""]],
+					["_Class","",[""]],
+					["_LastLoadout",[],[[]]],
+					["_LastPosition",[],[[]]],
+					["_Wallet",0,[0]]
+				];
+				missionNamespace setVariable ["extremo_var_playerclass", compileFinal str _Class];
+				[0,"LOADED", "Your data has been loaded",true,true] call Extremo_fnc_gui_splashScreen;
+				[player,true,_LastLoadout,_LastPosition,_Wallet] call Extremo_fnc_player_login;
+			};
+			case "update":
+			{
+				params [
+					["_silent",true]
+				];
+				if !_silent then{[5,"SYNC", "Your data has been synced",false,false] call Extremo_fnc_gui_splashScreen};
+				["characters","update",player] remoteExec ["extremo_fnc_database_server", 2];
+			};
+		};
+		
 	};
 	case "vehicles": 
 	{
-	 
+		switch _action do 
+		{
+			case "load": 
+			{
+
+			};
+			case "update": 
+			{
+
+			};
+		};
 	};
 };
+
+true

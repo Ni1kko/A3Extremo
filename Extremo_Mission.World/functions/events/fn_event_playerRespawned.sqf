@@ -10,4 +10,6 @@ params [
 	["_respawnDelay",0,[0]]
 ];
 
+["characters","update",player] remoteExec ["extremo_fnc_database_server", 2];
+
 true

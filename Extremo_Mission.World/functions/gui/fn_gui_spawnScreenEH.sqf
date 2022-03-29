@@ -180,7 +180,7 @@ switch _event do {
 
 		//--- Update pos
 		if _savePosition then{
-			["characters","update",player] remoteExec ["extremo_fnc_database_server", 2];
+			["characters", "update"] call extremo_fnc_database_client;
 		};
 
 		//---Spawn done (tell other systems spawn completed)
