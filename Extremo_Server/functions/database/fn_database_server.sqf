@@ -24,7 +24,8 @@ switch _table do {
 			private _BEGuidNotCalculated = _BEGuid isEqualTo "";
 			private _updates = [];
 			private _whereClause = [
-				["BEGuid",str _BEGuid]
+				["BEGuid", ["DB","STRING", _BEGuid] call Extremo_fnc_database_parse],
+				["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse]
 			];
 
 			if _BEGuidNotCalculated exitWith{[_rexecID,"<extremo_fnc_event_databse_server2client> Error calculating players BEGuid"] call Extremo_fnc_system_kick};
@@ -74,7 +75,8 @@ switch _table do {
 								["S64ID", 			["DB","STRING", _steamID] call Extremo_fnc_database_parse],
 								["LastKnownName", 	["DB","STRING", _name] call Extremo_fnc_database_parse],
 								["Wallet", 			["DB","A2NET", _startcash] call Extremo_fnc_database_parse],
-								["Class", 		    ["DB","STRING", selectRandom _classes] call Extremo_fnc_database_parse]
+								["Class", 		    ["DB","STRING", selectRandom _classes] call Extremo_fnc_database_parse],
+								["WorldName", 		["DB","STRING", WorldName] call Extremo_fnc_database_parse]
 							]
 						]call Extremo_fnc_database_request;
 
@@ -83,7 +85,7 @@ switch _table do {
 						};
 						
 						format["Inserted database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
-						[_this,{_this remoteExec ["extremo_fnc_database_server", 2]}] remoteExec ['call', _rexecID];
+						[[_table,_action,_object],{_this remoteExec ["extremo_fnc_database_server", 2]}] remoteExec ['call', _rexecID];
 					};
 
 					//--- 

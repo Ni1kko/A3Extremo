@@ -41,6 +41,7 @@ format["Loaded (%1) vehicle configs", _totalVehicles] call Extremo_fnc_server_lo
 private _vehiclesDB = ["READ","vehicles",[
 	["ID","BEGuid","Class","Spawned","Dead","Position","Fuel","Damage"],
 	[
+		["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse],
 		["Spawned", 1],	//only spawned vehicles
 		["Dead", 0]		//no wrecks
 	]

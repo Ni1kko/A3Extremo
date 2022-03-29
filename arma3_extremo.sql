@@ -39,13 +39,16 @@ CREATE TABLE `characters` (
   `LastHealthState` int(5) NOT NULL DEFAULT 0,
   `LastLoadout` text NOT NULL DEFAULT '"[]"',
   `Class` varchar(255) NOT NULL,
-  `Wallet` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Wallet` int(11) NOT NULL,
+  `WorldName` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4; 
+
 
 --
 -- Table structure for table `vehicles`
 --
 
+DROP TABLE IF EXISTS `vehicles`;
 CREATE TABLE `vehicles` (
   `ID` int(11) NOT NULL,
   `BEGuid` int(64) NOT NULL,
@@ -54,7 +57,8 @@ CREATE TABLE `vehicles` (
   `Dead` tinyint(1) NOT NULL DEFAULT 0,
   `Position` text NOT NULL DEFAULT '"[]"',
   `Fuel` int(1) NOT NULL,
-  `Damage` int(1) NOT NULL
+  `Damage` int(1) NOT NULL,
+  `WorldName` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
