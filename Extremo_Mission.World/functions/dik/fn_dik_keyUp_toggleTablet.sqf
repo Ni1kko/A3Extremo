@@ -5,6 +5,8 @@
 
 //Apps
 extremo_fnc_gui_tabletScreenGroupBanking = {
+	hint str _this; //debug
+
 	params [
 		['_mode','',['']],
 		['_params',[],[[]]]
@@ -66,10 +68,50 @@ extremo_fnc_gui_tabletScreenGroupBanking = {
 	};
 
 };
-extremo_fnc_gui_tabletScreenGroupContacts = {};
-extremo_fnc_gui_tabletScreenGroupCrafting = {};
-extremo_fnc_gui_tabletScreenGroupSync = {};
-extremo_fnc_gui_tabletScreenGroupSettings = {};
+extremo_fnc_gui_tabletScreenGroupCrafting = { 
+	hint str _this; //debug
+	params [
+		['_mode','',['']],
+		['_params',[],[[]]]
+	];
+
+	disableSerialization; 
+	if (_mode isEqualTo '') exitWith {
+		['extremo_fnc_gui_tabletScreenGroupCrafting: <MODE> was passed empty. Function Terminated!'] call BIS_fnc_error;
+	};
+
+	switch (_mode) do {
+		case 'onScreenShow' : 
+		{
+			_params params [
+				['_screenLockCtrl',controlNull,[controlNull]]
+			];
+		}; 
+		case 'onScreenHide' : 
+		{
+			_params params [
+				['_screenLockCtrl',controlNull,[controlNull]]
+			];
+		}; 
+		case 'changeCategory' : 
+		{
+			_params params [
+				['_categoryCtrl',controlNull,[controlNull]],
+				['_selection',-1,[0]]
+			];
+		}; 
+		case 'changeItem' : 
+		{
+			_params params [
+				['_itemCtrl',controlNull,[controlNull]],
+				['_selection',-1,[0]]
+			]; 
+		};
+	};
+};
+extremo_fnc_gui_tabletScreenGroupContacts = { hint str _this; };
+extremo_fnc_gui_tabletScreenGroupSync = { hint str _this; };
+extremo_fnc_gui_tabletScreenGroupSettings = { hint str _this; };
 
 
 private _displayClass = "RscExtremo_Tablet";
