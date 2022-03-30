@@ -1537,3 +1537,24 @@ if(isNil "extremo_fnc_system_getRealTime")then{
 
 	true call extremo_fnc_system_getRealTime	
 };
+
+
+[] call Extremo_fnc_dik_keyUp_toggleTablet;
+
+_curScreen = uiNamespace getVariable ['RscDisplayTablet_CurScreen',controlNull];
+displayTablet = findDisplay 1200;
+
+controlTablet_1 = displayTablet ctrlCreate ['RscButton', 29100, _curScreen];
+controlTablet_1 ctrlSetText 'Test';
+controlTablet_1 ctrlSetPosition [0, 0, (6.25 / 40), (1 / 25)];
+controlTablet_1 ctrlSetBackgroundColor [(profilenamespace getvariable ['GUI_BCG_RGB_R',0.3843]), (profilenamespace getvariable ['GUI_BCG_RGB_G',0.7019]), (profilenamespace getvariable ['GUI_BCG_RGB_B',0.8862]), (profilenamespace getvariable ['GUI_BCG_RGB_A',0.7])];
+controlTablet_1 ctrlCommit 0; 
+
+controlTablet_1 ctrlSetPosition [
+	0.2 * (safezoneW / 40), 
+	0.2 * (safezoneH / 25), 
+	(6.25 / 40), 
+	(1 / 25)
+];
+
+controlTablet_1 ctrlCommit 0; 

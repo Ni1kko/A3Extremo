@@ -323,6 +323,11 @@ class CfgFunctions
             class gui_tabletScreenEH {};
             class gui_tabletScreenSwitch {};
             class gui_tabletScreenLock {};
+            class gui_tabletScreenGroupBanking {};
+            class gui_tabletScreenGroupCrafting {};
+            class gui_tabletScreenGroupContacts {};
+            class gui_tabletScreenGroupSync {};
+            class gui_tabletScreenGroupSettings {};
         };
 
         //--- Medical
