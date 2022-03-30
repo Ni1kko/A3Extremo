@@ -253,15 +253,15 @@ class CfgKeyHandler
         class KeyDown 
         {
             functions[] = {
-                //Function,             		[dik,shift,ctrl,alt]   	    		call/spawn
-                {"Extremo_fnc_test1", 			{"DIK_SPACE",true,false,false}, 	"call"		} // Shift + Space
+                //Function,             		                [dik,shift,ctrl,alt]   	    		call/spawn
+                {"Extremo_fnc_test1", 			                {"DIK_SPACE",true,false,false}, 	"call"	  } // Shift + Space
             };
         };
         class KeyUp 
         {
             functions[] = {
-                //Function,             		[dik,shift,ctrl,alt]   	    		call/spawn
-                {"Extremo_fnc_test2", 			{"DIK_SPACE",true,true,false}, 	"call"		} // Shift + Ctrl + Space
+                //Function,             		                [dik,shift,ctrl,alt]   	    		call/spawn
+                {"Extremo_fnc_dik_keyUp_toggleTablet", 			{"DIK_6",false,false,false}, 	    "call"	  } // Shift + Ctrl + Space
             };
         };
     };
@@ -293,7 +293,8 @@ class CfgFunctions
         class Dik
         {
             file = "functions\dik"; 
-            class dik_initEventHandlers {}; 
+            class dik_initEventHandlers {};
+            class dik_keyUp_toggleTablet {};
         };
 
         //--- Events

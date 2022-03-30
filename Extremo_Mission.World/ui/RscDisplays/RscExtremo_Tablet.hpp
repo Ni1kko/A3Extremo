@@ -7,8 +7,8 @@
 class RscExtremo_Tablet
 {
     idd = 1200;
-    onLoad = "[""onLoad"",_this] call extremo_fnc_gui_tabletLoadScreen;";
-    onUnLoad = "[""onUnLoad"",_this] call extremo_fnc_gui_tabletLoadScreen;";
+    onLoad = "[""onLoad"",_this] call extremo_fnc_gui_tabletScreenEH;";
+    onUnLoad = "[""onUnLoad"",_this] call extremo_fnc_gui_tabletScreenEH;";
     class controlsBackground
     {
         //-- Border 
@@ -127,8 +127,8 @@ class RscExtremo_Tablet
                 class ScreenGroupLock: RscControlsGroupNoScrollbar
                 {
                     idc = 107;
-                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_screenGroupLock;";
-                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_screenGroupLock;";
+                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_tabletScreenLock;";
+                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_tabletScreenLock;";
                     x = 0.1 * (safezoneW / 40);
                     y = 0.1 * (safezoneH / 25);
                     w = 13.2 * (safezoneW / 40);
@@ -256,7 +256,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_banking_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsBanking""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsBanking""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             };
                         };  
@@ -285,7 +285,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_contacts_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsContacts""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsContacts""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         };
@@ -314,7 +314,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow1Btn3""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow1Btn3""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         };
@@ -344,7 +344,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow2Btn1""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow2Btn1""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             };
                         };
@@ -373,7 +373,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow2Btn2""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow2Btn2""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 };
                             };
                         };
@@ -402,7 +402,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsCrafting""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsCrafting""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 };
                             };
                         };   
@@ -432,7 +432,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow3Btn1""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow3Btn1""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         };
@@ -461,7 +461,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow3Btn2""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow3Btn2""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             };
                         };
@@ -490,7 +490,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_sync_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsSync""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsSync""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 };
                             };
                         }; 
@@ -520,7 +520,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow4Btn1""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow4Btn1""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         }; 
@@ -549,7 +549,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow4Btn2""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow4Btn2""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         }; 
@@ -578,7 +578,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow4Btn3""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow4Btn3""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         };
@@ -609,7 +609,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow5Btn1""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow5Btn1""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         }; 
@@ -638,7 +638,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow5Btn2""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow5Btn2""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         }; 
@@ -667,7 +667,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow5Btn3""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow5Btn3""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         };
@@ -697,7 +697,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow6Btn1""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow6Btn1""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         }; 
@@ -726,7 +726,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsRow6Btn2""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsRow6Btn2""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         }; 
@@ -755,7 +755,7 @@ class RscExtremo_Tablet
                                 {
                                     idc = -1;
                                     text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\Apps\tabletapps_info_ca.paa";
-                                    onButtonClick = "[""ScreenGroupsSettings""] call extremo_fnc_gui_tabletSwitchScreen;";
+                                    onButtonClick = "[""ScreenGroupsSettings""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
                         };
@@ -767,8 +767,8 @@ class RscExtremo_Tablet
                 class ScreenGroupsBanking : RscControlsGroupNoScrollbar
                 {
                     idc = 109;
-                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_screenGroupBanking;";
-                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_screenGroupBanking;";
+                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_tabletScreenGroupBanking;";
+                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_tabletScreenGroupBanking;";
                     x = 0 * (safezoneW / 40);
                     y = 0.2 * (safezoneH / 25);
                     w = 13.2 * (safezoneW / 40);
@@ -809,7 +809,7 @@ class RscExtremo_Tablet
                             y = (1 + (1/3)) * (safezoneH / 25);
                             w = 3.25 * (safezoneW / 40);
                             h = 0.5 * (safezoneH / 25);
-                            onLBSelChanged = "[""onAccountChanged"",_this] call extremo_fnc_gui_screenGroupBanking;";
+                            onLBSelChanged = "[""onAccountChanged"",_this] call extremo_fnc_gui_tabletScreenGroupBanking;";
                         }; 
                         class Target_Title : RscText
                         {
@@ -826,7 +826,7 @@ class RscExtremo_Tablet
                             y = (2.5 - (1/3)) * (safezoneH / 25);
                             w = 3.25 * (safezoneW / 40);
                             h = 0.5 * (safezoneH / 25);
-                            onLBSelChanged = "[""onTargetChanged"",_this] call extremo_fnc_gui_screenGroupBanking;";
+                            onLBSelChanged = "[""onTargetChanged"",_this] call extremo_fnc_gui_tabletScreenGroupBanking;";
                         }; 
                         class Amount_Title : RscText
                         {
@@ -844,7 +844,7 @@ class RscExtremo_Tablet
                             y = (1 + (1/3)) * (safezoneH / 25);
                             w = 4.9 * (safezoneW / 40);
                             h = 0.5 * (safezoneH / 25);
-                            onKeyUp = "[""onAmountChar"",_this] call extremo_fnc_gui_screenGroupBanking;";
+                            onKeyUp = "[""onAmountChar"",_this] call extremo_fnc_gui_tabletScreenGroupBanking;";
                         };
                         class AmountSlider: RscXSlider
                         {
@@ -853,7 +853,7 @@ class RscExtremo_Tablet
                             y = (2.5 - (1/3)) * (safezoneH / 25);
                             w = 6.8 * (safezoneW / 40);
                             h = 0.6 * (safezoneH / 25);
-                            onSliderPosChanged = "[""onSliderAmount"",_this] call extremo_fnc_gui_screenGroupBanking;";
+                            onSliderPosChanged = "[""onSliderAmount"",_this] call extremo_fnc_gui_tabletScreenGroupBanking;";
                         }; 
                         class Confirm : RscButton
                         {
@@ -864,7 +864,7 @@ class RscExtremo_Tablet
                             h = 0.5 * (safezoneH / 25);
                             text = "Transfer";
                             colorBackground[] = {"(profilenamespace getvariable ['GUI_BCG_RGB_R',0.77])","(profilenamespace getvariable ['GUI_BCG_RGB_G',0.51])","(profilenamespace getvariable ['GUI_BCG_RGB_B',0.08])",1};
-                            onMouseButtonClick = "[""onConfirm"",_this] call extremo_fnc_gui_screenGroupBanking;";
+                            onMouseButtonClick = "[""onConfirm"",_this] call extremo_fnc_gui_tabletScreenGroupBanking;";
                         }; 
                         class BG_Balance : RscText
                         {
@@ -889,8 +889,8 @@ class RscExtremo_Tablet
                 class ScreenGroupsContacts : RscControlsGroupNoScrollbar
                 {
                     idc = 130;
-                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_ScreenGroupContacts;";
-                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_ScreenGroupContacts;";
+                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_tabletScreenGroupContacts;";
+                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_tabletScreenGroupContacts;";
                     x = 0 * (safezoneW / 40);
                     y = 0.2 * (safezoneH / 25);
                     w = 13.2 * (safezoneW / 40);
@@ -943,8 +943,8 @@ class RscExtremo_Tablet
                 class ScreenGroupsCrafting : RscControlsGroupNoScrollbar
                 {
                     idc = 111;
-                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_screenGroupCrafting;";
-                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_screenGroupCrafting;";
+                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_tabletScreenGroupCrafting;";
+                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_tabletScreenGroupCrafting;";
                     x = 0 * (safezoneW / 40);
                     y = 0.2 * (safezoneH / 25);
                     w = 13.2 * (safezoneW / 40);
@@ -969,7 +969,7 @@ class RscExtremo_Tablet
                             y = 1.1 * (safezoneH / 25);
                             w = 6.3 * (safezoneW / 40);
                             h = 0.7 * (safezoneH / 25);
-                            onLBSelChanged = "[""changeCategory"",_this] call extremo_fnc_gui_screenGroupCrafting;";
+                            onLBSelChanged = "[""changeCategory"",_this] call extremo_fnc_gui_tabletScreenGroupCrafting;";
                         };
                         class CraftingBox : RscListbox
                         {
@@ -979,7 +979,7 @@ class RscExtremo_Tablet
                             w = 6.3 * (safezoneW / 40);
                             h = 6.6 * (safezoneH / 25);
                             colorBackground[] = {0,0,0,0.5};
-                            onLBSelChanged = "[""changeLicense"",_this] call extremo_fnc_gui_screenGroupCrafting;";
+                            onLBSelChanged = "[""changeLicense"",_this] call extremo_fnc_gui_tabletScreenGroupCrafting;";
                         };
                         class CraftingDescTitle : RscText
                         {
@@ -1072,8 +1072,8 @@ class RscExtremo_Tablet
                 class ScreenGroupsSync : RscControlsGroupNoScrollbar
                 {
                     idc = 112;
-                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_screenGroupSync;";
-                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_screenGroupSync;";
+                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_tabletScreenGroupSync;";
+                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_tabletScreenGroupSync;";
                     x = 0 * (safezoneW / 40);
                     y = 0.2 *  (safezoneH / 25);
                     w = 13.2 * (safezoneW / 40);
@@ -1099,7 +1099,7 @@ class RscExtremo_Tablet
                             y = 4.4 *  (safezoneH / 25);
                             w = 5 * (safezoneW / 40);
                             h = 1 *  (safezoneH / 25);
-                            onButtonClick = "[""onSyncNow"",_this] call extremo_fnc_gui_screenGroupSync;";
+                            onButtonClick = "[""onSyncNow"",_this] call extremo_fnc_gui_tabletScreenGroupSync;";
                             sizeEx = 0.6 *  (safezoneH / 25);
                         };
                     };
@@ -1173,8 +1173,8 @@ class RscExtremo_Tablet
                 class ScreenGroupsSettings : RscControlsGroupNoScrollbar
                 {
                     idc = 143;
-                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_ScreenGroupSettings;";
-                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_ScreenGroupSettings;";
+                    onScreenShow = "[""onScreenShow"",_this] call extremo_fnc_gui_tabletScreenGroupSettings;";
+                    onScreenHide = "[""onScreenHide"",_this] call extremo_fnc_gui_tabletScreenGroupSettings;";
                     x = 0 * (safezoneW / 40);
                     y = 0.2 * (safezoneH / 25);
                     w = 13.2 * (safezoneW / 40);
@@ -1198,7 +1198,7 @@ class RscExtremo_Tablet
             w = 0.5 * (safezoneW / 40);
             h = 0.6 * (safezoneH / 25);
             soundClick[] = {"\a3\Ui_f\data\Sound\ReadOut\readoutClick",0.891251,1};
-            onButtonClick = "[""HomeButton"",_this] call extremo_fnc_gui_tabletLoadScreen;";
+            onButtonClick = "[""HomeButton"",_this] call extremo_fnc_gui_tabletScreenEH;";
             tooltip = "Main Menu";
         };
         class TabletButtonLock: RscActivePicture
@@ -1210,7 +1210,7 @@ class RscExtremo_Tablet
             w = 0.4 * (safezoneW / 40);
             h = 0.5 * (safezoneH / 25);
             soundClick[] = {"\a3\Ui_f\data\Sound\ReadOut\readoutClick",0.891251,1};
-            onButtonClick = "[""LockButton"",_this] call extremo_fnc_gui_tabletLoadScreen;";
+            onButtonClick = "[""LockButton"",_this] call extremo_fnc_gui_tabletScreenEH;";
             tooltip = "Toggle Lock";
         };
         class TabletButtonMute: RscActivePicture
@@ -1218,11 +1218,11 @@ class RscExtremo_Tablet
             idc = 105;
             text = "ui\RscDisplays\Data\RscExtremo_Tablet\images\tabletbutton_sound_ca.paa";
             x = 21.15 * (safezoneW / 40) + (safezoneX);
-            y = 17.12 * (safezoneH / 25) + (safezoneY);//somehow it fucked up (Marshall is looking into it when he has a min)
+            y = 17.12 * (safezoneH / 25) + (safezoneY);//somehow it fucked up 
             w = 0.4 * (safezoneW / 40);
             h = 0.5 * (safezoneH / 25);
             soundClick[] = {"\a3\Ui_f\data\Sound\ReadOut\readoutClick",0.891251,1};
-            onButtonClick = "[""MuteButton"",_this] call extremo_fnc_gui_tabletLoadScreen;";
+            onButtonClick = "[""MuteButton"",_this] call extremo_fnc_gui_tabletScreenEH;";
             tooltip = "Toggle Sound";
         };
     };
