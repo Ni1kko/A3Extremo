@@ -313,6 +313,7 @@ class CfgFunctions
         class Gui
         {
             file = "functions\gui"; 
+            class gui_customEvent {};
             class gui_lockScreen {};
             class gui_lockScreenEH {};
             class gui_spawnScreen {};
