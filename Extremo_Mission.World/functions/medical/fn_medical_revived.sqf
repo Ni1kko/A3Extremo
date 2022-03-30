@@ -24,7 +24,7 @@ Extremo_var_medical_executer = objNull;
 
 //-- destoy effects first
 ppEffectDestroy Extremo_var_death_blurEffect;
-ppEffectDestroy Extremo_var_death_colorEffect;
+["Default", 0.7, false] call BIS_fnc_setPPeffectTemplate;
 
 //-- Revived effects
 [] remoteExecCall ["extremo_fnc_medical_createRevivedEffects", _target];

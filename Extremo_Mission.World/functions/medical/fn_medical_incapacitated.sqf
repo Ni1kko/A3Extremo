@@ -84,11 +84,7 @@ Extremo_var_death_blurEffect ppEffectForceInNVG true;
 Extremo_var_death_blurEffect ppEffectCommit 0.7;
 
 //-- Setup red screen
-Extremo_var_death_colorEffect = ppEffectCreate ["ColorCorrections", 3001];
-Extremo_var_death_colorEffect ppEffectEnable true;
-Extremo_var_death_colorEffect ppEffectAdjust [1,1,0,[0.4,0.1,0.1,0.11],[0.2,0,0,0.111], [0.2, 0.1, 0.1, 0.1]];
-Extremo_var_death_colorEffect ppEffectForceInNVG true;
-Extremo_var_death_colorEffect ppEffectCommit 0.7;
+["Bleedout", 0.7, false] call BIS_fnc_setPPeffectTemplate;
 
 //--- Fade sound
 2 fadeSound 0.1;

@@ -17,10 +17,7 @@ if((missionNamespace getVariable ["Extremo_var_death_blurEffect",-1]) isNotEqual
 	ppEffectDestroy Extremo_var_death_blurEffect;
 	Extremo_var_death_blurEffect = nil;
 };
-if((missionNamespace getVariable ["Extremo_var_death_colorEffect",-1]) isNotEqualTo -1)then{
-	ppEffectDestroy Extremo_var_death_colorEffect;
-	Extremo_var_death_colorEffect = nil;
-};
+["Default", 0.7, false] call BIS_fnc_setPPeffectTemplate;
 
 [] call extremo_fnc_medical_destroyRevivedEffects;
 
