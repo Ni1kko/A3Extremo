@@ -370,6 +370,7 @@ class CfgFunctions
             class system_destroyLayer {};
             class system_deathType {};
             class system_directionInfo {};
+            class system_getCargoType {};
             class system_getRealTime {};
             class system_itemDetails {};
             class system_replacmentCallback {};
