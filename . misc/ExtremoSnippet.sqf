@@ -1414,7 +1414,6 @@ if(isNil "Extremo_fnc_gui_lockScreenEH")then
 	]; 
 };
 
-
 //--- extremo_fnc_system_versionInfo
 if(isNil "extremo_fnc_system_versionInfo")then
 {
@@ -1523,6 +1522,18 @@ if(isNil "extremo_fnc_system_changePos")then
 	[player,nil,2] call extremo_fnc_system_changePos;
 };
 
-// parseNumber(((systemTimeUTC select [3,2]) joinString "."))
-//[parseNumber(((systemTimeUTC select [3,2]) joinString ".") + str(systemTimeUTC#5)),'HH:MM:SS'] call BIS_fnc_timeToString
+//--- extremo_fnc_system_getRealTime
+if(isNil "extremo_fnc_system_getRealTime")then{
+	extremo_fnc_system_getRealTime = {
+		params [
+			["_seconds",false]
+		];
 
+		// parseNumber(((systemTimeUTC select [3,2]) joinString "."))
+		//[parseNumber(((systemTimeUTC select [3,2]) joinString ".") + str(systemTimeUTC#5)),'HH:MM:SS'] call BIS_fnc_timeToString
+
+		(((systemTime select [3,[2,3] select _seconds]) apply {if(_x < 10)then {"0" + str _x}else{str _x}}) joinString ":")
+	};
+
+	true call extremo_fnc_system_getRealTime	
+};
