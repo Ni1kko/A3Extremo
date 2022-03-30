@@ -352,6 +352,7 @@ class CfgFunctions
         {
             file = "functions\system"; 
             class system_animationSync {};
+            class system_dateString {};
             class system_destroyLayer {};
             class system_deathType {};
             class system_directionInfo {};
