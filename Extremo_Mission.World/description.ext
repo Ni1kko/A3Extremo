@@ -261,7 +261,8 @@ class CfgKeyHandler
         {
             functions[] = {
                 //Function,             		                [dik,shift,ctrl,alt]   	    		call/spawn
-                {"Extremo_fnc_dik_keyUp_toggleTablet", 			{"DIK_6",false,false,false}, 	    "call"	  } // Shift + Ctrl + Space
+                {"Extremo_fnc_dik_keyUp_toggleTablet", 			{"DIK_6",false,false,false}, 	    "call"	  }, // 6
+                {"Extremo_fnc_dik_keyUp_toggleAutorun", 		{"DIK_0",false,false,false}, 	    "call"	  }  // 0
             };
         };
     };
@@ -294,6 +295,7 @@ class CfgFunctions
         {
             file = "functions\dik"; 
             class dik_initEventHandlers {};
+            class dik_keyUp_toggleAutorun {};
             class dik_keyUp_toggleTablet {};
         };
 
@@ -349,6 +351,8 @@ class CfgFunctions
         class Player
         {
             file = "functions\player";
+            class player_autorunEH {};
+            class player_canAutorun {};
             class player_init {};
             class player_initEventhandlers {};
             class player_login {};
@@ -368,6 +372,13 @@ class CfgFunctions
             class system_itemDetails {};
             class system_replacmentCallback {};
             class system_locationInfo {};
+        };
+
+        //--- World
+        class World
+        {
+            file = "functions\world";
+            class world_getTerrainGradient {};
         };
     };
 };
