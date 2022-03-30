@@ -319,7 +319,10 @@ class CfgFunctions
             class gui_spawnScreen {};
             class gui_spawnScreenEH {};
             class gui_splashScreen {};
-            class gui_splashScreenEH {}; 
+            class gui_splashScreenEH {};
+            class gui_tabletScreenEH {};
+            class gui_tabletScreenSwitch {};
+            class gui_tabletScreenLock {};
         };
 
         //--- Medical
