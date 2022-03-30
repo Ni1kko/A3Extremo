@@ -222,14 +222,14 @@ class RscExtremo_Tablet
                         class AppSectionGeneralTitle: RscText
                         {
                             idc = -1;
-                            text = "General Applications";
+                            text = "Extremo Applications";
                             x = 0.1 * (safezoneW / 40);
                             y = 0.2 * (safezoneH / 25);
                             w = 12.9 * (safezoneW / 40);
                             h = 0.7 * (safezoneH / 25);
                             colorBackground[] = {0,0,0,0.8};
                             sizeEx = 0.6 * (safezoneH / 25);
-                        };  
+                        };
 
                         //-- (ROW1 | BTN1) offset 1.0 x 0.1
                         class BankingApp : RscApplication
@@ -259,7 +259,7 @@ class RscExtremo_Tablet
                                     onButtonClick = "[""ScreenGroupsBanking""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             };
-                        };  
+                        };
                         //-- (ROW1 | BTN2) offset 1.0 x 4.43
                         class ContactsApp : RscApplication
                         {
@@ -396,7 +396,7 @@ class RscExtremo_Tablet
                                 class Title : Title
                                 {
                                     idc = -1;
-                                    text = "Licences";
+                                    text = "Crafting";
                                 };
                                 class Icon : Icon
                                 {
@@ -405,7 +405,7 @@ class RscExtremo_Tablet
                                     onButtonClick = "[""ScreenGroupsCrafting""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 };
                             };
-                        };   
+                        };
    
                         //--  (ROW3 | BTN1) offset 3.2 x 0.1
                         class Row3Btn1App : RscApplication
@@ -493,7 +493,7 @@ class RscExtremo_Tablet
                                     onButtonClick = "[""ScreenGroupsSync""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 };
                             };
-                        }; 
+                        };
 
                         //--  (ROW4 | BTN1) offset 4.3 x 0.1
                         class Row4Btn1App : RscApplication
@@ -523,7 +523,7 @@ class RscExtremo_Tablet
                                     onButtonClick = "[""ScreenGroupsRow4Btn1""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
-                        }; 
+                        };
                         //--  (ROW4 | BTN2) offset 4.3 x 4.43
                         class Row4Btn2App : RscApplication
                         {
@@ -552,7 +552,7 @@ class RscExtremo_Tablet
                                     onButtonClick = "[""ScreenGroupsRow4Btn2""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
-                        }; 
+                        };
                         //--  (ROW4 | BTN3) offset 4.3 x 8.76
                         class Row4Btn3 : RscApplication
                         {
@@ -612,7 +612,7 @@ class RscExtremo_Tablet
                                     onButtonClick = "[""ScreenGroupsRow5Btn1""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
-                        }; 
+                        };
                         //--  (ROW5 | BTN2) offset 5.4 x 4.43
                         class Row5Btn2App : RscApplication
                         {
@@ -641,7 +641,7 @@ class RscExtremo_Tablet
                                     onButtonClick = "[""ScreenGroupsRow5Btn2""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
-                        }; 
+                        };
                         //--  (ROW5 | BTN3) offset 5.4 x 8.76
                         class Row5Btn3App : RscApplication
                         {
@@ -700,7 +700,7 @@ class RscExtremo_Tablet
                                     onButtonClick = "[""ScreenGroupsRow6Btn1""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
-                        }; 
+                        };
                         //--  (ROW6 | BTN2) offset 6.5 x 4.43
                         class Row6Btn2App : RscApplication
                         {
@@ -729,7 +729,7 @@ class RscExtremo_Tablet
                                     onButtonClick = "[""ScreenGroupsRow6Btn2""] call extremo_fnc_gui_tabletScreenSwitch;";
                                 }; 
                             }; 
-                        }; 
+                        };
                         //--  (ROW6 | BTN3) offset 6.5 x 8.76
                         class SettingsApp : RscApplication
                         {
@@ -954,7 +954,7 @@ class RscExtremo_Tablet
                         class Title : RscText
                         {
                             idc = -1;
-                            text = "Licences";
+                            text = "Crafting";
                             x = 0.2 * (safezoneW / 40);
                             y = 0.2 * (safezoneH / 25);
                             w = 6.3 * (safezoneW / 40);
@@ -979,7 +979,7 @@ class RscExtremo_Tablet
                             w = 6.3 * (safezoneW / 40);
                             h = 6.6 * (safezoneH / 25);
                             colorBackground[] = {0,0,0,0.5};
-                            onLBSelChanged = "[""changeLicense"",_this] call extremo_fnc_gui_tabletScreenGroupCrafting;";
+                            onLBSelChanged = "[""changeItem"",_this] call extremo_fnc_gui_tabletScreenGroupCrafting;";
                         };
                         class CraftingDescTitle : RscText
                         {

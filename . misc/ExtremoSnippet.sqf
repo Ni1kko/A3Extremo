@@ -1522,3 +1522,7 @@ if(isNil "extremo_fnc_system_changePos")then
 
 	[player,nil,2] call extremo_fnc_system_changePos;
 };
+
+// parseNumber(((systemTimeUTC select [3,2]) joinString "."))
+//[parseNumber(((systemTimeUTC select [3,2]) joinString ".") + str(systemTimeUTC#5)),'HH:MM:SS'] call BIS_fnc_timeToString
+
