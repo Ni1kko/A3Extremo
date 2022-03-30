@@ -13,13 +13,13 @@ params [
 	["_instigator",objNull,[objNull]]
 ];
 
-private _execute = false;
 private _exit = false;
 private _vehicle = vehicle _source;
 private _isVehicle = ((_vehicle isKindOf "Air" OR _vehicle isKindOf "Car" OR _vehicle isKindOf "Ship") AND _projectile isEqualTo "");
 private _currentDamage = [_player getHit _selectionName,damage _player] select (_selectionName isEqualTo "");
 private _incapacitated = _player getVariable ["extremo_var_incapacitated", false];
 
+//---
 if (!isNull _source && {_source isNotEqualTo _player}) then 
 {
 	//--- Already Incapacitated and something executed our player
@@ -100,16 +100,10 @@ if (!isNull _source && {_source isNotEqualTo _player}) then
 //--- Handled in other system
 if _exit exitWith {};
 
-//--- Can our player die
-if (_this call extremo_fnc_medical_canDie) then {
-	
-	//--- Incapacitate or Execute
-	if !_incapacitated then {
-		[_source,_player] spawn extremo_fnc_medical_incapacitated;
-	} else {
-		_execute = true;
-	};
+//--- Incapacitate if our player can die
+if (_this call extremo_fnc_medical_canDie) then { 
+	[_source,_player] spawn extremo_fnc_medical_incapacitated;
 };
 
-//--- Adjust damage to prevent death
-[_damage min 0.99, _damage] select _execute
+//--- Adjust damage to prevent death but so they still take damage
+_damage min 0.99

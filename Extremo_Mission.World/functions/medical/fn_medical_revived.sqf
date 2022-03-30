@@ -17,6 +17,7 @@ if !(_target getVariable ["extremo_var_incapacitated", false]) exitWith {};
 
 _target setVariable ["extremo_var_incapacitated", false, true];
 _target setUnconscious false;
+_target setDamage 0;
 _target allowDamage true;
 
 Extremo_var_medical_healthState = 0;
