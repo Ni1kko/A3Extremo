@@ -46,6 +46,7 @@ class CfgFunctions
         {
             file = "\Extremo_Server\functions\system"; 
             class system_versionInfo {};
+            class system_getObjectFromBEGuid {};
         };
 
         //--- Extremo Vehicles Functions
