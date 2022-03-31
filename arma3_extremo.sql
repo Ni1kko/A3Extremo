@@ -51,13 +51,17 @@ CREATE TABLE `characters` (
 DROP TABLE IF EXISTS `vehicles`;
 CREATE TABLE `vehicles` (
   `ID` int(11) NOT NULL,
-  `BEGuid` int(64) NOT NULL,
+  `BEGuid` varchar(64) NOT NULL,
   `Class` varchar(255) NOT NULL,
+  `Lockcode` varchar(12) NOT NULL DEFAULT '0000',
+  `LockState` tinyint(1) NOT NULL DEFAULT 0,
   `Spawned` tinyint(1) NOT NULL DEFAULT 1,
+  `Spawned_At` datetime NOT NULL DEFAULT current_timestamp(),
   `Dead` tinyint(1) NOT NULL DEFAULT 0,
   `Position` text NOT NULL DEFAULT '"[]"',
-  `Fuel` int(1) NOT NULL,
-  `Damage` int(1) NOT NULL,
+  `Fuel` int(1) NOT NULL DEFAULT 1,
+  `Damage` int(1) NOT NULL DEFAULT 0,
+  `Hitpoints` text NOT NULL DEFAULT '"[]"',
   `WorldName` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

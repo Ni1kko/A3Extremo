@@ -53,7 +53,9 @@ class CfgFunctions
         {
             file = "\Extremo_Server\functions\vehicles"; 
             class vehicles_initialize {};
-            class vehicles_create {};
+            class vehicles_createCareful {};
+            class vehicles_createNonPersistentVehicle {};
+            class vehicles_createPersistentVehicle {};
         };
     };
 };

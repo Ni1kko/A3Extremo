@@ -1538,23 +1538,70 @@ if(isNil "extremo_fnc_system_getRealTime")then{
 	true call extremo_fnc_system_getRealTime	
 };
 
+//---
+{
+	[] call Extremo_fnc_dik_keyUp_toggleTablet;
 
-[] call Extremo_fnc_dik_keyUp_toggleTablet;
+	_curScreen = uiNamespace getVariable ['RscDisplayTablet_CurScreen',controlNull];
+	displayTablet = findDisplay 1200;
 
-_curScreen = uiNamespace getVariable ['RscDisplayTablet_CurScreen',controlNull];
-displayTablet = findDisplay 1200;
+	controlTablet_1 = displayTablet ctrlCreate ['RscButton', 29100, _curScreen];
+	controlTablet_1 ctrlSetText 'Test';
+	controlTablet_1 ctrlSetPosition [0, 0, (6.25 / 40), (1 / 25)];
+	controlTablet_1 ctrlSetBackgroundColor [(profilenamespace getvariable ['GUI_BCG_RGB_R',0.3843]), (profilenamespace getvariable ['GUI_BCG_RGB_G',0.7019]), (profilenamespace getvariable ['GUI_BCG_RGB_B',0.8862]), (profilenamespace getvariable ['GUI_BCG_RGB_A',0.7])];
+	controlTablet_1 ctrlCommit 0; 
 
-controlTablet_1 = displayTablet ctrlCreate ['RscButton', 29100, _curScreen];
-controlTablet_1 ctrlSetText 'Test';
-controlTablet_1 ctrlSetPosition [0, 0, (6.25 / 40), (1 / 25)];
-controlTablet_1 ctrlSetBackgroundColor [(profilenamespace getvariable ['GUI_BCG_RGB_R',0.3843]), (profilenamespace getvariable ['GUI_BCG_RGB_G',0.7019]), (profilenamespace getvariable ['GUI_BCG_RGB_B',0.8862]), (profilenamespace getvariable ['GUI_BCG_RGB_A',0.7])];
-controlTablet_1 ctrlCommit 0; 
+	controlTablet_1 ctrlSetPosition [
+		0.2 * (safezoneW / 40), 
+		0.2 * (safezoneH / 25), 
+		(6.25 / 40), 
+		(1 / 25)
+	];
 
-controlTablet_1 ctrlSetPosition [
-	0.2 * (safezoneW / 40), 
-	0.2 * (safezoneH / 25), 
-	(6.25 / 40), 
-	(1 / 25)
+	controlTablet_1 ctrlCommit 0;
+}
+
+
+missionNamespace setVariable ["playerobject",player,true];
+missionNamespace setVariable ["vehicleobject",vehicle player,true];
+(vehicle player) setVariable ["ExtremoVIN",3,true]
+
+private _playerobject = playerobject; 
+private _vehicleobject = vehicleobject; 
+private _steamID = getPlayerUID _playerobject; 
+private _BEGuid = ExtremoBeGuidHashmap get _steamID; 
+
+private _table = "vehicles";
+private _updates = []; 
+private _whereClause = [ 
+	["BEGuid", ["DB","STRING", _BEGuid] call Extremo_fnc_database_parse], 
+	["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse] 
+];
+ 
+    
+(getAllHitPointsDamage _vehicleObject) params [ 
+	["_hitPointNames",[]], 
+	["_hitSelectionNames",[]], 
+	["_hitDamageValues",[]] 
+]; 
+      
+private _vehicleHitpoints = _hitPointNames apply {[_x,_vehicleObject getHitPointDamage _x]}; 
+private _vehiclePosition = [ 
+    getPosATL _vehicleobject, 
+    vectorDir _vehicleobject, 
+    vectorUp _vehicleobject 
 ];
 
-controlTablet_1 ctrlCommit 0; 
+//--- Parse data 
+{ 
+	if((typeName (_x#1)) isEqualTo _x#2)then{ 
+		_updates pushBackUnique [_x#0,["DB",_x#3,_x#1] call Extremo_fnc_database_parse]; 
+	}; 
+}forEach [ 
+	["Position",_vehiclePosition,"ARRAY","ARRAY"], 
+	["Fuel",fuel _vehicleobject,"SCALAR","SCALAR"], 
+	["Damage",damage _vehicleobject,"SCALAR","SCALAR"], 
+	["Hitpoints",_vehicleHitpoints,"ARRAY","ARRAY"] 
+]; 
+
+["UPDATE",_table,[_updates,_whereClause]]call Extremo_fnc_database_request;     

@@ -2,84 +2,150 @@
 	## EXTREMO Survival
 	## Nikko Renolds
 */
-  
-with serverNamespace do { 
-	if(isNil "extremo_var_vehicles")then{
-		extremo_var_vehicles = [];
-	};
-};
 
-//--- Get min vehicle config values
-private _minCars = 20;
-private _minHelis = 2;
-private _minPlanes = 1;
-private _minShips = 1;
 
-//--- Get max vehicle config values
-private _maxCars = 45;
-private _maxHelis = 10;
-private _maxPlanes = 5;
-private _maxShips = 5;
+private _config = missionConfigFile >> "CfgSpawnVehicles";
+private _unlockInSafeZonesAfterRestart = getNumber(_config >> "unlockInSafeZonesAfterRestart") isEqualTo 1;
 
-//--- Get random values based of config values
-private _totalCars = round(random[_minCars, _maxCars - _minCars, _maxCars]);
-private _totalHelis = round(random[_minHelis, _maxHelis - _minHelis, _maxHelis]);
-private _totalPlanes = round(random[_minPlanes, _maxPlanes - _minPlanes, _maxPlanes]);
-private _totalShips = round(random[_minShips, _maxShips - _minShips, _maxShips]);
 
-//--- Get forbidden vehicles config array
-private _forbidden = [""];
+//------------------------------------------------------------------------------------------
+//--- Persistent Vehicles ------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 
-//--- Get all vehicles from config `CfgVehicles`
-"Reading configs for all vehicles" call Extremo_fnc_server_log; 
-private _vehicles = ("getNumber (_x >> 'scope') >= 2" configClasses (configFile >> "CfgVehicles"));
-private _totalVehicles = count _vehicles; 
-format["Loaded (%1) vehicle configs", _totalVehicles] call Extremo_fnc_server_log;
-
-//--- Get all vehicles from database `Vehicles`
-"Reading database records for all spawned vehicles" call Extremo_fnc_database_systemlog; 
-private _vehiclesDB = ["READ","vehicles",[
-	["ID","BEGuid","Class","Spawned","Dead","Position","Fuel","Damage"],
+"Reading database records for persistent vehicles" call Extremo_fnc_database_systemlog; 
+private _vehiclesDB = ["READ","vehicles",
 	[
-		["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse],
-		["Spawned", 1],	//only spawned vehicles
-		["Dead", 0]		//no wrecks
+		["ID","BEGuid","Class","Lockcode","LockState","Position","Fuel","Damage","HitPoints"],
+		[
+			["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse],
+			["Spawned", 1],	//only spawned vehicles
+			["Dead", 0]		//no wrecks
+		]
 	]
-]]call Extremo_fnc_database_request;
+]call Extremo_fnc_database_request;
 
 if(_vehiclesDB isEqualTo ["DB:Read:Task-failure",false])then{
 	_vehiclesDB = [];
 };
 
-private _totalVehiclesDB = count _vehiclesDB; 
-format["Loaded (%1) database records for spawned vehicles", _totalVehiclesDB] call Extremo_fnc_database_systemlog;
+private _persistentCount = 0;
+{
+	_x params [
+		["_ID",-1,[0]],
+		["_BEGuid","",[""]],
+		["_Class","",[""]],
+		["_Lockcode","",[""]],
+		["_LockState",0,[0]],
+		["_Position","[]",[""]],
+		["_Fuel",0,[0]],
+		["_Damage",0,[0]],
+		["_HitPoints","[]",[""]]
+	];
 
-//--- Sort vehicle category's
-private _cars =  	((_vehicles apply {if(configName _x isKindof 'Car')then{configName _x}else{""}}) - _forbidden);
-private _carsDB = 	(_vehiclesDB apply {});
-private _helis =  	((_vehicles apply {if(configName _x isKindof 'Helicopter')then{configName _x}else{""}}) - _forbidden);
-private _helisDB = 	(_vehiclesDB apply {});
-private _planes =  	((_vehicles apply {if(configName _x isKindof 'Plane')then{configName _x}else{""}}) - _forbidden);
-private _planesDB = (_vehiclesDB apply {});
-private _ships =   	((_vehicles apply {if(configName _x isKindof 'Ship')then{configName _x}else{""}}) - _forbidden);
-private _shipsDB = 	(_vehiclesDB apply {});
+	(["GAME","ARRAY", _Position] call Extremo_fnc_database_parse) params [
+		["_posATL",[]],
+		["_vectorDir",[]],
+		["_vectorUp",[]]
+	];
 
-//--- Shuffle config vehicles further sort vehicle category's and choose total vehicles
-_cars = ((_cars - _helis - _planes - _ships) call BIS_fnc_arrayShuffle) select [0,_totalCars];
-_helis = ((_helis - _cars - _planes - _ships) call BIS_fnc_arrayShuffle) select [0,_totalHelis];
-_planes = ((_planes - _cars - _helis - _ships) call BIS_fnc_arrayShuffle) select [0,_totalPlanes];
-_ships = ((_ships - _cars - _helis - _planes) call BIS_fnc_arrayShuffle) select [0,_totalShips];
+	private _vehicle = [_Class, _posATL, [_vectorDir, _vectorUp], true, _Lockcode] call Extremo_fnc_vehicles_createPersistentVehicle;
+	
+	if(!isNull _vehicle)then{
+		_persistentCount = _persistentCount + 1;
 
-//--- Spawn config vehicles
-{[_x,"land"] call extremo_fnc_vehicles_create; uiSleep 1;}forEach _cars;
-{[_x,"air"] call extremo_fnc_vehicles_create; uiSleep 1;}forEach _helis;
-{[_x,"air"] call extremo_fnc_vehicles_create; uiSleep 1;}forEach _planes;
-{[_x,"water"] call extremo_fnc_vehicles_create; uiSleep 1;}forEach _ships;
+		//--- Vehicle Info
+		_vehicle setVariable ["ExtremoVIN",_ID,true];
+		_vehicle setVariable ["ExtremoOwner",_BEGuid,true];
 
-//--- Spawn database vehicles
-{}forEach _carsDB;
-{}forEach _helisDB;
-{}forEach _planesDB;
-{}forEach _shipsDB;
+		//--- Money
+		//_vehicle setVariable ["ExtremoCash",0,true];
+
+		//--- Lock
+		private _isLocked = (_LockState isEqualTo -1);
+		/*if (_isLocked AND _unlockInSafeZonesAfterRestart AND (_posATL call Extremo_fnc_util_world_isInTraderZone)) then {
+			_isLocked = false;
+		};*/
+
+		if (_isLocked) then{
+			_vehicle setVariable ["ExtremoIsLocked", -1];
+			_vehicle lock 2;
+			_vehicle enableRopeAttach false;
+		}else{
+			_vehicle setVariable ["ExtremoIsLocked", 0];
+			_vehicle lock 0;
+			_vehicle enableRopeAttach true;
+		};
+
+		//--- Fuel
+		_vehicle setFuel _Fuel;
+
+
+		//--- Damage
+		_vehicle setDamage _Damage;
+		{_vehicle setHitPointDamage _x;} forEach (["GAME","ARRAY", _HitPoints] call Extremo_fnc_database_parse);
+	
+	};
+}forEach _vehiclesDB;
+
+
+
+//------------------------------------------------------------------------------------------
+//--- Non Persistent Vehicles --------------------------------------------------------------
+//------------------------------------------------------------------------------------------
+
+"Reading configs for non persistent" call Extremo_fnc_database_systemlog; 
+private _gridSize = getNumber(_config >> "NonPersistent" >> "vehiclesGridSize");
+private _gridVehicles = getNumber(_config >> "NonPersistent" >> "vehiclesGridAmount");
+private _groundVehicles = getArray(_config >> "NonPersistent" >> "groundVehicles");
+private _debugMarkers = getNumber(_config >> "NonPersistent" >> "vehiclesDebugMarkers") isEqualTo 1;
+private _nonPersistentCount = 0; 
+private _gridSizeOffset = _gridSize % 2;
+for "_xSize" from 0 to worldSize step _gridSize do
+{
+	private _workingXSize = _xSize + _gridSizeOffset;
+	for "_ySize" from 0 to worldSize step _gridSize do
+	{
+		private _workingYSize = _ySize + _gridSizeOffset;
+		private _position = [_workingXSize,_workingYSize];
+		private _spawned = 0;
+		private _spawnedPositions = [];
+		while {_spawned < _gridVehicles} do 
+		{
+			private _positionReal = [_position, 25, _gridSize, 5, 0 , 1 , 0 , _spawnedPositions] call BIS_fnc_findSafePos;
+			if(count _positionReal isEqualTo 3)exitWith{};
+
+			//--- 
+			_spawnedPositions pushBack [[(_positionReal select 0) - 50, (_positionReal select 1) + 50],[(_positionReal select 0) + 50,(_positionReal select 1) - 50]];
+			_positionReal pushBack 0;
+
+			//--- create vehicle
+			private _vehicleClassName = selectRandom _groundVehicles;
+			private _vehicle = [_vehicleClassName, _positionReal, random 360, true, true] call Extremo_fnc_vehicles_createNonPersistentVehicle;
+			private _vehicleNetID = netId _vehicle;
+
+			//--- create map markers
+			if _debugMarkers then{
+				private _markerName = format["ExtremoVehicle_DebugMarker_%1",(_vehicleNetID splitString ":") joinString "_"];
+				private _marker = createMarker [_markerName, getPosATL _vehicle];
+				_marker setMarkerType "mil_marker";
+				_marker setMarkerText _vehicleNetID;
+				_marker setMarkerColor "ColorRed";
+			};
+			
+			//--- 
+			_spawned = _spawned + 1;
+			_nonPersistentCount = _nonPersistentCount + 1;
+		};
+	};
+};
+
+//------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
+
+
+format["Spawned (%1) Persistent vehicles", _nonPersistentCount] call Extremo_fnc_database_systemlog;
+format["Spawned (%1) Non-Persistent vehicles", _nonPersistentCount] call Extremo_fnc_database_systemlog;
+
 
 true

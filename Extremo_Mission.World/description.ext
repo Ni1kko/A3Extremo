@@ -226,6 +226,38 @@ class CfgSpawn
     };
 };
 
+class CfgSpawnVehicles
+{ 
+    nightVision = true;                     //--- Enables or disables nightvision optics on ALL vehicles
+    thermalVision = false;                  //--- Enables or disables thermal optics on ALL vehicles
+    unlockInSafeZonesAfterRestart = true;	//--- unlock vehicles on server boot if they are in safe zones
+
+    class NonPersistent 
+    {
+        vehiclesGridSize = 4500;            //--- Grid Size for vehicle spawning, smaller the number more vehicles
+        vehiclesGridAmount = 2;             //--- Vehicle ammount per grid
+        vehiclesDebugMarkers = true;        //--- Creates global markers for vehicle spawn, ideal for tweeking
+
+        damageChance = 20;                  //--- x% chance for a vehicle HITPOINT to be damaged
+        fuel = true;                        //--- If set true will give random amount fuel, false will give no fuel 
+        ammo = true;                        //--- If set true will give random amount ammo, false will give no ammo 
+
+        groundVehicles[] = {                //--- Array of classnames to spawn on land
+            "Ark_Dartblack",
+            "I_C_Offroad_02_unarmed_F",
+            "I_E_Van_02_medevac_F",
+            "O_MRAP_02_gmg_F",
+            "B_GEN_Offroad_01_gen_F",
+            "O_Truck_02_transport_F"
+        };
+
+        waterVehicles[] = {                 //--- Array of classnames to spawn in water
+
+        };
+        
+    };
+};
+
 class CfgRespawnTemplates
 {
 	class Extremo
