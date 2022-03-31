@@ -312,6 +312,11 @@ switch _table do {
 	
 				if(typeName _playerobject isEqualTo "OBJECT" AND typeName _vehicleobject isEqualTo "OBJECT" )then
 				{
+					if(isNull _playerobject AND !isNull _vehicleobject)then{
+						private _OwnerBEGuid = _vehicleobject getVariable ["ExtremoOwner","<ERROR>"];
+						_playerobject = _OwnerBEGuid call extremo_fnc_system_getObjectFromBEGuid;
+					};
+					
 					private _steamID = getPlayerUID _playerobject;
 					private _BEGuid = ExtremoBeGuidHashmap get _steamID;
 					private _vehicleID = _vehicleobject getVariable ["ExtremoVIN",-1];
