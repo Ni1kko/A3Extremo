@@ -15,7 +15,7 @@ private _unlockInSafeZonesAfterRestart = getNumber(_config >> "unlockInSafeZones
 "Reading database records for persistent vehicles" call Extremo_fnc_database_systemlog; 
 private _vehiclesDB = ["READ","vehicles",
 	[
-		["ID","BEGuid","Class","Lockcode","LockState","Position","Fuel","Damage","HitPoints"],
+		["ID","BEGuid","Class","Lockcode","Position"],
 		[
 			["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse],
 			["Spawned", 1],	//only spawned vehicles
@@ -35,55 +35,25 @@ private _persistentCount = 0;
 		["_BEGuid","",[""]],
 		["_Class","",[""]],
 		["_Lockcode","",[""]],
-		["_LockState",0,[0]],
-		["_Position","[]",[""]],
-		["_Fuel",0,[0]],
-		["_Damage",0,[0]],
-		["_HitPoints","[]",[""]]
+		["_Position","[]",[""]]
 	];
 
+	//--- Parse Position's
 	(["GAME","ARRAY", _Position] call Extremo_fnc_database_parse) params [
-		["_posATL",[]],
-		["_vectorDir",[]],
-		["_vectorUp",[]]
+		["_posATL",[0,0,0]],
+		["_vectorDir",[0,0,0]],
+		["_vectorUp",[0,0,0]]
 	];
 
+	//--- Create Persistent Object
 	private _vehicle = [_Class, _posATL, [_vectorDir, _vectorUp], true, _Lockcode] call Extremo_fnc_vehicles_createPersistentVehicle;
 	
-	if(!isNull _vehicle)then{
-		_persistentCount = _persistentCount + 1;
+	//--- Load data for x vehicleID onto new persistent vehicle object
+	private _vehicleInfo = ["vehicles","load", _ID, _vehicle] call extremo_fnc_database_server;
 
-		//--- Vehicle Info
-		_vehicle setVariable ["ExtremoVIN",_ID,true];
-		_vehicle setVariable ["ExtremoOwner",_BEGuid,true];
-
-		//--- Money
-		//_vehicle setVariable ["ExtremoCash",0,true];
-
-		//--- Lock
-		private _isLocked = (_LockState isEqualTo -1);
-		/*if (_isLocked AND _unlockInSafeZonesAfterRestart AND (_posATL call Extremo_fnc_util_world_isInTraderZone)) then {
-			_isLocked = false;
-		};*/
-
-		if (_isLocked) then{
-			_vehicle setVariable ["ExtremoIsLocked", -1];
-			_vehicle lock 2;
-			_vehicle enableRopeAttach false;
-		}else{
-			_vehicle setVariable ["ExtremoIsLocked", 0];
-			_vehicle lock 0;
-			_vehicle enableRopeAttach true;
-		};
-
-		//--- Fuel
-		_vehicle setFuel _Fuel;
-
-
-		//--- Damage
-		_vehicle setDamage _Damage;
-		{_vehicle setHitPointDamage _x;} forEach (["GAME","ARRAY", _HitPoints] call Extremo_fnc_database_parse);
-	
+	//--- Data loaded okay? if not delete object
+	if !(_vehicle in _vehicleInfo)then{
+		deleteVehicle _vehicle;
 	};
 }forEach _vehiclesDB;
 
@@ -118,13 +88,15 @@ for "_xSize" from 0 to worldSize step _gridSize do
 			_spawnedPositions pushBack [[(_positionReal select 0) - 50, (_positionReal select 1) + 50],[(_positionReal select 0) + 50,(_positionReal select 1) - 50]];
 			_positionReal pushBack 0;
 
-			//--- create vehicle
+			//--- Select a random vehicle classname
 			private _vehicleClassName = selectRandom _groundVehicles;
-			private _vehicle = [_vehicleClassName, _positionReal, random 360, true, true] call Extremo_fnc_vehicles_createNonPersistentVehicle;
-			private _vehicleNetID = netId _vehicle;
 
+			//--- Create Non-Persistent Object
+			private _vehicle = [_vehicleClassName, _positionReal, random 360, true, true] call Extremo_fnc_vehicles_createNonPersistentVehicle;
+			 
 			//--- create map markers
 			if _debugMarkers then{
+				private _vehicleNetID = netId _vehicle;
 				private _markerName = format["ExtremoVehicle_DebugMarker_%1",(_vehicleNetID splitString ":") joinString "_"];
 				private _marker = createMarker [_markerName, getPosATL _vehicle];
 				_marker setMarkerType "mil_marker";
@@ -144,7 +116,7 @@ for "_xSize" from 0 to worldSize step _gridSize do
 //------------------------------------------------------------------------------------------
 
 
-format["Spawned (%1) Persistent vehicles", _nonPersistentCount] call Extremo_fnc_database_systemlog;
+format["Spawned (%1) Persistent vehicles", _persistentCount] call Extremo_fnc_database_systemlog;
 format["Spawned (%1) Non-Persistent vehicles", _nonPersistentCount] call Extremo_fnc_database_systemlog;
 
 

@@ -6,6 +6,7 @@
 private _table = [_this] call BIS_fnc_arrayShift;
 private _action = [_this] call BIS_fnc_arrayShift;
 private _rexecID = remoteExecutedOwner;
+private _output = [];
 
 switch _table do {
 	case "characters": 
@@ -166,14 +167,6 @@ switch _table do {
 						_updates pushBackUnique ["LastPosition",["DB","ARRAY", _LastPosition] call Extremo_fnc_database_parse];	
 					};
 
-					//--- Any changes?
-					if(count _updates > 0)then{ 
-						_request = ["UPDATE", _table,[_updates,_whereClause]]call Extremo_fnc_database_request;
-						if("DB:Update:Task-completed" in _request)then {
-							format["Updated database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
-						};
-					};
-
 					//--- Send result to client
 					[_table,_action,_BEGuid,_Class,_LastLoadout,_LastPosition,_Wallet] remoteExec ["extremo_fnc_database_client",_rexecID];
 				};
@@ -194,46 +187,36 @@ switch _table do {
 						["LastPosition",_LastPosition,"ARRAY","ARRAY"],
 						["LastLoadout",_LastLoadout,"ARRAY","ARRAY"]
 					];
-
-					["UPDATE", _table,[_updates,_whereClause]]call Extremo_fnc_database_request;
 				};
 			};
 		};
 	};
 	case "vehicles": 
-	{
-		private _playerobject = [_this] call BIS_fnc_arrayShift;
-		private _vehicleobject = [_this] call BIS_fnc_arrayShift;
-		if(typeName _playerobject isEqualTo "OBJECT" AND typeName _vehicleobject isEqualTo "OBJECT" )then
+	{ 
+		private _updates = [];
+		private _whereClause = [
+			["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse]
+		];
+		
+		switch _action do 
 		{
-			private _steamID = getPlayerUID _playerobject;
-			private _BEGuid = ExtremoBeGuidHashmap get _steamID;
-			private _vehicleID = _vehicleobject getVariable ["ExtremoVIN",-1];
-			private _updates = [];
-			private _whereClause = [
-				["ID", _vehicleID],
-				["BEGuid", ["DB","STRING", _BEGuid] call Extremo_fnc_database_parse],
-				["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse]
-			];
-			
-			(getAllHitPointsDamage _vehicleObject) params [
-				["_hitPointNames",[]],
-				["_hitSelectionNames",[]],
-				["_hitDamageValues",[]]
-			];
-					
-			private _vehicleHitpoints = _hitPointNames apply {[_x,_vehicleObject getHitPointDamage _x]};
-			private _vehiclePosition = [
-				getPosATL _vehicleobject,
-				vectorDir _vehicleobject,
-				vectorUp _vehicleobject
-			];
-
-			switch _action do 
+			//["vehicles","add", player, vehicle player, "2411"] remoteExec ["extremo_fnc_database_server", 2];
+			case "add": 
 			{
-				//["vehicles","add", player, vehicle player, "2411"] remoteExec ["extremo_fnc_database_server", 2];
-				case "add": 
+				private _playerobject = [_this] call BIS_fnc_arrayShift;
+				private _vehicleobject = [_this] call BIS_fnc_arrayShift;
+
+				if(typeName _playerobject isEqualTo "OBJECT" AND typeName _vehicleobject isEqualTo "OBJECT" )then
 				{
+					private _steamID = getPlayerUID _playerobject;
+					private _BEGuid = ExtremoBeGuidHashmap get _steamID;
+
+					private _vehiclePosition = [
+						getPosATL _vehicleobject,
+						vectorDir _vehicleobject,
+						vectorUp _vehicleobject
+					];
+					
 					private _lockCode = [_this] call BIS_fnc_arrayShift;
 					private _request = ["CREATE", _table, 
 						[//What
@@ -249,30 +232,119 @@ switch _table do {
 						[_rexecID, "Warning error occured with database"] call Extremo_fnc_system_kick;
 					};
 				};
-				//["vehicles","update", player, vehicle player] remoteExec ["extremo_fnc_database_server", 2];
-				case "load": 
+			};
+			//["vehicles","load", 3, vehicle player] remoteExec ["extremo_fnc_database_server", 2];
+			case "load": 
+			{
+				private _vehicleID = [_this] call BIS_fnc_arrayShift;
+				private _vehicleobject = [_this] call BIS_fnc_arrayShift;
+
+				_whereClause pushBack ["ID", _vehicleID];
+
+				private _request = ["READ",_table,
+					[
+						["ID","BEGuid","Class","Lockcode","LockState","Position","Fuel","Damage","HitPoints"],
+						_whereClause
+					],true
+				]call Extremo_fnc_database_request;
+
+				if(_request isEqualTo ["DB:Read:Task-failure",false])exitWith{
+					[_rexecID, "Warning error occured with database"] call Extremo_fnc_system_kick;
+				};
+
+				_request params [
+					["_ID",-1,[0]],
+					["_BEGuid","",[""]],
+					["_Class","",[""]],
+					["_Lockcode","",[""]],
+					["_LockState",0,[0]],
+					["_Position","[]",[""]],
+					["_Fuel",0,[0]],
+					["_Damage",0,[0]],
+					["_HitPoints","[]",[""]]
+				];
+
+				(["GAME","ARRAY", _Position] call Extremo_fnc_database_parse) params [
+					["_posATL",[]],
+					["_vectorDir",[]],
+					["_vectorUp",[]]
+				];
+
+				//--- Vehicle Info
+				_vehicleobject setVariable ["ExtremoVIN",_ID,true];
+				_vehicleobject setVariable ["ExtremoOwner",_BEGuid,true];
+
+				//--- Money
+				//_vehicleobject setVariable ["ExtremoCash",0,true];
+
+				//--- Lock
+				private _isLocked = (_LockState isEqualTo -1);
+				/*if (_isLocked AND _unlockInSafeZonesAfterRestart AND (_posATL call Extremo_fnc_util_world_isInTraderZone)) then {
+					_isLocked = false;
+				};*/
+
+				if (_isLocked) then{
+					_vehicleobject setVariable ["ExtremoIsLocked", -1];
+					_vehicleobject lock 2;
+					_vehicleobject enableRopeAttach false;
+				}else{
+					_vehicleobject setVariable ["ExtremoIsLocked", 0];
+					_vehicleobject lock 0;
+					_vehicleobject enableRopeAttach true;
+				};
+
+				//--- Fuel
+				_vehicleobject setFuel _Fuel;
+ 
+				//--- Damage
+				_vehicleobject setDamage _Damage;
+				{_vehicleobject setHitPointDamage _x} forEach (["GAME","ARRAY", _HitPoints] call Extremo_fnc_database_parse);
+
+				//--- Return
+				_output = [_vehicleobject,_request];
+			};
+			//["vehicles","update", player, vehicle player,[]] remoteExec ["extremo_fnc_database_server", 2];
+			case "update": 
+			{ 
+				private _playerobject = [_this] call BIS_fnc_arrayShift;
+				private _vehicleobject = [_this] call BIS_fnc_arrayShift;
+				private _vehicleData = [_this] call BIS_fnc_arrayShift;
+	
+				if(typeName _playerobject isEqualTo "OBJECT" AND typeName _vehicleobject isEqualTo "OBJECT" )then
 				{
-
-					/*private _hitPoints = [];
-					private _fuelLevel = 1;
-					private _damageLevel = 0;
-
-					format["Reading database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
-					private _request = ["READ",_table,[["BEGuid","Position","Fuel","Damage","HitPoints","Class"],_whereClause]]call Extremo_fnc_database_request;
-
-					params [
-						["_posATL",[]],
-						["_vectorDir",[]],
-						["_vectorUp",[]]
+					private _steamID = getPlayerUID _playerobject;
+					private _BEGuid = ExtremoBeGuidHashmap get _steamID;
+					private _vehicleID = _vehicleobject getVariable ["ExtremoVIN",-1];
+					 
+					_whereClause pushBack ["ID", _vehicleID];
+					_whereClause pushBack ["BEGuid", ["DB","STRING", _BEGuid] call Extremo_fnc_database_parse];
+		 			 
+					(getAllHitPointsDamage _vehicleObject) params [
+						["_hitPointNames",[]],
+						["_hitSelectionNames",[]],
+						["_hitDamageValues",[]]
+					];
+							
+					private _vehicleHitpoints = _hitPointNames apply {[_x,_vehicleObject getHitPointDamage _x]};
+					private _vehiclePosition = [
+						getPosATL _vehicleobject,
+						vectorDir _vehicleobject,
+						vectorUp _vehicleobject
 					];
 
-					{_vehicle setHitPointDamage _x;} forEach _hitPoints;
-					_vehicle setDamage _damageLevel;
-					_vehicle setFuel _fuelLevel;*/
-				};
-				//["vehicles","update", player, vehicle player] remoteExec ["extremo_fnc_database_server", 2];
-				case "update": 
-				{ 
+					_vehicleData params [
+						["_spawned",true] 
+					];
+
+					private _lockState = _vehicleObject getVariable ["ExtremoIsLocked",-1];
+					
+					private _dead = false;
+					private _damage = damage _vehicleobject;
+
+					if(_damage >= 1)then{
+						_dead = true;
+					};
+
 					//--- Parse data
 					{
 						if((typeName (_x#1)) isEqualTo _x#2)then{
@@ -281,13 +353,24 @@ switch _table do {
 					}forEach [
 						["Position",_vehiclePosition,"ARRAY","ARRAY"],
 						["Fuel",fuel _vehicleobject,"SCALAR","SCALAR"],
-						["Damage",damage _vehicleobject,"SCALAR","SCALAR"],
+						["Damage",_damage,"SCALAR","SCALAR"],
+						["LockState",_lockState,"SCALAR","SCALAR"],
+						["Spawned",_spawned,"BOOL","BOOL"],
+						["Dead",_dead,"BOOL","BOOL"],
 						["Hitpoints",_vehicleHitpoints,"ARRAY","ARRAY"]
 					];
-
-					["UPDATE",_table,[_updates,_whereClause]]call Extremo_fnc_database_request;
 				};
+			};
+		};
+
+		//--- Any updates?
+		if(count _updates > 0)then{ 
+			_request = ["UPDATE",_table,[_updates,_whereClause]]call Extremo_fnc_database_request;
+			if("DB:Update:Task-completed" in _request)then {
+				format["Updated Database table: %1", _table] call Extremo_fnc_database_systemlog;
 			};
 		};
 	};
 };
+
+_output
