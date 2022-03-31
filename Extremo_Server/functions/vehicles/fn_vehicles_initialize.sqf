@@ -54,6 +54,8 @@ private _persistentCount = 0;
 	//--- Data loaded okay? if not delete object
 	if !(_vehicle in _vehicleInfo)then{
 		deleteVehicle _vehicle;
+	}else{
+		_persistentCount = _persistentCount + 1;
 	};
 }forEach _vehiclesDB;
 
