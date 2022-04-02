@@ -351,6 +351,9 @@ class CfgFunctions
             class gui_customEvent {};
             class gui_lockScreen {};
             class gui_lockScreenEH {};
+            class gui_modelBox_create {};
+            class gui_modelBox_destroy {};
+            class gui_modelBox_update {};
             class gui_spawnScreen {};
             class gui_spawnScreenEH {};
             class gui_splashScreen {};

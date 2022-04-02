@@ -34,22 +34,13 @@ if(isNull _display)then{
 };
 
 private _controls = [
-	["controlsBackground","Background"],
-	["controlsBackground","Header"],
-	["controls","Info"],
-	["controls","Selection"],
-	["controls","Confirm"]
+	["controlsBackground","Background"],	//-- _controlBackground
+	["controlsBackground","Header"],		//-- _controlHeader
+	["controls","Info"],					//-- _controlInfo
+	["controls","Selection"],				//-- _controlSelection
+	["controls","Confirm"]					//-- _controlConfirm
 ];
-
-(
-	_controls apply {_display displayCtrl getNumber(missionConfigFile >> _displayClass >> _x#0 >> _x#1 >> "idc")}
-) params [
-	["_controlBackground",controlNull,[controlNull]],
-	["_controlHeader",controlNull,[controlNull]],
-	["_controlInfo",controlNull,[controlNull]],
-	["_controlSelection",controlNull,[controlNull]],
-	["_controlConfirm",controlNull,[controlNull]]
-];
+((_controls apply {[format["_control%1",_x#1],controlNull,[controlNull]]}) apply {_display displayCtrl getNumber(missionConfigFile >> _displayClass >> _x#0 >> _x#1 >> "idc")}) params _controlsParams;
 
 switch _event do {
 	case "onLoad": 		   {uiNameSpace setVariable [_displayClass,_object]; extremo_var_dik_blockESC = true; setMousePosition [0.5,0.5]};

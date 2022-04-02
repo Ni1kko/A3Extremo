@@ -1536,185 +1536,121 @@ if(isNil "extremo_fnc_system_getRealTime")then{
 	};
 
 	true call extremo_fnc_system_getRealTime	
-};
+}; 
 
-//---
-{
-	[] call Extremo_fnc_dik_keyUp_toggleTablet;
+//--- extremo_fnc_vehicles_generateVIN
+if(isNil "extremo_fnc_vehicles_generateVIN")then{
 
-	_curScreen = uiNamespace getVariable ['RscDisplayTablet_CurScreen',controlNull];
-	displayTablet = findDisplay 1200;
+	extremo_fnc_vehicles_generateVIN = {
+		params [
+			["_class","",["",objNull]],
+			["_lockcode","",[""]],
+			["_steamID","",[""]]
+		];
 
-	controlTablet_1 = displayTablet ctrlCreate ['RscButton', 29100, _curScreen];
-	controlTablet_1 ctrlSetText 'Test';
-	controlTablet_1 ctrlSetPosition [0, 0, (6.25 / 40), (1 / 25)];
-	controlTablet_1 ctrlSetBackgroundColor [(profilenamespace getvariable ['GUI_BCG_RGB_R',0.3843]), (profilenamespace getvariable ['GUI_BCG_RGB_G',0.7019]), (profilenamespace getvariable ['GUI_BCG_RGB_B',0.8862]), (profilenamespace getvariable ['GUI_BCG_RGB_A',0.7])];
-	controlTablet_1 ctrlCommit 0; 
-
-	controlTablet_1 ctrlSetPosition [
-		0.2 * (safezoneW / 40), 
-		0.2 * (safezoneH / 25), 
-		(6.25 / 40), 
-		(1 / 25)
-	];
-
-	controlTablet_1 ctrlCommit 0;
-}
-
-
-missionNamespace setVariable ["playerobject",player,true];
-missionNamespace setVariable ["vehicleobject",vehicle player,true];
-(vehicle player) setVariable ["ExtremoVIN",3,true]
-
-private _playerobject = playerobject; 
-private _vehicleobject = vehicleobject; 
-private _steamID = getPlayerUID _playerobject; 
-private _BEGuid = ExtremoBeGuidHashmap get _steamID; 
-
-private _table = "vehicles";
-private _updates = []; 
-private _whereClause = [ 
-	["BEGuid", ["DB","STRING", _BEGuid] call Extremo_fnc_database_parse], 
-	["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse] 
-];
- 
-    
-(getAllHitPointsDamage _vehicleObject) params [ 
-	["_hitPointNames",[]], 
-	["_hitSelectionNames",[]], 
-	["_hitDamageValues",[]] 
-]; 
-      
-private _vehicleHitpoints = _hitPointNames apply {[_x,_vehicleObject getHitPointDamage _x]}; 
-private _vehiclePosition = [ 
-    getPosATL _vehicleobject, 
-    vectorDir _vehicleobject, 
-    vectorUp _vehicleobject 
-];
-
-//--- Parse data 
-{ 
-	if((typeName (_x#1)) isEqualTo _x#2)then{ 
-		_updates pushBackUnique [_x#0,["DB",_x#3,_x#1] call Extremo_fnc_database_parse]; 
-	}; 
-}forEach [ 
-	["Position",_vehiclePosition,"ARRAY","ARRAY"], 
-	["Fuel",fuel _vehicleobject,"SCALAR","SCALAR"], 
-	["Damage",damage _vehicleobject,"SCALAR","SCALAR"], 
-	["Hitpoints",_vehicleHitpoints,"ARRAY","ARRAY"] 
-]; 
-
-["UPDATE",_table,[_updates,_whereClause]]call Extremo_fnc_database_request;     
-
-
-
-onMapSingleClick "player setPosATL _pos; true";
-
-extremo_fnc_vehicles_generateVIN = {
-	params [
-		["_class","",["",objNull]],
-		["_lockcode","",[""]],
-		["_steamID","",[""]]
-	];
-
-	if(typeName _class isEqualTo "OBJECT")then{
-		_class = typeOf _class;
-	};
-	
-	private _vinClass = toArray (_class select [0,5]) joinString "";
-	private _vinLockcode = toArray _lockcode joinString "X";
-
-    private _vinUid = _steamID select [12,5]; 
-	for "_i" from 1 to 5 do {
-		_vinUid = (selectrandom ("9876543210" splitString "")) + _vinUid;
-	};
-    format ["A3_%1_%2_%3",_vinClass,_vinUid,_vinLockcode];
-};
-
-extremo_fnc_vehicles_getPinFromVin = {
-	params [
-		["_vin","",[""]]
-	];
-
-	private _lockCodeID = (_vin splitString "_") call BIS_fnc_arrayPop;
-	private _lockCode = toString((_lockCodeID splitString "X") apply {parseNumber _x});
-	_lockCode
-};
-
-extremo_fnc_vehicles_updateVinPin = {
-	params [
-		["_vin","",[""]],
-		["_lockCode","",[""]]
-	];
-
-	private _vinSections = (_vin splitString "_");
-
-	_vinSections set [3, toArray _lockcode joinString "X"];
-
-	_vin = _vinSections joinString "_";
- 
-	_vin
-};
-
-extremo_fnc_vehicles_setObjectVin = {
-	params [
-		["_object",objNull,[objNull]],
-		["_vin","",[""]]
-	];
-
-	_object setVehicleVarName _vin;
- 
-	private _isSet = _object isEqualTo (_vin call extremo_fnc_vehicles_getObjectFromVin);
-	
-	_isSet
-};
-
-extremo_fnc_vehicles_getObjectVin = {
-	params [
-		["_object",objNull,[objNull]]
-	];
-	
-	private _vin = vehicleVarName _object;
-	
-	if !((_vin select [0,2]) in ["A1","A2","A3"])then{
-		_vin = "<BAD-VIN>";
-	};
- 
-	_vin
-};
-
-extremo_fnc_vehicles_getObjectFromVin = {
-	params [
-		["_vin","",[""]]
-	];
-
-	private _object = objNull;
-
-	{
-		if((_x call extremo_fnc_vehicles_getObjectVin) isEqualTo _vin)exitWith{
-			_object = _x;
+		if(typeName _class isEqualTo "OBJECT")then{
+			_class = typeOf _class;
 		};
-	}forEach vehicles;
+		
+		private _vinClass = toArray (_class select [0,5]) joinString "";
+		private _vinLockcode = toArray _lockcode joinString "X";
 
-	_object
+		private _vinUid = _steamID select [12,5]; 
+		for "_i" from 1 to 5 do {
+			_vinUid = (selectrandom ("9876543210" splitString "")) + _vinUid;
+		};
+		format ["A3_%1_%2_%3",_vinClass,_vinUid,_vinLockcode];
+	};
+
+	extremo_fnc_vehicles_getPinFromVin = {
+		params [
+			["_vin","",[""]]
+		];
+
+		private _lockCodeID = (_vin splitString "_") call BIS_fnc_arrayPop;
+		private _lockCode = toString((_lockCodeID splitString "X") apply {parseNumber _x});
+		_lockCode
+	};
+
+	extremo_fnc_vehicles_updateVinPin = {
+		params [
+			["_vin","",[""]],
+			["_lockCode","",[""]]
+		];
+
+		private _vinSections = (_vin splitString "_");
+
+		_vinSections set [3, toArray _lockcode joinString "X"];
+
+		_vin = _vinSections joinString "_";
+	
+		_vin
+	};
+
+	extremo_fnc_vehicles_setObjectVin = {
+		params [
+			["_object",objNull,[objNull]],
+			["_vin","",[""]]
+		];
+
+		_object setVehicleVarName _vin;
+	
+		private _isSet = _object isEqualTo (_vin call extremo_fnc_vehicles_getObjectFromVin);
+		
+		_isSet
+	};
+
+	extremo_fnc_vehicles_getObjectVin = {
+		params [
+			["_object",objNull,[objNull]]
+		];
+		
+		private _vin = vehicleVarName _object;
+		
+		if !((_vin select [0,2]) in ["A1","A2","A3"])then{
+			_vin = "<BAD-VIN>";
+		};
+	
+		_vin
+	};
+
+	extremo_fnc_vehicles_getObjectFromVin = {
+		params [
+			["_vin","",[""]]
+		];
+
+		private _object = objNull;
+
+		{
+			if((_x call extremo_fnc_vehicles_getObjectVin) isEqualTo _vin)exitWith{
+				_object = _x;
+			};
+		}forEach vehicles;
+
+		_object
+	};
+
+	private _vin = ["I_C_Offroad_02_unarmed_F","2411",getPlayerUID player] call extremo_fnc_vehicles_generateVIN; // "A3_7395679579_723662_50X52X49X49"
+	_vin
+	private _pin = [_vin] call extremo_fnc_vehicles_getPinFromVin;	// "2411"
+	private _vinNew = [_vin,"7233"] call extremo_fnc_vehicles_updateVinPin;	//"A3_7395679579_723662_55X50X51X51"
+
+
+	/*
+	(_vin splitString "_" select [2,2]) params [["_uniqueID",""],["_lockCodeID",""]];
+	private _lockCode = toString((_lockCodeID splitString "X") apply {parseNumber _x});
+
+	["A3_7395679579_723662_50X52X49X49"] call extremo_fnc_vehicles_getPinFromVin
+	*/
+
+	(_vin splitString "_" select [2,2]) params [
+		["_uniqueID",""],
+		["_lockCodeID",""]
+	];
+
+	private _lockCode = toString((_lockCodeID splitString "X") apply {parseNumber _x});
 };
 
-private _vin = ["I_C_Offroad_02_unarmed_F","2411",getPlayerUID player] call extremo_fnc_vehicles_generateVIN; // "A3_7395679579_723662_50X52X49X49"
-_vin
-private _pin = [_vin] call extremo_fnc_vehicles_getPinFromVin;	// "2411"
-private _vinNew = [_vin,"7233"] call extremo_fnc_vehicles_updateVinPin;	//"A3_7395679579_723662_55X50X51X51"
+//onMapSingleClick "player setPosATL _pos; true";
 
-
-/*
-(_vin splitString "_" select [2,2]) params [["_uniqueID",""],["_lockCodeID",""]];
-private _lockCode = toString((_lockCodeID splitString "X") apply {parseNumber _x});
-
-["A3_7395679579_723662_50X52X49X49"] call extremo_fnc_vehicles_getPinFromVin
-*/
-
-(_vin splitString "_" select [2,2]) params [
-	["_uniqueID",""],
-	["_lockCodeID",""]
-];
-
-private _lockCode = toString((_lockCodeID splitString "X") apply {parseNumber _x})
+//"Extremo_Trader_Vehicle" createVehicleLocal (getPosATL player)

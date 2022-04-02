@@ -26,40 +26,24 @@ if(isNull _display)then{
 
 //--- 
 private _controls = [
-	["controlsBackground","Background"],
-	["controls","NumFake"],
-	["controls","Num0"],
-	["controls","Num1"],
-	["controls","Num2"],
-	["controls","Num3"],
-	["controls","Num4"],
-	["controls","Num5"],
-	["controls","Num6"],
-	["controls","Num7"],
-	["controls","Num8"],
-	["controls","Num9"],
-	["controls","Confirm"],
-	["controls","Cancel"],
-	["controls","Screen"]
+	["controlsBackground","Background"],		//-- _controlBackground
+	["controls","NumFake"],						//-- _controlNumFake
+	["controls","Num0"],						//-- _controlNum0
+	["controls","Num1"],						//-- _controlNum1
+	["controls","Num2"],						//-- _controlNum2
+	["controls","Num3"],						//-- _controlNum3
+	["controls","Num4"],						//-- _controlNum4
+	["controls","Num5"],						//-- _controlNum5
+	["controls","Num6"],						//-- _controlNum6
+	["controls","Num7"],						//-- _controlNum7
+	["controls","Num8"],						//-- _controlNum8
+	["controls","Num9"],						//-- _controlNum9
+	["controls","Confirm"],						//-- _controlConfirm
+	["controls","Cancel"],						//-- _controlCancel
+	["controls","Screen"]						//-- _controlScreen
 ];
 
-(_controls apply {_display displayCtrl getNumber(configFile >> _displayClass >> _x#0 >> _x#1 >> "idc")}) params [
-	["_controlBackground",controlNull,[controlNull]],
-	["_controlNumFake",controlNull,[controlNull]],
-	["_controlNum0",controlNull,[controlNull]],
-	["_controlNum1",controlNull,[controlNull]],
-	["_controlNum2",controlNull,[controlNull]],
-	["_controlNum3",controlNull,[controlNull]],
-	["_controlNum4",controlNull,[controlNull]],
-	["_controlNum5",controlNull,[controlNull]],
-	["_controlNum6",controlNull,[controlNull]],
-	["_controlNum7",controlNull,[controlNull]],
-	["_controlNum8",controlNull,[controlNull]],
-	["_controlNum9",controlNull,[controlNull]],
-	["_controlConfirm",controlNull,[controlNull]],
-	["_controlCancel",controlNull,[controlNull]],
-	["_controlScreen",controlNull,[controlNull]]
-];
+private _controlsParams = _controls apply {[format["_control%1",_x#1],controlNull,[controlNull]]};
 
 //--
 private _fnc_updateLockCode = {

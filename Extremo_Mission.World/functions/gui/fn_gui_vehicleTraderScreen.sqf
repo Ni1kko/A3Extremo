@@ -92,5 +92,4 @@ _controlButtonPurchase ctrlEnable false;
 
 _controlCategoryDropDown lbSetCurSel _allCategoryIndex;
 
-//[] call Extremo_fnc_gui_modelBox_create;
-//"Extremo_Trader_Vehicle" createVehicleLocal (getPosATL player)
+[] call Extremo_fnc_gui_modelBox_create;
