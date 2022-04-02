@@ -91,5 +91,3 @@ _controlButtonPurchase ctrlEnable false;
 }forEach _traderCategories;
 
 _controlCategoryDropDown lbSetCurSel _allCategoryIndex;
-
-[] call Extremo_fnc_gui_modelBox_create;

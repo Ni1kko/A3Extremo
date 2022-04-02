@@ -50,6 +50,7 @@ switch _event do {
 			["_display",displayNull,[displayNull]] 
 		];
 		uiNamespace setVariable [_displayClass,_display];
+		[] call Extremo_fnc_gui_modelBox_create;
 	};
 	case "onUnload": 
 	{ 
@@ -57,6 +58,7 @@ switch _event do {
 			["_display",displayNull,[displayNull]] 
 		];
 		uiNamespace setVariable [_displayClass,displayNull];
+		[] call Extremo_fnc_gui_modelBox_destroy;
 	};
 	case "onCategoryDropDownSelectionChanged": 
 	{ 
