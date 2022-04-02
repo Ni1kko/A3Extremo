@@ -41,10 +41,11 @@ if(!isNull _vehicle)then{
 	//Charge them
 	_player setVariable ["ExtremoWallet", (_playerMoney - _salesPrice), true];
 	 
-	//update player db
+	//update db records
 	["characters", "update", _player] call extremo_fnc_database_server;
-
-	//
+	["vehicles",   "update", _vehicle, [true]] call extremo_fnc_database_server;
+	
+	//finish on clientside
 	[[_player,_vehicle,_salesPrice],{
 		params [
 			["_player",objNull],
