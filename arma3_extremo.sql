@@ -53,7 +53,7 @@ CREATE TABLE `vehicles` (
   `ID` int(11) NOT NULL,
   `BEGuid` varchar(64) NOT NULL,
   `Class` varchar(255) NOT NULL,
-  `Lockcode` varchar(12) NOT NULL DEFAULT '0000',
+  `VIN` varchar(255) NOT NULL,
   `LockState` tinyint(1) NOT NULL DEFAULT 0,
   `Spawned` tinyint(1) NOT NULL DEFAULT 1,
   `Spawned_At` datetime NOT NULL DEFAULT current_timestamp(),
