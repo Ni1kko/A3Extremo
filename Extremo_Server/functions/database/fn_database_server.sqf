@@ -7,7 +7,11 @@ private _table = [_this] call BIS_fnc_arrayShift;
 private _action = [_this] call BIS_fnc_arrayShift;
 private _rexecID = remoteExecutedOwner;
 private _output = [];
-
+private _updates = [];
+private _whereClause = [
+	["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse]
+];
+		
 switch _table do {
 	case "characters": 
 	{
@@ -21,11 +25,8 @@ switch _table do {
 			private _BEGuid = ExtremoBeGuidHashmap getOrDefault [_steamID,'BEGuid' callExtension ("get:"+_steamID)]; 
 			private _BEGuidNotCached = not(_steamID in keys ExtremoBeGuidHashmap); 
 			private _BEGuidNotCalculated = _BEGuid isEqualTo "";
-			private _updates = [];
-			private _whereClause = [
-				["BEGuid", ["DB","STRING", _BEGuid] call Extremo_fnc_database_parse],
-				["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse]
-			];
+			 
+			_whereClause  pushBack ["BEGuid", ["DB","STRING", _BEGuid] call Extremo_fnc_database_parse];
 
 			if _BEGuidNotCalculated exitWith{[_rexecID,"<extremo_fnc_event_databse_server2client> Error calculating players BEGuid"] call Extremo_fnc_system_kick};
 			if _BEGuidNotCached then {
@@ -170,7 +171,7 @@ switch _table do {
 					//--- Send result to client
 					[_table,_action,_BEGuid,_Class,_LastLoadout,_LastPosition,_Wallet] remoteExec ["extremo_fnc_database_client",_rexecID];
 				};
-				//["characters","update",player,20000] remoteExec ["extremo_fnc_database_server", 2];
+				//["characters","update",player] remoteExec ["extremo_fnc_database_server", 2];
 				case "update": 
 				{
 					private _LastPosition = getPosATL _object;
@@ -193,11 +194,6 @@ switch _table do {
 	};
 	case "vehicles": 
 	{ 
-		private _updates = [];
-		private _whereClause = [
-			["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse]
-		];
-		
 		switch _action do 
 		{
 			//["vehicles","add", player, vehicle player, "2411"] remoteExec ["extremo_fnc_database_server", 2];
@@ -205,8 +201,9 @@ switch _table do {
 			{
 				private _playerobject = [_this] call BIS_fnc_arrayShift;
 				private _vehicleobject = [_this] call BIS_fnc_arrayShift;
+				private _lockCode = [_this] call BIS_fnc_arrayShift;
 
-				if(typeName _playerobject isEqualTo "OBJECT" AND typeName _vehicleobject isEqualTo "OBJECT" )then
+				if(typeName _playerobject isEqualTo "OBJECT" AND typeName _vehicleobject isEqualTo "OBJECT")then
 				{
 					private _steamID = getPlayerUID _playerobject;
 					private _BEGuid = ExtremoBeGuidHashmap get _steamID;
@@ -216,20 +213,26 @@ switch _table do {
 						vectorDir _vehicleobject,
 						vectorUp _vehicleobject
 					];
-					
-					private _lockCode = [_this] call BIS_fnc_arrayShift;
+
+					private _class = typeOf _vehicleobject;
+					private _vin = [_class,_lockCode,_steamID] call extremo_fnc_vehicles_generateVIN;
+
 					private _request = ["CREATE", _table, 
 						[//What
 							["BEGuid", 		["DB","STRING", _BEGuid] call Extremo_fnc_database_parse],
-							["Class", 		["DB","STRING", typeOf _vehicleobject] call Extremo_fnc_database_parse],
+							["Class", 		["DB","STRING", _class] call Extremo_fnc_database_parse],
 							["Position", 	["DB","ARRAY", _vehiclePosition] call Extremo_fnc_database_parse],
 							["WorldName", 	["DB","STRING", WorldName] call Extremo_fnc_database_parse],
-							["Lockcode",	["DB","STRING", _lockCode] call Extremo_fnc_database_parse]
+							["VIN",			["DB","STRING", _vin] call Extremo_fnc_database_parse]  
 						]
 					]call Extremo_fnc_database_request;
 
 					if("DB:Task-failure" in _request)exitWith {
 						[_rexecID, "Warning error occured with database"] call Extremo_fnc_system_kick;
+					};
+					
+					if([_vehicleobject,_Vin] call extremo_fnc_vehicles_setObjectVin)then{
+						_output = [_vin];
 					};
 				};
 			};
@@ -239,11 +242,15 @@ switch _table do {
 				private _vehicleID = [_this] call BIS_fnc_arrayShift;
 				private _vehicleobject = [_this] call BIS_fnc_arrayShift;
 
-				_whereClause pushBack ["ID", _vehicleID];
+				if(typeName _vehicleID isEqualTo "STRING")then{
+					_whereClause pushBack ["VIN", ["DB","STRING", _vehicleID] call Extremo_fnc_database_parse];
+				}else{
+					_whereClause pushBack ["ID", _vehicleID];
+				};
 
 				private _request = ["READ",_table,
 					[
-						["ID","BEGuid","Class","Lockcode","LockState","Position","Fuel","Damage","HitPoints"],
+						["ID","BEGuid","Class","VIN","LockState","Position","Fuel","Damage","HitPoints"],
 						_whereClause
 					],true
 				]call Extremo_fnc_database_request;
@@ -256,7 +263,7 @@ switch _table do {
 					["_ID",-1,[0]],
 					["_BEGuid","",[""]],
 					["_Class","",[""]],
-					["_Lockcode","",[""]],
+					["_Vin","",[""]],
 					["_LockState",0,[0]],
 					["_Position","[]",[""]],
 					["_Fuel",0,[0]],
@@ -270,38 +277,41 @@ switch _table do {
 					["_vectorUp",[]]
 				];
 
-				//--- Vehicle Info
-				_vehicleobject setVariable ["ExtremoVIN",_ID,true];
-				_vehicleobject setVariable ["ExtremoOwner",_BEGuid,true];
+				if([_vehicleobject,_Vin] call extremo_fnc_vehicles_setObjectVin)then
+				{
+					//--- Vehicle Info 
+					_vehicleobject setVariable ["ExtremoOwner",_BEGuid,true];
 
-				//--- Money
-				//_vehicleobject setVariable ["ExtremoCash",0,true];
+					//--- Money
+					//_vehicleobject setVariable ["ExtremoCash",0,true];
 
-				//--- Lock
-				private _isLocked = (_LockState isEqualTo -1);
-				/*if (_isLocked AND _unlockInSafeZonesAfterRestart AND (_posATL call Extremo_fnc_util_world_isInTraderZone)) then {
-					_isLocked = false;
-				};*/
+					//--- Lock
+					private _lockCode = [_Vin] call extremo_fnc_vehicles_getPinFromVin;
+					private _isLocked = (_LockState isEqualTo -1);
+					/*if (_isLocked AND _unlockInSafeZonesAfterRestart AND (_posATL call Extremo_fnc_util_world_isInTraderZone)) then {
+						_isLocked = false;
+					};*/
 
-				if (_isLocked) then{
-					_vehicleobject setVariable ["ExtremoIsLocked", -1];
-					_vehicleobject lock 2;
-					_vehicleobject enableRopeAttach false;
-				}else{
-					_vehicleobject setVariable ["ExtremoIsLocked", 0];
-					_vehicleobject lock 0;
-					_vehicleobject enableRopeAttach true;
+					if (_isLocked) then{
+						_vehicleobject setVariable ["ExtremoIsLocked", -1];
+						_vehicleobject lock 2;
+						_vehicleobject enableRopeAttach false;
+					}else{
+						_vehicleobject setVariable ["ExtremoIsLocked", 0];
+						_vehicleobject lock 0;
+						_vehicleobject enableRopeAttach true;
+					};
+
+					//--- Fuel
+					_vehicleobject setFuel _Fuel;
+	
+					//--- Damage
+					_vehicleobject setDamage _Damage;
+					{_vehicleobject setHitPointDamage _x} forEach (["GAME","ARRAY", _HitPoints] call Extremo_fnc_database_parse);
+
+					//--- Return
+					_output = [_vehicleobject,_request];
 				};
-
-				//--- Fuel
-				_vehicleobject setFuel _Fuel;
- 
-				//--- Damage
-				_vehicleobject setDamage _Damage;
-				{_vehicleobject setHitPointDamage _x} forEach (["GAME","ARRAY", _HitPoints] call Extremo_fnc_database_parse);
-
-				//--- Return
-				_output = [_vehicleobject,_request];
 			};
 			//["vehicles","update", player, vehicle player,[]] remoteExec ["extremo_fnc_database_server", 2];
 			case "update": 
@@ -316,12 +326,19 @@ switch _table do {
 						private _OwnerBEGuid = _vehicleobject getVariable ["ExtremoOwner","<ERROR>"];
 						_playerobject = _OwnerBEGuid call extremo_fnc_system_getObjectFromBEGuid;
 					};
-					
+
 					private _steamID = getPlayerUID _playerobject;
 					private _BEGuid = ExtremoBeGuidHashmap get _steamID;
 					private _vehicleID = _vehicleobject getVariable ["ExtremoVIN",-1];
-					 
-					_whereClause pushBack ["ID", _vehicleID];
+					
+					if(_vehicleID in [-1,""])exitWith{};
+
+					if(typeName _vehicleID isEqualTo "STRING")then{
+						_whereClause pushBack ["VIN", ["DB","STRING", _vehicleID] call Extremo_fnc_database_parse];
+					}else{
+						_whereClause pushBack ["ID", _vehicleID];
+					};
+
 					_whereClause pushBack ["BEGuid", ["DB","STRING", _BEGuid] call Extremo_fnc_database_parse];
 		 			 
 					(getAllHitPointsDamage _vehicleObject) params [
@@ -367,14 +384,14 @@ switch _table do {
 				};
 			};
 		};
+	};
+};
 
-		//--- Any updates?
-		if(count _updates > 0)then{ 
-			_request = ["UPDATE",_table,[_updates,_whereClause]]call Extremo_fnc_database_request;
-			if("DB:Update:Task-completed" in _request)then {
-				format["Updated Database table: %1", _table] call Extremo_fnc_database_systemlog;
-			};
-		};
+//--- Any updates?
+if(count _updates > 0)then{ 
+	_request = ["UPDATE",_table,[_updates,_whereClause]]call Extremo_fnc_database_request;
+	if("DB:Update:Task-completed" in _request)then {
+		format["Updated Database table: %1", _table] call Extremo_fnc_database_systemlog;
 	};
 };
 

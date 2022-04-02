@@ -10,7 +10,7 @@
 //--- Arma Settings
 author = "Nikko";
 onLoadName = "Extremo Survival";
-loadScreen = "textures\logo.paa";
+loadScreen = "\Extremo_assets\texture\mod\logo.paa";
 
 OnLoadIntro = "";                           //--- 
 OnLoadIntroTime = 0;                        //--- 
@@ -173,12 +173,12 @@ class CfgSpawn
         {
             spawnIsland = "extremo_marker_spawnisland";
             zones[] = {
-                {"extremo_marker_spawnzone_kavala",         "textures\icon.paa"},
-                {"extremo_marker_spawnzone_atheria",        "textures\icon.paa"},
-                {"extremo_marker_spawnzone_oreokastro",     "textures\icon.paa"},
-                {"extremo_marker_spawnzone_molos",          "textures\icon.paa"},
-                {"extremo_marker_spawnzone_chalkeia",       "textures\icon.paa"},
-                {"extremo_marker_spawnzone_agela",          "textures\icon.paa"}
+                {"extremo_marker_spawnzone_kavala",         "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_atheria",        "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_oreokastro",     "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_molos",          "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_chalkeia",       "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_agela",          "\Extremo_assets\texture\mod\icon.paa"}
             };
             protectedZones[] = {
                 //{"extremo_marker_spawnzone_atheria",    "1234"}
@@ -188,10 +188,10 @@ class CfgSpawn
         {
             spawnIsland = "extremo_marker_spawnisland";
             zones[] = {
-                {"extremo_marker_spawnzone_nadbór",             "textures\icon.paa"},
-                {"extremo_marker_spawnzone_topolin",            "textures\icon.paa"},
-                {"extremo_marker_spawnzone_lukow",              "textures\icon.paa"},
-                {"extremo_marker_spawnzone_lukow_airfield",     "textures\icon.paa"}
+                {"extremo_marker_spawnzone_nadbór",             "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_topolin",            "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_lukow",              "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_lukow_airfield",     "\Extremo_assets\texture\mod\icon.paa"}
             };
             protectedZones[] = {
                 //{"extremo_marker_spawnzone_lukow_airfield",    "1234"}
@@ -201,8 +201,8 @@ class CfgSpawn
         {
             spawnIsland = "extremo_marker_spawnisland";
             zones[] = {
-                {"extremo_marker_spawnzone1",    "textures\icon.paa"},
-                {"extremo_marker_spawnzone2",    "textures\icon.paa"}
+                {"extremo_marker_spawnzone1",    "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone2",    "\Extremo_assets\texture\mod\icon.paa"}
             };
             protectedZones[] = {
                 //{"extremo_marker_spawnzone2",    "1234"}
@@ -212,11 +212,11 @@ class CfgSpawn
         { 
             spawnIsland = "extremo_marker_spawnisland";
             zones[] = {
-                {"extremo_marker_spawnzone_northjackson",    "textures\icon.paa"},
-                {"extremo_marker_spawnzone_eastside",        "textures\icon.paa"},
-                {"extremo_marker_spawnzone_city",            "textures\icon.paa"},
-                {"extremo_marker_spawnzone_cityisle",        "textures\icon.paa"},
-                {"extremo_marker_spawnzone_mistyfarms",      "textures\icon.paa"}
+                {"extremo_marker_spawnzone_northjackson",    "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_eastside",        "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_city",            "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_cityisle",        "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_mistyfarms",      "\Extremo_assets\texture\mod\icon.paa"}
             };
             protectedZones[] = { 
                 {"extremo_marker_spawnzone_city",            "241115"},
@@ -363,6 +363,8 @@ class CfgFunctions
             class gui_tabletScreenGroupContacts {};
             class gui_tabletScreenGroupSync {};
             class gui_tabletScreenGroupSettings {};
+            class gui_vehicleTraderScreen {};
+            class gui_vehicleTraderScreenEH {};
         };
 
         //--- Medical
@@ -398,6 +400,7 @@ class CfgFunctions
         {
             file = "functions\system"; 
             class system_animationSync {};
+            class system_exponentToString {};
             class system_dateString {};
             class system_destroyLayer {};
             class system_deathType {};
@@ -450,6 +453,7 @@ class CfgRemoteExec
         //////////////// SERVER Whitelist ////////////////
         ExtremoRE_Server(extremo_fnc_database_server);
         ExtremoRE_Server(Extremo_fnc_server_log);
+        ExtremoRE_Server(extremo_fnc_vehicles_purchase);
     };
 
     class Commands 

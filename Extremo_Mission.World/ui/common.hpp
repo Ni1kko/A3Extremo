@@ -1057,8 +1057,3 @@ class RscMapControl : RscDefault
 };
 
 #include "displays.hpp"
-
-class RscTitles 
-{
-	#include "titles.hpp"
-};

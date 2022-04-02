@@ -1605,3 +1605,116 @@ private _vehiclePosition = [
 ]; 
 
 ["UPDATE",_table,[_updates,_whereClause]]call Extremo_fnc_database_request;     
+
+
+
+onMapSingleClick "player setPosATL _pos; true";
+
+extremo_fnc_vehicles_generateVIN = {
+	params [
+		["_class","",["",objNull]],
+		["_lockcode","",[""]],
+		["_steamID","",[""]]
+	];
+
+	if(typeName _class isEqualTo "OBJECT")then{
+		_class = typeOf _class;
+	};
+	
+	private _vinClass = toArray (_class select [0,5]) joinString "";
+	private _vinLockcode = toArray _lockcode joinString "X";
+
+    private _vinUid = _steamID select [12,5]; 
+	for "_i" from 1 to 5 do {
+		_vinUid = (selectrandom ("9876543210" splitString "")) + _vinUid;
+	};
+    format ["A3_%1_%2_%3",_vinClass,_vinUid,_vinLockcode];
+};
+
+extremo_fnc_vehicles_getPinFromVin = {
+	params [
+		["_vin","",[""]]
+	];
+
+	private _lockCodeID = (_vin splitString "_") call BIS_fnc_arrayPop;
+	private _lockCode = toString((_lockCodeID splitString "X") apply {parseNumber _x});
+	_lockCode
+};
+
+extremo_fnc_vehicles_updateVinPin = {
+	params [
+		["_vin","",[""]],
+		["_lockCode","",[""]]
+	];
+
+	private _vinSections = (_vin splitString "_");
+
+	_vinSections set [3, toArray _lockcode joinString "X"];
+
+	_vin = _vinSections joinString "_";
+ 
+	_vin
+};
+
+extremo_fnc_vehicles_setObjectVin = {
+	params [
+		["_object",objNull,[objNull]],
+		["_vin","",[""]]
+	];
+
+	_object setVehicleVarName _vin;
+ 
+	private _isSet = _object isEqualTo (_vin call extremo_fnc_vehicles_getObjectFromVin);
+	
+	_isSet
+};
+
+extremo_fnc_vehicles_getObjectVin = {
+	params [
+		["_object",objNull,[objNull]]
+	];
+	
+	private _vin = vehicleVarName _object;
+	
+	if !((_vin select [0,2]) in ["A1","A2","A3"])then{
+		_vin = "<BAD-VIN>";
+	};
+ 
+	_vin
+};
+
+extremo_fnc_vehicles_getObjectFromVin = {
+	params [
+		["_vin","",[""]]
+	];
+
+	private _object = objNull;
+
+	{
+		if((_x call extremo_fnc_vehicles_getObjectVin) isEqualTo _vin)exitWith{
+			_object = _x;
+		};
+	}forEach vehicles;
+
+	_object
+};
+
+private _vin = ["I_C_Offroad_02_unarmed_F","2411",getPlayerUID player] call extremo_fnc_vehicles_generateVIN; // "A3_7395679579_723662_50X52X49X49"
+_vin
+private _pin = [_vin] call extremo_fnc_vehicles_getPinFromVin;	// "2411"
+private _vinNew = [_vin,"7233"] call extremo_fnc_vehicles_updateVinPin;	//"A3_7395679579_723662_55X50X51X51"
+
+
+/*
+(_vin splitString "_" select [2,2]) params [["_uniqueID",""],["_lockCodeID",""]];
+private _lockCode = toString((_lockCodeID splitString "X") apply {parseNumber _x});
+
+["A3_7395679579_723662_50X52X49X49"] call extremo_fnc_vehicles_getPinFromVin
+*/
+
+(_vin splitString "_" select [2,2]) params [
+	["_uniqueID",""],
+	["_lockCodeID",""]
+];
+
+private _lockCode = toString((_lockCodeID splitString "X") apply {parseNumber _x})

@@ -43,7 +43,7 @@ private _controls = [
 	["controls","Screen"]
 ];
 
-(_controls apply {_display displayCtrl getNumber(missionConfigFile >> _displayClass >> _x#0 >> _x#1 >> "idc")}) params [
+(_controls apply {_display displayCtrl getNumber(configFile >> _displayClass >> _x#0 >> _x#1 >> "idc")}) params [
 	["_controlBackground",controlNull,[controlNull]],
 	["_controlNumFake",controlNull,[controlNull]],
 	["_controlNum0",controlNull,[controlNull]],

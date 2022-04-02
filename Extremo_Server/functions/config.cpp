@@ -57,6 +57,13 @@ class CfgFunctions
             class vehicles_createCareful {};
             class vehicles_createNonPersistentVehicle {};
             class vehicles_createPersistentVehicle {};
+            class vehicles_generateVIN {};
+            class vehicles_getPinFromVin {};
+            class vehicles_getObjectVin {};
+            class vehicles_getObjectFromVin {};
+            class vehicles_setObjectVin {};
+            class vehicles_updateVinPin {};
+            class vehicles_purchase {}; 
         };
     };
 };

@@ -49,6 +49,7 @@ private _layer1 = ["RscExtremo_SplashScreenBlackoutLayer"] call BIS_fnc_rscLayer
 private _layer2 = ["RscExtremo_SplashScreenNoiseLayer"] call BIS_fnc_rscLayer;
 private _layer3 = ["RscExtremo_SplashScreenLayer"] call BIS_fnc_rscLayer;
 private _staticBGActive = not(false in ([_layer1,_layer2] apply {_x in allActiveTitleEffects}));
+private _backgrounds = getArray(configFile >> 'CfgMods' >> 'Extremo' >> 'LoadingScreen' >> 'pictures');
 
 //--- toggle background overlay
 if _staticBGActive then{
@@ -59,7 +60,10 @@ if _staticBGActive then{
 }else{
 	if _background then{
 		_layer1 cutText ["", "BLACK OUT", 0.00001];
-		_layer2 cutRsc ["SPLASHNOISE", "PLAIN",3];
+		_layer2 cutRsc ["SplashNoise", "PLAIN",3];
+		private _layer2Display = uiNamespace getVariable ['SplashNoise',displayNull];
+		private _layer2DisplayBGCrtl = _layer2Display displayCtrl 66000;
+		_layer2DisplayBGCrtl ctrlSetText (selectRandom _backgrounds);
 	};
 };
 

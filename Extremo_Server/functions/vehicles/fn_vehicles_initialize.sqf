@@ -15,7 +15,7 @@ private _unlockInSafeZonesAfterRestart = getNumber(_config >> "unlockInSafeZones
 "Reading database records for persistent vehicles" call Extremo_fnc_database_systemlog; 
 private _vehiclesDB = ["READ","vehicles",
 	[
-		["ID","BEGuid","Class","Lockcode","Position"],
+		["VIN","Class","Position"],
 		[
 			["WorldName", ["DB","STRING", WorldName] call Extremo_fnc_database_parse],
 			["Spawned", 1],	//only spawned vehicles
@@ -30,14 +30,12 @@ if(_vehiclesDB isEqualTo ["DB:Read:Task-failure",false])then{
 
 private _persistentCount = 0;
 {
-	_x params [
-		["_ID",-1,[0]],
-		["_BEGuid","",[""]],
-		["_Class","",[""]],
-		["_Lockcode","",[""]],
+	_x params [ 
+		["_VIN","",[""]],
+		["_Class","",[""]], 
 		["_Position","[]",[""]]
 	];
-
+	
 	//--- Parse Position's
 	(["GAME","ARRAY", _Position] call Extremo_fnc_database_parse) params [
 		["_posATL",[0,0,0]],
@@ -46,10 +44,11 @@ private _persistentCount = 0;
 	];
 
 	//--- Create Persistent Object
+	private _lockCode = [_Vin] call extremo_fnc_vehicles_getPinFromVin;
 	private _vehicle = [_Class, _posATL, [_vectorDir, _vectorUp], true, _Lockcode] call Extremo_fnc_vehicles_createPersistentVehicle;
 	
 	//--- Load data for x vehicleID onto new persistent vehicle object
-	private _vehicleInfo = ["vehicles","load", _ID, _vehicle] call extremo_fnc_database_server;
+	private _vehicleInfo = ["vehicles","load", _VIN, _vehicle] call extremo_fnc_database_server;
 
 	//--- Data loaded okay? if not delete object
 	if !(_vehicle in _vehicleInfo)then{
