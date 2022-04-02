@@ -9,34 +9,23 @@ params [
 	["_lockCode","",[""]]
 ];
 
-if (count _Lockcode < 4) exitWith {
-	"Purchase Failed, Not a valid pin!" remoteExec ["systemChat",owner _player];
-};
-if (_className isEqualTo "") exitWith {
-	"Purchase Failed, system error!" remoteExec ["systemChat",owner _player];
-};
-
 private _position = [0,0,0];
-
-if (_className isKindOf "Ship") then {
-	//_position = [(getPosATL _playerObject), 100, 20] call Extremo_fnc_world_findWaterPosition; 
-} else {
-	_position = (getPos _player) findEmptyPosition [10, 250, _className]; 
-};	
-
-//
 private _salesPrice = getNumber(configFile >> "CfgExtremoArsenal" >> _className >> "price");
 private _quality = getNumber(configFile >> "CfgExtremoArsenal" >> _className >> "quality");
 private _requiredRespect = getNumber(configFile >> "CfgTrading" >> "requiredRespect" >> format["Level%1",_quality]);
 private _playerMoney = (_player getVariable ["ExtremoWallet", 0]);
 private _playerRespect = (_player getVariable ["ExtremoScore", 0]);
+private _playerOwnerID = owner _player;
 
-if (_salesPrice > _playerMoney) exitWith {
-	"Purchase Failed, Not enough poptabs!" remoteExec ["systemChat",owner _player];
+if (_className isKindOf "Ship") then {
+	//_position = [(getPosATL _playerObject), 100, 20] call Extremo_fnc_world_findWaterPosition; 
+} else {
+	_position = (getPos _player) findEmptyPosition [10, 250, _className]; 
 };
-if (_requiredRespect > _playerRespect) exitWith {
-	"Purchase Failed, Not enough respect!" remoteExec ["systemChat",owner _player];
-};
+
+if (count _Lockcode < 4) exitWith {["ErrorTitleAndText",["Whoops!","Not a valid pincode to purchase this vehicle"]] remoteExecCall ["Extremo_fnc_gui_toasterScreen",_playerOwnerID]}; 
+if (_salesPrice > _playerMoney) exitWith {["ErrorTitleAndText",["Whoops!","Not enough poptabs to purchase this vehicle"]] remoteExecCall ["Extremo_fnc_gui_toasterScreen",_playerOwnerID]};
+if (_requiredRespect > _playerRespect) exitWith {["ErrorTitleAndText",["Whoops!","Not enough respect to purchase this vehicle"]] remoteExecCall ["Extremo_fnc_gui_toasterScreen",_playerOwnerID]};
 
 private _vehicle = [_className, _position, (random 360), true, _Lockcode] call Extremo_fnc_vehicles_createPersistentVehicle;
 
@@ -45,15 +34,26 @@ if(!isNull _vehicle)then{
 	//Add it to db
 	private _data = ["vehicles", "add", _player, _vehicle, _Lockcode] call extremo_fnc_database_server;
 
-	if(count _data isEqualTo 0)exitWith{
-		"Purchase Failed, Vin error!" remoteExec ["systemChat",owner _player];
+	if(count _data isEqualTo 0)exitWith{ 
+		["ErrorTitleAndText",["Whoops!","Something went really wrong. Please tell a server admin that you have having issues purchasing this vehicle due to a vin error"]] remoteExecCall ["Extremo_fnc_gui_toasterScreen",_playerOwnerID]
 	};
 
 	//Charge them
 	_player setVariable ["ExtremoWallet", (_playerMoney - _salesPrice), true];
-
+	 
 	//update player db
 	["characters", "update", _player] call extremo_fnc_database_server;
+
+	//
+	[[_player,_vehicle,_salesPrice],{
+		params [
+			["_player",objNull],
+			["_vehicle",objNull],
+			["_price",0]
+		];
+		["SuccessTitleAndText", ["Vehicle purchased!", format ["-%1<img image='\Extremo_assets\texture\ui\poptab_inline_ca.paa' size='24'/>", _price]]] call Extremo_fnc_gui_toasterScreen;
+		_player moveInDriver _vehicle;
+	}]remoteExecCall ["call", _playerOwnerID];
 }else{
-	"Purchase Failed, <null> vehicle!" remoteExec ["systemChat",owner _player];
+	["ErrorTitleAndText",["Whoops!","Something went really wrong. Please tell a server admin that you have having issues purchasing this vehicle "]] remoteExecCall ["Extremo_fnc_gui_toasterScreen",_playerOwnerID];
 };

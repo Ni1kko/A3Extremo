@@ -14,7 +14,6 @@ params [
 private _vehicle = [_className,_position,_direction,_usePositionATL] call Extremo_fnc_vehicles_createCareful;
 
 _vehicle setVariable ["ExtremoIsPersistent", true];
-_vehicle setVariable ["ExtremoAccessCode", _lockCode];
 _vehicle addEventHandler ["GetIn", {_this call (missionNamespace getVariable ["Extremo_fnc_vehicles_event_GetIn",{}])}];
 _vehicle addEventHandler ["GetOut", {_this call (missionNamespace getVariable ["Extremo_fnc_vehicles_event_GetOut",{}])}];
 _vehicle addMPEventHandler ["MPKilled", {if(!isServer)exitWith{};_this call (missionNamespace getVariable ["Extremo_fnc_vehicles_event_MPKilled",{}])}];

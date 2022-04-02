@@ -313,34 +313,22 @@ switch _table do {
 					_output = [_vehicleobject,_request];
 				};
 			};
-			//["vehicles","update", player, vehicle player,[]] remoteExec ["extremo_fnc_database_server", 2];
+			//["vehicles","update", vehicle player,[]] remoteExec ["extremo_fnc_database_server", 2];
 			case "update": 
-			{ 
-				private _playerobject = [_this] call BIS_fnc_arrayShift;
+			{  
 				private _vehicleobject = [_this] call BIS_fnc_arrayShift;
 				private _vehicleData = [_this] call BIS_fnc_arrayShift;
 	
-				if(typeName _playerobject isEqualTo "OBJECT" AND typeName _vehicleobject isEqualTo "OBJECT" )then
-				{
-					if(isNull _playerobject AND !isNull _vehicleobject)then{
-						private _OwnerBEGuid = _vehicleobject getVariable ["ExtremoOwner","<ERROR>"];
-						_playerobject = _OwnerBEGuid call extremo_fnc_system_getObjectFromBEGuid;
-					};
-
-					private _steamID = getPlayerUID _playerobject;
-					private _BEGuid = ExtremoBeGuidHashmap get _steamID;
-					private _vehicleID = _vehicleobject getVariable ["ExtremoVIN",-1];
-					
-					if(_vehicleID in [-1,""])exitWith{};
-
+				if(typeName _vehicleobject isEqualTo "OBJECT" )then
+				{ 
+					private _vehicleID = _vehicleobject getVariable ["ExtremoVIN",-1]; 
+					if(_vehicleID in [-1,""])exitWith{}; 
 					if(typeName _vehicleID isEqualTo "STRING")then{
 						_whereClause pushBack ["VIN", ["DB","STRING", _vehicleID] call Extremo_fnc_database_parse];
 					}else{
 						_whereClause pushBack ["ID", _vehicleID];
 					};
-
-					_whereClause pushBack ["BEGuid", ["DB","STRING", _BEGuid] call Extremo_fnc_database_parse];
-		 			 
+ 
 					(getAllHitPointsDamage _vehicleObject) params [
 						["_hitPointNames",[]],
 						["_hitSelectionNames",[]],

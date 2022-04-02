@@ -75,6 +75,9 @@ waitUntil extremo_fnc_client_initEventhandlers;
 "(fn_client_init.sqf) Starting messages thread" call Extremo_fnc_client_log;
 [] spawn extremo_fnc_client_messages;
 
+//--- Setup toaster
+[] spawn extremo_fnc_gui_toasterScreenEH;
+
 //--- Done
 "(fn_client_init.sqf) Client setup finished!" call Extremo_fnc_client_log;
 

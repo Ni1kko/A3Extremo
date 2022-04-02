@@ -120,5 +120,23 @@ for "_xSize" from 0 to worldSize step _gridSize do
 format["Spawned (%1) Persistent vehicles", _persistentCount] call Extremo_fnc_database_systemlog;
 format["Spawned (%1) Non-Persistent vehicles", _nonPersistentCount] call Extremo_fnc_database_systemlog;
 
+//------------------------------------------------------------------------------------------
+//--- Update Persistent Vehicles -----------------------------------------------------------
+//------------------------------------------------------------------------------------------
+
+[]spawn {
+	private _newRandomTime = compile "round(random[5 * 60, 10 * 60, 15 * 60])"; 
+	while {true} do {
+		private _nextSyncAt = call _newRandomTime;
+		uiSleep _nextSyncAt;
+
+		private _targets = (vehicles apply {if((_x getVariable ["ExtremoIsPersistent", false]) AND count(_x getVariable ["ExtremoVIN",""]) > 0)then{_x}else{objNull}}) - [objNull];
+		
+		{
+			uiSleep (random [5,15,25]);
+			["vehicles","update",_x,[true]] remoteExec ["extremo_fnc_database_server", 2];
+		}forEach _targets;
+	};
+};
 
 true

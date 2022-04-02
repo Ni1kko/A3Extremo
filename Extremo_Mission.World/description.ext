@@ -366,6 +366,8 @@ class CfgFunctions
             class gui_tabletScreenGroupContacts {};
             class gui_tabletScreenGroupSync {};
             class gui_tabletScreenGroupSettings {};
+            class gui_toasterScreen {};
+            class gui_toasterScreenEH {};
             class gui_vehicleTraderScreen {};
             class gui_vehicleTraderScreenEH {};
         };
@@ -453,6 +455,7 @@ class CfgRemoteExec
         ExtremoRE_Client(extremo_fnc_medical_createRevivedEffects);
         ExtremoRE_Client(extremo_fnc_database_client);
         ExtremoRE_Client(Extremo_fnc_client_log);
+        ExtremoRE_Client(Extremo_fnc_gui_toasterScreen);
         //////////////// SERVER Whitelist ////////////////
         ExtremoRE_Server(extremo_fnc_database_server);
         ExtremoRE_Server(Extremo_fnc_server_log);
