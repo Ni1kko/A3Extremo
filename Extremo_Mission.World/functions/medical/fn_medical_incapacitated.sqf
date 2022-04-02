@@ -14,7 +14,7 @@ if (_player getVariable ["extremo_var_incapacitated", false]) exitWith {};
 private _broadcast = format ["%1 has been seriously wounded", name _player];
 Extremo_var_medical_healthState = 1;
 Extremo_var_medical_executer = objNull;
-Extremo_var_remainingBlood = [missionConfigFile >> "CfgRespawnTemplates" >> "Extremo", "bleedoutDuration", 60] call BIS_fnc_returnConfigEntry;
+Extremo_var_remainingBlood = [configFile >> "CfgRespawnTemplates" >> "Extremo", "bleedoutDuration", 60] call BIS_fnc_returnConfigEntry;
 Extremo_var_incapacitateInitTime = diag_tickTime;
 
 _player allowDamage false;
@@ -147,7 +147,7 @@ escKeyEH = (uiNamespace getVariable "RscExtremo_BleedoutScreen") displayAddEvent
 		private _subtitle = "%<U>ProfileName% YOU WILL RESPAWN IN %RespawnTimer%";
 		private _broadcast = format ["%1 has died", name _player];
 		private _blockEscapeKey = false;
-		private _configRespawn = missionConfigFile >> "CfgRespawnTemplates" >> "Extremo";
+		private _configRespawn = configFile >> "CfgRespawnTemplates" >> "Extremo";
 		private _configTimers = _configRespawn >> "RespawnTimers";
 		private _hideBody = ([_configRespawn, "hideBodyOnRespawn", 0] call BIS_fnc_returnConfigEntry) isEqualTo 1;
 		private _deleteBody = ([_configRespawn, "deleteBodyOnRespawn", 0] call BIS_fnc_returnConfigEntry) isEqualTo 1;

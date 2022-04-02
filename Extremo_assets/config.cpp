@@ -575,6 +575,13 @@ class CfgFunctions
             class preInit {preInit=1;};  
         };
     };
+	class Extremo3DEN
+	{		class custom3DENNotification
+		{
+			file="\Extremo_assets\script\EDEN\Functions";
+			class DisplayCustom3DENNotification {};
+		};
+	};
 };
 
 //--- Worlds
@@ -2665,16 +2672,136 @@ class CfgDifficultyPresets
 };
 
 //--- Mission Respawn Templates
+
 class CfgRespawnTemplates
 {
 	class Extremo
 	{
 		isCall=1;
-		onPlayerKilled="Extremo_fnc_event_player_killed";
-		onPlayerRespawn="Extremo_fnc_event_player_respawned";
+		onPlayerKilled="Extremo_fnc_event_playerKilled";
+		onPlayerRespawn="Extremo_fnc_event_playerRespawned";
 		respawnDelay=30;
 		respawnOnStart=0;
 		respawnButton=1;
+        bleedoutDuration = 100;	// 0 - 1000
+        hideBodyOnRespawn = false;
+        deleteBodyOnRespawn = false;
+        class RespawnTimers 
+        {
+            Executed = 15;
+            Bleedout = 10;
+            Suicide  = 20;
+            Revived  = 3;
+        };
+	};
+};
+
+class ctrlMenuStrip;
+class Display3DEN
+{
+	class Controls
+	{
+		class MenuStrip: ctrlMenuStrip
+		{
+			class Items
+			{
+				class Tools
+				{
+					items[]+=
+					{
+						"Extremo_ToolFolder"
+					};
+				};
+				class Extremo_ToolFolder
+				{
+					text="Extremo Tools";
+					picture="\Extremo_assets\texture\mod\icon.paa";
+					items[]=
+					{
+						"Extremo_ObjectFolder",
+						"Extremo_MarkerFolder",
+						"Extremo_SpawnFolder",
+						"Extremo_LootFolder"
+					};
+				};
+				class Extremo_ObjectFolder
+				{
+					text="Objects";
+					items[]=
+					{
+						"Extremo_GenerateObjectCode"
+					};
+				};
+				class Extremo_GenerateObjectCode
+				{
+					text="Generate Code for Objects";
+					action="[] execVM '\Extremo_assets\script\EDEN\GenerateObjects.sqf';";
+				};
+				class Extremo_MarkerFolder
+				{
+					text="Markers";
+					items[]=
+					{
+						"Extremo_GenerateMarkerCode"
+					};
+				};
+				class Extremo_GenerateMarkerCode
+				{
+					text="Generate Code for Markers";
+					action="[] execVM '\Extremo_assets\script\EDEN\GenerateMarkers.sqf';";
+				};
+				class Extremo_SpawnFolder
+				{
+					text="Spawnpoints";
+					items[]=
+					{
+						"Extremo_CreateSpawnGroup",
+						"Extremo_GenerateSpawnCode"
+					};
+				};
+				class Extremo_CreateSpawnGroup
+				{
+					text="Create Spawn Group";
+					action="[] execVM '\Extremo_assets\script\EDEN\CreateExtremoSpawnGroup.sqf';";
+				};
+				class Extremo_GenerateSpawnCode
+				{
+					text="Generate Code for Spawnpoints";
+					action="[] execVM '\Extremo_assets\script\EDEN\GenerateSpawns.sqf';";
+				};
+				class Extremo_LootFolder
+				{
+					text="Loot";
+					items[]=
+					{
+						"Extremo_SelectTarget",
+						"Extremo_ToggleLootPreview",
+						"Extremo_GenerateLootCode",
+						"Extremo_ClearLoot"
+					};
+				};
+				class Extremo_SelectTarget
+				{
+					text="Select Target Object";
+					action="[0] execVM '\Extremo_assets\script\EDEN\LootManager.sqf';";
+				};
+				class Extremo_ToggleLootPreview
+				{
+					text="Toggle Loot Preview";
+					action="[1] execVM '\Extremo_assets\script\EDEN\LootManager.sqf';";
+				};
+				class Extremo_GenerateLootCode
+				{
+					text="Generate Code for Loot";
+					action="[2] execVM '\Extremo_assets\script\EDEN\LootManager.sqf';";
+				};
+				class Extremo_ClearLoot
+				{
+					text="Clear Loot Spheres";
+					action="[3] execVM '\Extremo_assets\script\EDEN\LootManager.sqf';";
+				};
+			};
+		};
 	};
 };
 

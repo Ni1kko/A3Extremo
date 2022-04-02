@@ -258,25 +258,6 @@ class CfgSpawnVehicles
     };
 };
 
-class CfgRespawnTemplates
-{
-	class Extremo
-	{
-		onPlayerKilled="Extremo_fnc_event_playerKilled";
-		onPlayerRespawn="Extremo_fnc_event_playerRespawned";
-        bleedoutDuration = 100;	// 0 - 1000
-        hideBodyOnRespawn = false;
-        deleteBodyOnRespawn = false;
-        class RespawnTimers 
-        {
-            Executed = 15;
-            Bleedout = 10;
-            Suicide  = 20;
-            Revived  = 3;
-        };
-	};
-};
-
 class CfgKeyHandler 
 {
     class Extremo
