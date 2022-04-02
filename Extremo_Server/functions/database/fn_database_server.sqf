@@ -250,7 +250,7 @@ switch _table do {
 
 				private _request = ["READ",_table,
 					[
-						["ID","BEGuid","Class","VIN","LockState","Position","Fuel","Damage","HitPoints"],
+						["ID","BEGuid","Class","VIN","Wallet","LockState","Position","Fuel","Damage","HitPoints"],
 						_whereClause
 					],true
 				]call Extremo_fnc_database_request;
@@ -264,6 +264,7 @@ switch _table do {
 					["_BEGuid","",[""]],
 					["_Class","",[""]],
 					["_Vin","",[""]],
+					["_Wallet",0,[0]],
 					["_LockState",0,[0]],
 					["_Position","[]",[""]],
 					["_Fuel",0,[0]],
@@ -283,7 +284,7 @@ switch _table do {
 					_vehicleobject setVariable ["ExtremoOwner",_BEGuid,true];
 
 					//--- Money
-					//_vehicleobject setVariable ["ExtremoCash",0,true];
+					_vehicleobject setVariable ["ExtremoWallet",_Wallet,true];
 
 					//--- Lock
 					private _lockCode = [_Vin] call extremo_fnc_vehicles_getPinFromVin;
@@ -346,6 +347,7 @@ switch _table do {
 						["_spawned",true] 
 					];
 
+					private _wallet = _vehicleobject getVariable ["ExtremoWallet",0]; 
 					private _lockState = _vehicleObject getVariable ["ExtremoIsLocked",-1];
 					
 					private _dead = false;
@@ -363,6 +365,7 @@ switch _table do {
 					}forEach [
 						["Position",_vehiclePosition,"ARRAY","ARRAY"],
 						["Fuel",fuel _vehicleobject,"SCALAR","SCALAR"],
+						["Wallet",_wallet,"SCALAR","A2NET"],
 						["Damage",_damage,"SCALAR","SCALAR"],
 						["LockState",_lockState,"SCALAR","SCALAR"],
 						["Spawned",_spawned,"BOOL","BOOL"],
