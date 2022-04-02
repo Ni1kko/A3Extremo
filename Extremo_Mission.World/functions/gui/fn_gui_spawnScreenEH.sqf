@@ -40,7 +40,7 @@ private _controls = [
 	["controls","Selection"],				//-- _controlSelection
 	["controls","Confirm"]					//-- _controlConfirm
 ];
-((_controls apply {[format["_control%1",_x#1],controlNull,[controlNull]]}) apply {_display displayCtrl getNumber(missionConfigFile >> _displayClass >> _x#0 >> _x#1 >> "idc")}) params _controlsParams;
+(_controls apply {_display displayCtrl getNumber(missionConfigFile >> _displayClass >> _x#0 >> _x#1 >> "idc")}) params (_controls apply {[format["_control%1",_x#1],controlNull,[controlNull]]});
 
 switch _event do {
 	case "onLoad": 		   {uiNameSpace setVariable [_displayClass,_object]; extremo_var_dik_blockESC = true; setMousePosition [0.5,0.5]};
