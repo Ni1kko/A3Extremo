@@ -71,6 +71,9 @@ waitUntil extremo_fnc_client_initVariables;
 "(fn_client_init.sqf) Registering mission eventhandlers" call Extremo_fnc_client_log;
 waitUntil extremo_fnc_client_initEventhandlers;
 
+//--- Setup Traders
+waitUntil extremo_fnc_world_setupTraders;
+
 //--- Setup messages
 "(fn_client_init.sqf) Starting messages thread" call Extremo_fnc_client_log;
 [] spawn extremo_fnc_client_messages;

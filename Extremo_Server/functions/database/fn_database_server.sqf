@@ -40,7 +40,6 @@ switch _table do {
 				case "load": 
 				{ 
 					private _spawnIsland = [missionConfigFile >> "CfgSpawn" >> "Extremo" >> worldName, "spawnIsland", ""] call BIS_fnc_returnConfigEntry;
-					private _classes = [missionConfigFile >> "CfgPlayer" >> "Extremo", "unitClassNames", ["C_Man_casual_6_F"]] call BIS_fnc_returnConfigEntry;
 					private _startcash = [missionConfigFile >> "CfgPlayer" >> "Extremo", "startCash", 0] call BIS_fnc_returnConfigEntry;
 					private _forbiddenPositions = [missionConfigFile >> "CfgPlayer" >> "Extremo", "forbiddenPositions", []] call BIS_fnc_returnConfigEntry;
 					private _useLatestRecord = true;
@@ -50,7 +49,7 @@ switch _table do {
 					};
 
 					format["Reading database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
-					private _request = ["READ",_table,[["BEGuid","S64ID","LastKnownName","LastLoadout","LastPosition","Class","Wallet"],_whereClause]]call Extremo_fnc_database_request;
+					private _request = ["READ",_table,[["BEGuid","S64ID","LastKnownName","LastLoadout","LastPosition","Wallet"],_whereClause]]call Extremo_fnc_database_request;
 
 					//--- DB Down...
 					if("DB:Task-failure" in _request)exitWith {
@@ -75,7 +74,6 @@ switch _table do {
 								["S64ID", 			["DB","STRING", _steamID] call Extremo_fnc_database_parse],
 								["LastKnownName", 	["DB","STRING", _name] call Extremo_fnc_database_parse],
 								["Wallet", 			["DB","A2NET", _startcash] call Extremo_fnc_database_parse],
-								["Class", 		    ["DB","STRING", selectRandom _classes] call Extremo_fnc_database_parse],
 								["WorldName", 		["DB","STRING", WorldName] call Extremo_fnc_database_parse]
 							]
 						]call Extremo_fnc_database_request;
@@ -109,7 +107,7 @@ switch _table do {
 						[1,"STRING"],	//Parse LastKnownName
 						[2,"ARRAY"],	//Parse LastLoadout
 						[3,"ARRAY"],	//Parse LastPosition
-						[5,"A2NET"]		//Parse Wallet
+						[4,"A2NET"]		//Parse Wallet
 					];
 
 					//--- Parse values into local vars with defaults 
@@ -118,8 +116,7 @@ switch _table do {
 						["_LastKnownName","",[""]],//1
 						["_LastLoadout",[],[[]]],//2
 						["_LastPosition",[],[[]]],//3
-						["_Class","",[""]],//4
-						["_Wallet",0,[0]]//5
+						["_Wallet",0,[0]]//4
 					])exitWith{
 						[_rexecID, format["Warning unable parse database record for BEGuid: %1", _BEGuid]] call Extremo_fnc_system_kick;
 					};
@@ -169,7 +166,7 @@ switch _table do {
 					};
 
 					//--- Send result to client
-					[_table,_action,_BEGuid,_Class,_LastLoadout,_LastPosition,_Wallet] remoteExec ["extremo_fnc_database_client",_rexecID];
+					[_table,_action,_BEGuid,_LastLoadout,_LastPosition,_Wallet] remoteExec ["extremo_fnc_database_client",_rexecID];
 				};
 				//["characters","update",player] remoteExec ["extremo_fnc_database_server", 2];
 				case "update": 

@@ -138,9 +138,6 @@ class CfgPlayer
 	{
         startCash = 100;
         startBank = 10000;
-	    unitClassNames[] = {
-            "C_Man_casual_6_F"
-        };
         forbiddenPositions[] = {
             //{"marker", distance}
         };
@@ -190,8 +187,9 @@ class CfgSpawn
             zones[] = {
                 {"extremo_marker_spawnzone_nadbór",             "\Extremo_assets\texture\mod\icon.paa"},
                 {"extremo_marker_spawnzone_topolin",            "\Extremo_assets\texture\mod\icon.paa"},
-                {"extremo_marker_spawnzone_lukow",              "\Extremo_assets\texture\mod\icon.paa"},
-                {"extremo_marker_spawnzone_lukow_airfield",     "\Extremo_assets\texture\mod\icon.paa"}
+                {"extremo_marker_spawnzone_tarnow",             "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_lukow_airfield",     "\Extremo_assets\texture\mod\icon.paa"},
+                {"extremo_marker_spawnzone_dolnik",             "\Extremo_assets\texture\mod\icon.paa"}
             };
             protectedZones[] = {
                 //{"extremo_marker_spawnzone_lukow_airfield",    "1234"}
@@ -403,6 +401,8 @@ class CfgFunctions
         {
             file = "functions\world";
             class world_getTerrainGradient {};
+            class world_setupTraders {};
+            class world_createAttachTo {};
         };
     };
 };

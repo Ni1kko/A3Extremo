@@ -1499,7 +1499,8 @@ if(isNil "extremo_fnc_system_changePos")then
 		params [
 			["_object",cursorObject],
 			["_distance",nil],
-			["_elevation",nil]
+			["_elevation",nil],
+			["_flip",false]
 		];
 		
 		if(isNull _object)exitWith{[0,0,0]};
@@ -1513,7 +1514,9 @@ if(isNil "extremo_fnc_system_changePos")then
 		];
 
 		private _newPos = [_currentPosX + (_distance / 2),_currentPosY + (_distance / 2),_currentPosZ + _elevation];
-		
+		if _flip then{
+			_newPos = [_currentPosX + (_distance / 2),_currentPosY - (_distance / 2),_currentPosZ + _elevation];
+		};
 		_object SetPosATL _newPos;
 
 		_newPos
@@ -1651,6 +1654,42 @@ if(isNil "extremo_fnc_vehicles_generateVIN")then{
 	private _lockCode = toString((_lockCodeID splitString "X") apply {parseNumber _x});
 };
 
+//--- extremo_fnc_3denSP_placeTrader (buggy WIP)
+if(isNil "extremo_fnc_3denSP_placeTrader")then{
+
+	extremo_fnc_3denSP_placeTrader = {
+		params [
+			["_class","",[""]] 
+		];
+
+		private _start = eyePos player; 
+		private _ins = lineIntersectsSurfaces [_start, _start vectorAdd (getCameraViewDirection player vectorMultiply 1000),player,objNull,true,1,'FIRE','NONE'];
+		private _pos = if (count _ins > 0) then [{_ins select 0 select 0},{ _start vectorAdd (getCameraViewDirection player vectorMultiply 1000)}];
+		
+		extremo_temp_trader = _class createVehicleLocal _pos; 
+		extremo_temp_trader setDir (360 - (getDir player));
+
+		private _result = ["Are you sure?", "Confirm Placement", true, true] call BIS_fnc_guiMessage;
+
+		if !_result exitWith {
+			deleteVehicle extremo_temp_trader; 
+		};
+
+		copyToClipboard str([_class, getPosASL extremo_temp_trader, [vectorUp extremo_temp_trader, vectorDir extremo_temp_trader], simulationEnabled extremo_temp_trader]);
+		systemChat "Generated Code for Trader, Saved to Clipboard.";
+	};
+	
+	["Extremo_Trader_Vehicle"]spawn extremo_fnc_3denSP_placeTrader
+};
+
 //onMapSingleClick "player setPosATL _pos; true";
 
-//"Extremo_Trader_Vehicle" createVehicleLocal (getPosATL player)
+ 
+/*
+["Extremo_Trader_Office"]spawn extremo_fnc_3denSP_placeTrader;
+[extremo_temp_trader,-0.2,nil,true] call extremo_fnc_system_changePos;
+extremo_temp_trader setDir (getDir extremo_temp_trader) + 10;
+["Extremo_Trader_Office", getPosASL extremo_temp_trader, [vectorUp extremo_temp_trader, vectorDir extremo_temp_trader], simulationEnabled extremo_temp_trader]
+*/
+
+ 

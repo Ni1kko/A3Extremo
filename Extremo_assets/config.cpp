@@ -3982,7 +3982,7 @@ class CfgMarkers
 {
 	class ExtremoMissionHardcoreIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Mission Icon (Hardcore)";
 		icon="Extremo_Assets\texture\marker\mission_hardcore_ca.paa";
 		color[]={1,1,1,1};
@@ -3993,7 +3993,7 @@ class CfgMarkers
 	};
 	class ExtremoMissionModerateIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Mission Icon (Moderate)";
 		icon="Extremo_Assets\texture\marker\mission_moderate_ca.paa";
 		color[]={1,1,1,1};
@@ -4004,7 +4004,7 @@ class CfgMarkers
 	};
 	class ExtremoMissionDifficultIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Mission Icon (Difficult)";
 		icon="Extremo_Assets\texture\marker\mission_difficult_ca.paa";
 		color[]={1,1,1,1};
@@ -4015,7 +4015,7 @@ class CfgMarkers
 	};
 	class ExtremoMissionEasyIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Mission Icon (Easy)";
 		icon="Extremo_Assets\texture\marker\mission_easy_ca.paa";
 		color[]={1,1,1,1};
@@ -4026,7 +4026,7 @@ class CfgMarkers
 	};
 	class ExtremoMissionCapturePointIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Capture Point Icon";
 		icon="Extremo_Assets\texture\marker\capture_point_ca.paa";
 		color[]={1,1,1,1};
@@ -4037,7 +4037,7 @@ class CfgMarkers
 	};
 	class ExtremoMissionStrongholdIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Stronghold Icon";
 		icon="Extremo_Assets\texture\marker\stronghold_ca.paa";
 		color[]={1,1,1,1};
@@ -4048,7 +4048,7 @@ class CfgMarkers
 	};
 	class ExtremoNonConstructionZone
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Non-Construction Zone";
 		icon="Extremo_Assets\texture\marker\spawn_zone_ca.paa";
 		color[]={1,1,1,1};
@@ -4059,7 +4059,7 @@ class CfgMarkers
 	};
 	class ExtremoSpawnZone
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Spawn Zone";
 		icon="Extremo_Assets\texture\marker\spawn_zone_ca.paa";
 		color[]={1,1,1,1};
@@ -4070,7 +4070,7 @@ class CfgMarkers
 	};
 	class ExtremoSpawnZoneIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Spawn Zone Icon";
 		icon="Extremo_Assets\texture\marker\spawn_zone_ca.paa";
 		color[]={1,1,1,1};
@@ -4081,7 +4081,7 @@ class CfgMarkers
 	};
 	class ExtremoTraderZone
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Trader Zone";
 		icon="Extremo_Assets\texture\marker\trader_zone_ca.paa";
 		color[]={1,1,1,1};
@@ -4092,7 +4092,7 @@ class CfgMarkers
 	};
 	class ExtremoTraderZoneIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Trader Zone Icon";
 		icon="Extremo_Assets\texture\marker\trader_zone_ca.paa";
 		color[]={1,1,1,1};
@@ -4103,7 +4103,7 @@ class CfgMarkers
 	};
 	class ExtremoPlayer
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Player";
 		icon="\A3\ui_f\data\map\VehicleIcons\iconman_ca.paa";
 		color[]={1,1,1,1};
@@ -4114,7 +4114,7 @@ class CfgMarkers
 	};
 	class ExtremoSafe
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Safe";
 		icon="Extremo_Assets\texture\marker\unlocked_safe_ca.paa";
 		color[]={1,1,1,1};
@@ -4125,7 +4125,7 @@ class CfgMarkers
 	};
 	class ExtremoHeart
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Heart";
 		icon="Extremo_Assets\texture\marker\supply_drop_ca.paa";
 		color[]={1,1,1,1};
@@ -4136,7 +4136,7 @@ class CfgMarkers
 	};
 	class ExtremoContaminatedZone
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Heart";
 		icon="Extremo_Assets\texture\marker\contaminated_zone_ca.paa";
 		color[]={1,1,1,1};
@@ -4147,7 +4147,7 @@ class CfgMarkers
 	};
 	class ExtremoContaminatedZoneIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Heart";
 		icon="Extremo_Assets\texture\marker\contaminated_zone_ca.paa";
 		color[]={1,1,1,1};
@@ -4158,7 +4158,7 @@ class CfgMarkers
 	};
 	class ExtremoConcreteMixerZone
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Concrete Mixer Zone";
 		icon="Extremo_Assets\texture\marker\spawn_zone_ca.paa";
 		color[]={1,1,1,1};
@@ -4169,7 +4169,7 @@ class CfgMarkers
 	};
 	class ExtremoConcreteMixerZoneIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Concrete Mixer Zone Icon";
 		icon="Extremo_Assets\texture\marker\concrete_mixer_ca.paa";
 		color[]={1,1,1,1};
@@ -4180,7 +4180,7 @@ class CfgMarkers
 	};
 	class ExtremoDiversTraderIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Divers Trader Icon";
 		icon="Extremo_Assets\texture\marker\divers_trader_ca.paa";
 		color[]={1,1,1,1};
@@ -4191,7 +4191,7 @@ class CfgMarkers
 	};
 	class ExtremoBoatTraderIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Boat Trader Icon";
 		icon="Extremo_Assets\texture\marker\boat_trader_ca.paa";
 		color[]={1,1,1,1};
@@ -4202,7 +4202,7 @@ class CfgMarkers
 	};
 	class ExtremoAircraftTraderIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Aircraft Trader Icon";
 		icon="Extremo_Assets\texture\marker\aircraft_trader_ca.paa";
 		color[]={1,1,1,1};
@@ -4213,7 +4213,7 @@ class CfgMarkers
 	};
 	class ExtremoSpecOpsTraderIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Spec Ops Trader Icon";
 		icon="Extremo_Assets\texture\marker\spec_ops_trader_ca.paa";
 		color[]={1,1,1,1};
@@ -4224,7 +4224,7 @@ class CfgMarkers
 	};
 	class ExtremoRussianRouletteIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Russian Roulette Icon";
 		icon="Extremo_Assets\texture\marker\russian_roulette_ca.paa";
 		color[]={1,1,1,1};
@@ -4235,7 +4235,7 @@ class CfgMarkers
 	};
 	class ExtremoHackingIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Hacking Icon";
 		icon="Extremo_Assets\texture\marker\hacking_ca.paa";
 		color[]={1,1,1,1};
@@ -4246,7 +4246,7 @@ class CfgMarkers
 	};
 	class ExtremoVehicleIcon
 	{
-		scope=0;
+		scope=2;
 		name="Extremo Vehicle Icon";
 		icon="Extremo_Assets\texture\marker\vehicle_ca.paa";
 		color[]={1,1,1,1};
@@ -4256,1446 +4256,12 @@ class CfgMarkers
 		showEditorMarkerColor=0;
 	};
 };
-class CfgNetworkMessages
-{
-	class kickClient
-	{
-		module="object_player";
-		parameters[]={};
-	};
-	class youWonMate
-	{
-		module="object_player";
-		parameters[]={};
-	};
-	class playerStart
-	{
-		module="object_player";
-		parameters[]={};
-	};
-	class tagSpectateRequest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class spectateRequest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"OBJECT",
-			"STRING"
-		};
-	};
-	class spectateResponse
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class escapeVariables
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"SCALAR",
-			"SCALAR"
-		};
-	};
-	class announceAnimalRequest
-	{
-		module="object_animal";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class gutAnimalRequest
-	{
-		module="object_animal";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class playEarthQuakeEffectRequest
-	{
-		module="system_earthQuake";
-		parameters[]=
-		{
-			"SCALAR"
-		};
-	};
-	class requestJoinRussianRouletteDialogRequest
-	{
-		module="system_russianRoulette";
-		parameters[]={};
-	};
-	class requestJoinRussianRouletteDialogResponse
-	{
-		module="system_russianRoulette";
-		parameters[]=
-		{
-			"SCALAR",
-			"SCALAR"
-		};
-	};
-	class concreteMixerStartRequest
-	{
-		module="object_concreteMixer";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class concreteMixerAddSmokeRequest
-	{
-		module="object_concreteMixer";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class concreteMixerRemoveSmokeRequest
-	{
-		module="object_concreteMixer";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class winRussianRouletteRequest
-	{
-		module="system_russianRoulette";
-		parameters[]=
-		{
-			"ARRAY",
-			"SCALAR",
-			"SCALAR"
-		};
-	};
-	class joinRussianRouletteRequest
-	{
-		module="system_russianRoulette";
-		parameters[]={};
-	};
-	class joinRussianRouletteResponse
-	{
-		module="system_russianRoulette";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class leaveRussianRouletteRequest
-	{
-		module="system_russianRoulette";
-		parameters[]={};
-	};
-	class leaveRussianRouletteResponse
-	{
-		module="system_russianRoulette";
-		parameters[]=
-		{
-			"ARRAY",
-			"SCALAR"
-		};
-	};
-	class updateRussianRouletteGameStatusRequest
-	{
-		module="system_russianRoulette";
-		parameters[]=
-		{
-			"SCALAR",
-			"SCALAR",
-			"ARRAY",
-			"STRING",
-			"SCALAR",
-			"SCALAR"
-		};
-	};
-	class fireRussianRouletteRevolverRequest
-	{
-		module="system_russianRoulette";
-		parameters[]=
-		{
-			"BOOL"
-		};
-	};
-	class fireRussianRouletteRevolverResponse
-	{
-		module="system_russianRoulette";
-		parameters[]={};
-	};
-	class startSessionRequest
-	{
-		module="system_session";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class startSessionResponse
-	{
-		module="system_session";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class updateSessionRequest
-	{
-		module="system_session";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class switchMoveRequest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class updateStatsRequest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR",
-			"SCALAR"
-		};
-	};
-	class showFragRequest
-	{
-		module="gui";
-		parameters[]=
-		{
-			"ARRAY"
-		};
-	};
-	class hasPlayerRequest
-	{
-		module="object_player";
-		parameters[]={};
-	};
-	class hasPlayerResponse
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"BOOL"
-		};
-	};
-	class createPlayerRequest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class createPlayerResponse
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"OBJECT",
-			"STRING",
-			"STRING",
-			"SCALAR",
-			"SCALAR",
-			"SCALAR",
-			"SCALAR",
-			"SCALAR",
-			"SCALAR",
-			"ARRAY",
-			"SCALAR"
-		};
-	};
-	class loadPlayerRequest
-	{
-		module="object_player";
-		parameters[]={};
-	};
-	class loadPlayerResponse
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"STRING",
-			"STRING",
-			"SCALAR",
-			"SCALAR",
-			"SCALAR",
-			"SCALAR",
-			"SCALAR",
-			"ARRAY",
-			"SCALAR",
-			"SCALAR"
-		};
-	};
-	class updatePlayerIncapacitatedRequest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"BOOL"
-		};
-	};
-	class savePlayerRequest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"SCALAR",
-			"SCALAR",
-			"SCALAR",
-			"SCALAR",
-			"SCALAR"
-		};
-	};
-	class hideBodyRequest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class chopTreeRequest
-	{
-		module="object_tree";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class smashShippingContainerRequest
-	{
-		module="object_shippingContainer";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class chopBushRequest
-	{
-		module="object_bush";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class systemChatRequest
-	{
-		module="gui";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class advancedHintRequest
-	{
-		module="gui";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class standardHintRequest
-	{
-		module="gui";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class toastRequest
-	{
-		module="gui";
-		parameters[]=
-		{
-			"STRING",
-			"ARRAY"
-		};
-	};
-	class baguetteRequest
-	{
-		module="gui";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class dynamicTextRequest
-	{
-		module="gui";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR",
-			"SCALAR",
-			"STRING"
-		};
-	};
-	class resetPlayerRequest
-	{
-		module="object_player";
-		parameters[]={};
-	};
-	class buildConstructionRequest
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"STRING",
-			"ARRAY"
-		};
-	};
-	class repairConstructionRequest
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class repairConstructionResponse
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class payTerritoryProtectionMoneyRequest
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class buildTerritoryRequest
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"STRING",
-			"ARRAY",
-			"STRING",
-			"STRING"
-		};
-	};
-	class constructionResponse
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class swapConstructionRequest
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"STRING",
-			"STRING",
-			"ARRAY"
-		};
-	};
-	class deconstructConstructionRequest
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class moveConstructionRequest
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class constructionMoveResponse
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"BOOL",
-			"STRING"
-		};
-	};
-	class upgradeConstructionRequest
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class upgradeConstructionResponse
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class flipVehRequest
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class pushVehicleRequest
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR",
-			"SCALAR",
-			"STRING"
-		};
-	};
-	class rotateVehicleRequest
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class lockVehicleRequest
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"STRING",
-			"BOOL"
-		};
-	};
-	class lockResponse
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"STRING",
-			"BOOL",
-			"STRING",
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class spawnLootRequest
-	{
-		module="system_lootManager";
-		parameters[]=
-		{
-			"ARRAY"
-		};
-	};
-	class toggleFloodLightRequest
-	{
-		module="object_floodLight";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class connectionTest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"BOOL"
-		};
-	};
-	class purchaseVehicleRequest
-	{
-		module="system_trading";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class purchaseVehicleResponse
-	{
-		module="system_trading";
-		parameters[]=
-		{
-			"SCALAR",
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class vehicleSaveRequest
-	{
-		module="system_vehicleSaveQueue";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class purchaseVehicleSkinRequest
-	{
-		module="system_trading";
-		parameters[]=
-		{
-			"STRING",
-			"ARRAY"
-		};
-	};
-	class purchaseVehicleSkinResponse
-	{
-		module="system_trading";
-		parameters[]=
-		{
-			"SCALAR",
-			"SCALAR"
-		};
-	};
-	class endBambiStateRequest
-	{
-		module="object_player";
-		parameters[]={};
-	};
-	class purchaseItemRequest
-	{
-		module="system_trading";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR",
-			"SCALAR",
-			"STRING"
-		};
-	};
-	class purchaseItemResponse
-	{
-		module="system_trading";
-		parameters[]=
-		{
-			"SCALAR",
-			"SCALAR",
-			"STRING",
-			"SCALAR",
-			"SCALAR",
-			"STRING"
-		};
-	};
-	class sellItemRequest
-	{
-		module="system_trading";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR",
-			"SCALAR",
-			"STRING"
-		};
-	};
-	class sellItemResponse
-	{
-		module="system_trading";
-		parameters[]=
-		{
-			"SCALAR",
-			"SCALAR",
-			"STRING",
-			"SCALAR",
-			"SCALAR",
-			"STRING",
-			"STRING"
-		};
-	};
-	class hotwireLockRequest
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class lockToggle
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"STRING",
-			"STRING",
-			"BOOL"
-		};
-	};
-	class setPin
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"STRING",
-			"STRING",
-			"STRING"
-		};
-	};
-	class setPinResponse
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"ARRAY",
-			"STRING",
-			"STRING"
-		};
-	};
-	class packRequest
-	{
-		module="object_container";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class setFuelRequest
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class registerClanRequest
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class registerClanResponse
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"SCALAR",
-			"SCALAR",
-			"ARRAY"
-		};
-	};
-	class leaveClanRequest
-	{
-		module="system_clan";
-		parameters[]={};
-	};
-	class leaveClanResponse
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"BOOL",
-			"STRING"
-		};
-	};
-	class updateClanInfoFull
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"STRING",
-			"STRING",
-			"ARRAY",
-			"ARRAY",
-			"ARRAY",
-			"GROUP"
-		};
-	};
-	class updateClanGotKicked
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"STRING",
-			"ARRAY"
-		};
-	};
-	class updateMarkers
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"ARRAY"
-		};
-	};
-	class updatePolys
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"ARRAY"
-		};
-	};
-	class inviteToClanRequest
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class inviteToClanRequestClient
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class inviteToClanRequestClientResponse
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"BOOL"
-		};
-	};
-	class clanInviteServerResponse
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"BOOL"
-		};
-	};
-	class kickClanPlayerRequest
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class addMarkerRequest
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"STRING",
-			"ARRAY",
-			"ARRAY",
-			"SCALAR",
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class addPolyRequest
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"ARRAY",
-			"ARRAY"
-		};
-	};
-	class removeMarkerRequest
-	{
-		module="system_clan";
-		parameters[]=
-		{
-			"SCALAR",
-			"SCALAR"
-		};
-	};
-	class inviteToPartyRequest
-	{
-		module="system_party";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class joinPartyRequest
-	{
-		module="system_party";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class kickFromPartyRequest
-	{
-		module="system_party";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class announceTerritoryRequest
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class addToTerritoryRequest
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class removeFromTerritoryRequest
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class moderationTerritoryRequest
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"STRING",
-			"STRING",
-			"BOOL"
-		};
-	};
-	class purchaseTerritory
-	{
-		module="system_territory";
-		parameters[]={};
-	};
-	class purchaseTerritoryResponse
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"SCALAR"
-		};
-	};
-	class requestTerritoryUpgradeDialog
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class payFlagRansomRequest
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class restoreFlagRequest
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class addLockRequest
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"OBJECT",
-			"STRING"
-		};
-	};
-	class addLockResponse
-	{
-		module="object_construction";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class territoryUpgradeDialogResponse
-	{
-		module="gui_upgradeTerritoryDialog";
-		parameters[]=
-		{
-			"SCALAR"
-		};
-	};
-	class territoryUpgradeRequest
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class deleteGroupPlz
-	{
-		module="system";
-		parameters[]=
-		{
-			"GROUP"
-		};
-	};
-	class wasteDumpRequest
-	{
-		module="system_trading";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class wasteDumpResponse
-	{
-		module="system_trading";
-		parameters[]=
-		{
-			"SCALAR",
-			"SCALAR",
-			"STRING"
-		};
-	};
-	class beginTakeAllRequest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class beginTakeAllResponse
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class endTakeAllRequest
-	{
-		module="object_player";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class scanCodeLockRequest
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class scanCodeLockResponse
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class enableSimulationRequest
-	{
-		module="system_simulationMonitor";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class attachSupplyBoxRequest
-	{
-		module="object_supplyBox";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class detachSupplyBoxRequest
-	{
-		module="object_supplyBox";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class installSupplyBoxRequest
-	{
-		module="object_supplyBox";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class handcuffRequest
-	{
-		module="object_handcuffs";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class handcuffResponse
-	{
-		module="object_handcuffs";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class freeRequest
-	{
-		module="object_handcuffs";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class freeResponse
-	{
-		module="object_handcuffs";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class breakFreeRequest
-	{
-		module="object_handcuffs";
-		parameters[]={};
-	};
-	class breakFreeResponse
-	{
-		module="object_handcuffs";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class updateMyPartyMarkerRequest
-	{
-		module="system_party";
-		parameters[]=
-		{
-			"BOOL",
-			"ARRAY"
-		};
-	};
-	class updatePartyMarkerRequest
-	{
-		module="system_party";
-		parameters[]=
-		{
-			"STRING",
-			"BOOL",
-			"ARRAY"
-		};
-	};
-	class resetCodeRequest
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"STRING",
-			"STRING",
-			"STRING"
-		};
-	};
-	class resetCodeResponse
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"ARRAY",
-			"STRING",
-			"STRING"
-		};
-	};
-	class rekeyVehicleRequest
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class rekeyVehicleDialogRequest
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class rekeyVehicleDialogResponse
-	{
-		module="gui_vehicleRekeyDialog";
-		parameters[]=
-		{
-			"STRING",
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class resetCodeDialogRequest
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class resetCodeDialogResponse
-	{
-		module="gui_vehicleRekeyDialog";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class putMoneyRequest
-	{
-		module="system_money";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class takeMoneyRequest
-	{
-		module="system_money";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class moneyTransactionResponse
-	{
-		module="system_money";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR"
-		};
-	};
-	class flagStolenRequest
-	{
-		module="system_territory";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class lockerDepositRequest
-	{
-		module="system_locker";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class lockerWithdrawRequest
-	{
-		module="system_locker";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class lockerResponse
-	{
-		module="system_locker";
-		parameters[]={};
-	};
-	class slothMachineRequest
-	{
-		module="system_slothMachine";
-		parameters[]={};
-	};
-	class slothMachineResponse
-	{
-		module="system_slothMachine";
-		parameters[]=
-		{
-			"STRING",
-			"SCALAR",
-			"SCALAR",
-			"ARRAY"
-		};
-	};
-	class breachingStart
-	{
-		module="system_breaching";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class breachingResponse
-	{
-		module="system_breaching";
-		parameters[]=
-		{
-			"OBJECT",
-			"OBJECT"
-		};
-	};
-	class breachingPlaceRequest
-	{
-		module="system_breaching";
-		parameters[]=
-		{
-			"ARRAY",
-			"ARRAY",
-			"OBJECT"
-		};
-	};
-	class breachingCancel
-	{
-		module="system_breaching";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class breachingPlaceResponse
-	{
-		module="system_breaching";
-		parameters[]=
-		{
-			"OBJECT"
-		};
-	};
-	class chargePlanted
-	{
-		module="system_breaching";
-		parameters[]={};
-	};
-	class detonateAllCharges
-	{
-		module="system_breaching";
-		parameters[]={};
-	};
-	class hackLockRequest
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class updateHackAttemptRequest
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class startHackRequest
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class grindNotificationRequest
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class grindLockRequest
-	{
-		module="object_lock";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class storeVehicleRequest
-	{
-		module="vehicle";
-		parameters[]=
-		{
-			"STRING",
-			"STRING"
-		};
-	};
-	class storeVehicleResponse
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"BOOL",
-			"STRING"
-		};
-	};
-	class retrieveVehicleRequest
-	{
-		module="vehicle";
-		parameters[]=
-		{
-			"STRING"
-		};
-	};
-	class retrieveVehicleResponse
-	{
-		module="object_vehicle";
-		parameters[]=
-		{
-			"BOOL"
-		};
-	};
-	class startAirdrop
-	{
-		module="airdrop";
-		parameters[] = {"STRING","STRING","STRING"};
-	};
-};
+
 class CfgPoptabStorage
 {
 	class Extremo_Container_Safe_Small { max = 25000; };	
 };
+
 class CfgSimulation
 {
 	/*
@@ -5729,6 +4295,7 @@ class CfgSimulation
 	// Multiplies the entity activation distance by set value if the entity is moving. Default: 2
 	isMovingSimulationCoef = 2;
 };
+
 class CfgSFX
 {
 	class Extremo_Sfx_Flies

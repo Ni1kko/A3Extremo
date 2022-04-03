@@ -52,8 +52,7 @@ if(count _spawnIslandPos < 2)exitWith{
 };
 
 //
-private _class = call(missionNamespace getVariable ["extremo_var_playerclass", {"C_Man_casual_6_F"}]);
-private _newcharacter = _group createUnit [_class, _spawnIslandPos, [], 0, "CAN_COLLIDE"]; 
+private _newcharacter = _group createUnit ["Extremo_Unit_Player", _spawnIslandPos, [], 0, "CAN_COLLIDE"]; 
 private _LastDir = random 360;
 
 //Reveal newbody to the oldbody

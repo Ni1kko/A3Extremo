@@ -38,7 +38,6 @@ CREATE TABLE `characters` (
   `LastPosition` text NOT NULL DEFAULT '"[]"',
   `LastHealthState` int(5) NOT NULL DEFAULT 0,
   `LastLoadout` text NOT NULL DEFAULT '"[]"',
-  `Class` varchar(255) NOT NULL,
   `Wallet` int(11) NOT NULL,
   `WorldName` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4; 

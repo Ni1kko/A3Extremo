@@ -18,12 +18,10 @@ switch _table do
 			{
 				params [
 					["_BEGuid","",[""]],
-					["_Class","",[""]],
 					["_LastLoadout",[],[[]]],
 					["_LastPosition",[],[[]]],
 					["_Wallet",0,[0]]
 				];
-				missionNamespace setVariable ["extremo_var_playerclass", compileFinal str _Class];
 				[0,"LOADED", "Your data has been loaded",true,true] call Extremo_fnc_gui_splashScreen;
 				[player,true,_LastLoadout,_LastPosition,_Wallet] call Extremo_fnc_player_login;
 			};
