@@ -8,10 +8,10 @@
 		
 	},
 	"sqfVmLanguageServer.ls.additionalMappings": [
-		{"/Extremo_assets": "D:/GitHub/Repos/Ni1kko/A3Extremo/Extremo_assets" }
+		{"/Extremo_assets": "C:/Users/Tomje/Desktop/A3Extremo/Extremo_assets" }
 	   ],
 	"sqflint.includePrefixes": {
-		"\\A3\\": "D:/SteamLibrary/steamapps/common/Arma3Server/addons" 
+		"\\A3\\": "C:/Program Files (x86)/Steam/steamapps/common/Arma 3 Server/addons" 
 	},
 	"sqflint.checkPaths": true,
 }
