@@ -22,6 +22,7 @@
 		"discord.lowerDetailsIdling": "Idling",
 		"discord.lowerDetailsNoWorkspaceFound": "No workspace",
 		"discord.smallImage": "https://github.com/Ni1kko",
-		"discord.swapBigAndSmallImage": true
+		"discord.swapBigAndSmallImage": true,
+		"discord.removeDetails": true
 	}
 }
