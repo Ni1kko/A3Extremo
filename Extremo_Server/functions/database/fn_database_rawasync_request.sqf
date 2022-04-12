@@ -51,9 +51,18 @@ with serverNamespace do
 		//--- Handle different responses from DLL
 		_extensionBusy = switch _responseCode do 
 		{
-			//--- DLL returned a complete message
-			case 3: 
+            //--- DLL returned a complete message
+			case 1: 
 			{ 
+				//--- Return query
+				_res = _responseData;
+
+				//--- Task Completed
+				false
+			};
+			//--- DLL returned busy message
+			case 3: 
+			{
 				//--- Delay before next request
 				if canSuspend then { uiSleep 0.25 };
 
@@ -88,9 +97,6 @@ with serverNamespace do
 			};
 			default 
 			{
-				//--- Return query
-				_res = _responseData;
-
 				//--- Task Completed
 				false
 			};
@@ -104,8 +110,8 @@ with serverNamespace do
 	};
 
 	//--- Return single result?
-	if (count _res >= 1 AND _single) then {
-		_res = [_res] call BIS_fnc_arrayShift;
+	if (count _res > 0 AND _single) then {
+		_res = [_res] call (missionNamespace getVariable "BIS_fnc_arrayShift");
 	};
 };
 
