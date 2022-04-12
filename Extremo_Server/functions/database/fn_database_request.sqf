@@ -89,8 +89,7 @@ with serverNamespace do
 	while{_extensionBusy} do
 	{  
 		//--- Get query message
-		private _queryResult = "extDB3" callExtension ("4:" + _sessionID); 
-		format ["_queryResult = %1",_queryResult] call Extremo_fnc_database_systemlog;
+		private _queryResult = "extDB3" callExtension ("4:" + _sessionID);
 
 		//--- Parse response
 		(parseSimpleArray _queryResult) params [
@@ -158,8 +157,6 @@ with serverNamespace do
 		["DLL Response error: response isEqualTo (%1) Expected (STRING)",typeName _res] call Extremo_fnc_database_systemlog;
 		_res = ["DB:Read:Task-failure",false];
 	};
-    
-	format ["_res = %1",_res] call Extremo_fnc_database_systemlog;
 
 	//--- Return single result?
 	if (count _res > 0 AND _single) then {
