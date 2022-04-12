@@ -19,4 +19,4 @@ jobs:
       with:
         python-version: '3.6.x'
     - name: Check Headers
-      run: python ./.gitActions/chf.py
+      run: python ./actions/chf.py
