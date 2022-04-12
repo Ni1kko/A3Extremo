@@ -113,6 +113,8 @@ try {
 
 	with serverNamespace do 
 	{ 
+		Extremo_fnc_database_systemlog = missionNamespace getVariable "Extremo_fnc_database_systemlog";
+		
 		private _databasekey = call extdb_var_database_key;
 		
 		//--- Version

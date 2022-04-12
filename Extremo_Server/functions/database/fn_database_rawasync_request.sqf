@@ -11,77 +11,102 @@
 params [ 
     ["_queryStmt","",[""]],
     ["_mode",0,[0]],
-    ["_returnSingle",false,[false]] 
+    ["_single",false]
 ];
 
-private _return = [];
+private _res = ["DB:Task-failure", false];
 
-if((serverNameSpace getvariable ["extremo_var_rcon_RestartMode", 0]) > 0 OR (serverNameSpace getvariable ["extdb_var_database_error", false]) OR isNil {serverNameSpace getvariable "extdb_var_database_key"})exitWith{_return};
+with serverNamespace do
+{
+	if(extremo_var_rcon_RestartMode > 0 OR extdb_var_database_error)exitWith{_res = []};
 
-with serverNamespace do 
-{ 
     //--- Send querry to DLL (returns: sessionID for given key)
-    private _keyResponse = parseSimpleArray("extDB3" callExtension format ["%1:%2:%3",_mode,call extdb_var_database_key,_queryStmt]);
+    private _keyResponse = ("extDB3" callExtension format ["%1:%2:%3",_mode,call extdb_var_database_key,_queryStmt]);
 
-    switch _mode do 
-    {
-        //--- Fire and forget (no return, used for inserting/deleting records)
-        case 1: {true};
-        //--- Return for query (returns, array of record(s))
-        default
-        { 
-            //--- Parse response
-            if(!(parseSimpleArray _keyResponse) params [
-                ["_responseCode",0,[0]],
-                ["_sessionID",0,[0]]
-            ])exitWith{
-                "DLL Response error" call Extremo_fnc_database_systemlog;
-            }; 
+    //--- No Database Return... Task Completed
+	if(_mode isEqualTo 1)exitWith{_res};
 
-            private _queryResult = "extDB3" callExtension format ["4:%1", _sessionID];
-            private _msgReceived = {_this isEqualTo "[3]"};
-            private _multiPart = _queryResult isEqualTo "[5]";
+    //--- Parse response
+	if not((parseSimpleArray _keyResponse) params [
+		["_responseCode",0,[0]],
+		["_sessionID","0",[""]]
+	])exitWith{
+		"DLL KeyResponse parsing error" call Extremo_fnc_database_systemlog;
+	}; 
 
-            //--- Make sure the message is received
-            if (_queryResult call _msgReceived) then 
-            {
-                while {_queryResult call _msgReceived} do {
-                    _queryResult = "extDB3" callExtension format ["4:%1", _sessionID];
-                };
-            };
+	//--- Get query result
+	private _extensionBusy = true;
+	while{_extensionBusy} do
+	{  
+		//--- Get query message
+		private _queryResult = "extDB3" callExtension ("4:" + _sessionID); 
+		format ["_queryResult = %1",_queryResult] call Extremo_fnc_database_systemlog;
 
-            //--- extDB3 returned that result is Multi-Part Message
-            if _multiPart then 
-            {
-                _queryResult = "";
+		//--- Parse response
+		(parseSimpleArray _queryResult) params [
+			["_responseCode",0,[0]],
+			["_responseData",[]]
+		];
+		
+		//--- Handle different responses from DLL
+		_extensionBusy = switch _responseCode do 
+		{
+			//--- DLL returned a complete message
+			case 3: 
+			{ 
+				//--- Delay before next request
+				if canSuspend then { uiSleep 0.25 };
 
-                //--- Loop until we get the final message
-                while {_multiPart} do
-                {
-                    private _pipe = "extDB3" callExtension format ["5:%1", _sessionID];
-                        
-                    if(_pipe isNotEqualTo "")then{
-                        _queryResult = _queryResult + _pipe;
-                    }else{
-                        _multiPart = false;
-                    };
-                };
-            };
+				//--- Task Busy
+				true
+			};
+			//--- DLL returned a Multi-Part Message (result to large for single string response due to the output buffer of DLL has a hard limit (10kb) so we need to split it up)
+			case 5:
+			{
+				private _multiPartIncoming = true;
+				private _multiPartMessage = "";
 
-            (call compile _queryResult) params [
-                ["_queryResponse",0,[0]],
-                ["_queryData",""],
-            ];
- 
-            if (_queryResponse isEqualTo 0) exitWith {format ["extDB3: Protocol Error: %1", _queryData] call Extremo_fnc_database_systemlog; []};
-            _return = _queryData;
-        }; 
-    };
+				//--- Get full message from DLL
+				while{_multiPartIncoming} do
+				{
+					private _pipeMessage = "extDB3" callExtension ("5:" + _sessionID);
+					
+					//--- Alter state depending on DLL response
+					_multiPartIncoming = _pipeMessage isNotEqualTo "";
+
+					//--- Are we receiving any parts of the message?
+					if _multiPartIncoming then {
+						_multiPartMessage = _multiPartMessage + _pipeMessage;
+					};
+				};
+				
+				//--- Construct, Parse & Return the multiPart message
+				_res = if(_multiPartMessage isNotEqualTo "")then{parseSimpleArray _multiPartMessage}else{["DB:Read:Pipe-message-lost",false]};
+
+				//--- Task Completed
+				false
+			};
+			default 
+			{
+				//--- Return query
+				_res = _responseData;
+
+				//--- Task Completed
+				false
+			};
+		};
+	};
+
+	//--- Check query is parsed into array
+	if(typeName _res isNotEqualTo "ARRAY")exitWith{
+		["DLL Response error: response isEqualTo (%1) Expected (STRING)",typeName _res] call Extremo_fnc_database_systemlog;
+		_res = ["DB:Read:Task-failure",false];
+	};
+
+	//--- Return single result?
+	if (count _res >= 1 AND _single) then {
+		_res = [_res] call BIS_fnc_arrayShift;
+	};
 };
 
-//--- Return single array
-if (count _return >= 1 AND _returnSingle) then {
-    _return = [_return] call BIS_fnc_arrayShift;
-};
-
-_return;
+_res

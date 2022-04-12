@@ -14,12 +14,13 @@ private _res = ["DB:Task-failure", false];
 
 with serverNamespace do
 {
-	if(extremo_var_rcon_RestartMode > 0 OR extdb_var_database_error)exitWith{_res};
+	if(extremo_var_rcon_RestartMode > 0 OR extdb_var_database_error)exitWith{_res = []};
 
 	private _qstring = "";
 
 	//--- Build Query
-	switch (_mode) do {
+	switch _mode do 
+	{
 		case "CREATE": 
 		{ 
 			private _columns = [];
@@ -76,72 +77,85 @@ with serverNamespace do
 	if(_mode in ["UPDATE","CREATE","DELETE","CALL"])exitWith{_res};
 
 	//--- Parse response
-	if(not((parseSimpleArray _keyResponse) params [
+	if not((parseSimpleArray _keyResponse) params [
 		["_responseCode",0,[0]],
 		["_sessionID","0",[""]]
-	]))exitWith{
+	])exitWith{
 		"DLL KeyResponse parsing error" call Extremo_fnc_database_systemlog;
 	}; 
-	
-	//--- Get query result
-	private _receivingMsg = true;
-	while{_receivingMsg} do
-	{ 
-		private _queryResult = "extDB3" callExtension ("4:" + _sessionID);
-		private _msgReceived = _queryResult isEqualTo "[3]";
-		private _multiPart = _queryResult isEqualTo "[5]";
-		private _multiPartMsg = "";
 
-		//--- DLL returned a Multi-Part Message 
-		if _multiPart then 
+	//--- Get query result
+	private _extensionBusy = true;
+	while{_extensionBusy} do
+	{  
+		//--- Get query message
+		private _queryResult = "extDB3" callExtension ("4:" + _sessionID); 
+		format ["_queryResult = %1",_queryResult] call Extremo_fnc_database_systemlog;
+
+		//--- Parse response
+		(parseSimpleArray _queryResult) params [
+			["_responseCode",0,[0]],
+			["_responseData",[]]
+		];
+		
+		//--- Handle different responses from DLL
+		_extensionBusy = switch _responseCode do 
 		{
-			//--- Get full message from DLL
-			while{true} do {
-				private _pipe = "extDB3" callExtension ("5:" + _sessionID);
-				if(_pipe isEqualTo "") exitWith {_receivingMsg = false};
-				_multiPartMsg = _multiPartMsg + _pipe;
-			}; 
-		} else {
-			//--- Make sure the message is received
-			if _msgReceived then {
-				uisleep 0.25;
-			} else {
-				_receivingMsg = false;
+			//--- DLL returned a complete message
+			case 3: 
+			{ 
+				//--- Delay before next request
+				if canSuspend then { uiSleep 0.25 };
+
+				//--- Task Busy
+				true
+			};
+			//--- DLL returned a Multi-Part Message (result to large for single string response due to the output buffer of DLL has a hard limit (10kb) so we need to split it up)
+			case 5:
+			{
+				private _multiPartIncoming = true;
+				private _multiPartMessage = "";
+
+				//--- Get full message from DLL
+				while{_multiPartIncoming} do
+				{
+					private _pipeMessage = "extDB3" callExtension ("5:" + _sessionID);
+					
+					//--- Alter state depending on DLL response
+					_multiPartIncoming = _pipeMessage isNotEqualTo "";
+
+					//--- Are we receiving any parts of the message?
+					if _multiPartIncoming then {
+						_multiPartMessage = _multiPartMessage + _pipeMessage;
+					};
+				};
+				
+				//--- Construct, Parse & Return the multiPart message
+				_res = if(_multiPartMessage isNotEqualTo "")then{parseSimpleArray _multiPartMessage}else{["DB:Read:Pipe-message-lost",false]};
+
+				//--- Task Completed
+				false
+			};
+			default 
+			{
+				//--- Return query
+				_res = _responseData;
+
+				//--- Task Completed
+				false
 			};
 		};
-
-		//--- Was a Multi-Part Message received?
-		if(_multiPart AND count _multiPartMsg > 0)then{
-			_res = _multiPartMsg;
-		}else{ 
-			_res = _queryResult;
-		};
 	};
 
-	//--- Check response can be compiled
-	if(typeName _res isNotEqualTo "STRING")exitWith{
+	//--- Check query is parsed into array
+	if(typeName _res isNotEqualTo "ARRAY")exitWith{
 		["DLL Response error: response isEqualTo (%1) Expected (STRING)",typeName _res] call Extremo_fnc_database_systemlog;
-		_res = ["DB:Read:Task-failure"];
-	};
-	
-	//--- Parse response
-	if(not((parseSimpleArray _res) params [
-		["_queryResponse",0,[0]],
-		["_queryData",[]]
-	]))exitWith{
-		"DLL Response parsing error" call Extremo_fnc_database_systemlog;
-	};
-
-	//--- Bad Result
-	if (_queryResponse isEqualTo 0) exitWith {
-		_res = ["DB:Read:Task-failure"];
+		_res = ["DB:Read:Task-failure",false];
 	};
 
 	//--- Return single result?
-	if (count _queryData >= 1 AND _single) then {
-		_res = [_queryData] call BIS_fnc_arrayShift;
-	}else{
-		_res = _queryData;
+	if (count _res >= 1 AND _single) then {
+		_res = [_res] call BIS_fnc_arrayShift;
 	};
 };
 
