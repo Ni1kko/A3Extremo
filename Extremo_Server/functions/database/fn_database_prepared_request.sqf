@@ -7,30 +7,33 @@
 		1: INTEGER (1 = ASYNC + not return for update/insert, 2 = ASYNC + return for query's).
 		3: BOOL (False to return a single array, True to return multiple entries mainly for garage).
 */
-
-if !(call extdb_var_database_prepared)exitWith{ 
-    diag_log "extDB3: Protocol Error, cant use `extdb_fnc_preparedCall` with SQL Raw";
+ 
+if !(call (serverNameSpace getvariable ["extdb_var_database_prepared",{true}]))exitWith{ 
+    "Protocol Error, cant use `extdb_fnc_preparedCall` with SQL Raw" call Extremo_fnc_database_systemlog;
 };
 
-if(extremo_var_rcon_RestartMode > 0 || extdb_var_database_error || isNil "extdb_var_database_key")exitWith{false};
+if((serverNameSpace getvariable ["extremo_var_rcon_RestartMode", 0]) > 0 OR (serverNameSpace getvariable ["extdb_var_database_error", false]) OR isNil {serverNameSpace getvariable "extdb_var_database_key"})exitWith{false};
 
-waitUntil {uiSleep (random .25); !extdb_var_database_preparedAsync};
-
-extdb_var_database_preparedAsync = true;
+//--- Handle aSync call to database
+waitUntil {uiSleep (random .25); not(serverNameSpace getvariable ["extdb_var_database_preparedAsync", false])};
+serverNameSpace setvariable ["extdb_var_database_preparedAsync", true];
 
 private _queryStmt = [_this,0,"",[""]] call BIS_fnc_param;
 private _mode = [_this,1,1,[0]] call BIS_fnc_param;
 private _multiarr = [_this,2,false,[false]] call BIS_fnc_param;
 private _tickTime = diag_tickTime;
-private _key = "extDB3" callExtension format["%1:%2:%3",_mode, call extdb_var_database_key, _queryStmt];
+private _key = "extDB3" callExtension format["%1:%2:%3",_mode, call (serverNameSpace getvariable ["extdb_var_database_key",{-1}]), _queryStmt];
 
-if(_mode isEqualTo 1) exitWith {extdb_var_database_preparedAsync = false; true};
+if(_mode isEqualTo 1) exitWith {
+	serverNameSpace setvariable ["extdb_var_database_preparedAsync", false]; 
+	true
+};
 
 _key = call compile format["%1",_key];
 _key = _key select 1;
 
-waitUntil{uisleep (random .25); !extdb_var_database_prepared_asynclock};
-extdb_var_database_prepared_asynclock = true;
+waitUntil{uisleep (random .25); not(serverNameSpace getvariable ["extdb_var_database_prepared_asynclock", false])};
+serverNameSpace setvariable ["extdb_var_database_prepared_asynclock", true]; 
 
 // Get Result via 4:x (single message return)  v19 and later
 _fetchTime = diag_tickTime;
@@ -63,8 +66,8 @@ while{_loop} do
 
 diag_log format ["extDB3: QUERY: %1 ALLTIME: %3 GETTIME: %4 RESULT: %2", _queryStmt,_queryResult,diag_tickTime - _tickTime,diag_tickTime - _fetchTime];
 
-extdb_var_database_prepared_asynclock = false;
-extdb_var_database_preparedAsync = false;
+serverNameSpace setvariable ["extdb_var_database_preparedAsync", false]; 
+serverNameSpace setvariable ["extdb_var_database_prepared_asynclock", true]; 
 
 _queryResult = call compile _queryResult;
 

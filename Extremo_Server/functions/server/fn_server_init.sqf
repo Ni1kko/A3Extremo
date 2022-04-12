@@ -34,8 +34,10 @@ if !Extremo_var_system_versionOK exitWith {
 
 //--- 
 "Server loading..." call Extremo_fnc_server_log;
-extremo_var_rcon_restartmode = 0;
-extremo_var_rcon_passwordOK = false;
+with serverNamespace do {
+	extremo_var_rcon_restartmode = 0;
+	extremo_var_rcon_passwordOK = false;
+};
 
 //--- 
 if !(getRemoteSensorsDisabled) then{
