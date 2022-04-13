@@ -4,10 +4,14 @@
 name: SQF Functions
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+push:
+branches:
+-'\*'  
+-'!\*/\*'
+pull_request:
+branches:
+-'\*'  
+-'!\*/\*'
 
 jobs:
   validate:
