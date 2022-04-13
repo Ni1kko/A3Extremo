@@ -65,5 +65,14 @@ class CfgFunctions
             class vehicles_updateVinPin {};
             class vehicles_purchase {}; 
         };
+
+        //--- Extremo Loot Functions
+        class Vehicles_Functions
+        {
+            file = "\Extremo_Server\functions\loot"; 
+            class loot_addItem {};
+            class loot_spawn {};
+            class loot_thread {};
+        };
     };
 };
