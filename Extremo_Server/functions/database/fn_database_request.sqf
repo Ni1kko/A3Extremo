@@ -10,11 +10,13 @@ params [
 	["_single",false]
 ];
 
-private _res = ["DB:Task-failure", false];
+
+private _resException = "";
+private _res = [];
 
 with serverNamespace do
 {
-	if(extremo_var_rcon_RestartMode > 0 OR extdb_var_database_error)exitWith{_res = []};
+	if(extremo_var_rcon_RestartMode > 0 OR extdb_var_database_error)exitWith{};
 
 	private _qstring = "";
 
@@ -30,7 +32,7 @@ with serverNamespace do
 				_values pushBack (_x#1);
 			} forEach _params; 
 			_qstring = ("1:" + str(call extdb_var_database_key) + ":INSERT INTO " + _table + " (" + (_columns joinString ",") + ")VALUES(" + (_values joinString ",") + ")");
-			_res = ["DB:Create:Task-completed",true];
+			_resException = "DB:Create:Task-success";
 			//"1:464:INSERT INTO players (name,aliases,playerid,cash,safe)VALUES(Nikko2,""[``test``]"",76561198276956558,0,10000)"
 		};
 		case "READ": 
@@ -47,7 +49,7 @@ with serverNamespace do
 			private _clauses = [];{_clauses pushBack (_x joinString "=")} forEach (_params#1);
 			_qstring = ("1:" + str(call extdb_var_database_key) + ":UPDATE " + _table + " SET " + (_columns joinString ","));
 			if(count _clauses > 0)then{_qstring = _qstring + (" WHERE " + (_clauses joinString " AND "));};
-			_res = ["DB:Update:Task-completed",true];
+			_resException = "DB:Update:Task-success";
 			//"1:464:UPDATE players SET cash=500,safe=99999 WHERE playerid=76561199109931625"
 		};
 		case "DELETE": 
@@ -55,13 +57,13 @@ with serverNamespace do
 			private _clauses = [];{_clauses pushBack (_x joinString "=")} forEach (_params#0);
 			_qstring = ("1:" + str(call extdb_var_database_key) + ":DELETE FROM " + _table);
 			if(count _clauses > 0)then{_qstring = _qstring + (" WHERE " + (_clauses joinString " AND "));};
-			_res = ["DB:Delete:Task-completed",true];
+			_resException = "DB:Delete:Task-success";
 			//"1:464:DELETE FROM vehicles WHERE id=1"
 		};
 		case "CALL": 
 		{  
 			_qstring = ("1:" + str(call extdb_var_database_key) + ":CALL " + _table);
-			_res = ["DB:Call:Task-completed",true];
+			_resException = "DB:Call:Task-success";
 			//"1:464:CALL deleteOldGangs"
 		};
 		default
@@ -72,10 +74,7 @@ with serverNamespace do
  
     //--- Send querry to DLL (returns: sessionID for given key)
     private _keyResponse = ("extDB3" callExtension _qstring);
- 
-	//--- No Database Return... Task Completed
-	if(_mode in ["UPDATE","CREATE","DELETE","CALL"])exitWith{_res};
-
+	
 	//--- Parse response
 	if not((parseSimpleArray _keyResponse) params [
 		["_responseCode",0,[0]],
@@ -83,6 +82,14 @@ with serverNamespace do
 	])exitWith{
 		"DLL KeyResponse parsing error" call Extremo_fnc_database_systemlog;
 	}; 
+	
+	format ["_keyResponse = %1",_keyResponse] call Extremo_fnc_database_systemlog;
+
+	//--- No Database Return... Task Completed
+	if(_mode in ["UPDATE","CREATE","DELETE","CALL"])exitWith{
+		_resException = format ["%1:%2",_resException,["Task-failure","Task-success"] select (_responseCode > 0)];
+		_resException call Extremo_fnc_database_systemlog;
+	};
 
 	//--- Get query result
 	private _extensionBusy = true;
@@ -144,8 +151,11 @@ with serverNamespace do
 				//--- Task Completed
 				false
 			};
+			//--- DLL returned a non handled response 
 			default 
 			{
+				_resException = "DB:Read:Unhandled-response";
+
 				//--- Task Completed
 				false
 			};
@@ -154,8 +164,8 @@ with serverNamespace do
 
 	//--- Check query is parsed into array
 	if(typeName _res isNotEqualTo "ARRAY")exitWith{
-		["DLL Response error: response isEqualTo (%1) Expected (STRING)",typeName _res] call Extremo_fnc_database_systemlog;
-		_res = ["DB:Read:Task-failure",false];
+		_resException = "DB:Read:Error-parsing-response";
+		_resException call Extremo_fnc_database_systemlog;
 	};
 
 	//--- Return single result?
@@ -164,7 +174,7 @@ with serverNamespace do
 	};
 };
 
-_res
+[_res,_resException] select (_resException isNotEqualTo "");
 
 /* 
 	["CREATE", "players", 
