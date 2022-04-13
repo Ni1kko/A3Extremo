@@ -1,4 +1,4 @@
-# ArmA3 - Extremo
+# Arma3 - Extremo
 Extremo Survival Framework
 
 ### File Checks
