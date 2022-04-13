@@ -24,7 +24,7 @@ private _vehiclesDB = ["READ","vehicles",
 	]
 ]call Extremo_fnc_database_request;
 
-if(_vehiclesDB isEqualTo ["DB:Read:Task-failure",false])then{
+if (typeName _vehiclesDB isNotEqualTo "ARRAY") exitWith {
 	_vehiclesDB = [];
 };
 

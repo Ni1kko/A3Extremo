@@ -29,7 +29,7 @@ private _getNewVin = {
 private _isUniqueVin = {
 	params ["_vin"];
 	private _vehiclesDB = ["READ","vehicles",[["ID"],[["VIN", ["DB","STRING", _vin] call Extremo_fnc_database_parse]]]]call Extremo_fnc_database_request;
-	if(_vehiclesDB isEqualTo ["DB:Read:Task-failure",false])exitWith{false};
+	if (typeName _vehiclesDB isNotEqualTo "ARRAY") exitWith {false};
 	count _vehiclesDB isEqualTo 0
 };
 

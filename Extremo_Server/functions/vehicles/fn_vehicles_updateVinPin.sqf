@@ -27,13 +27,13 @@ private _vehiclesDB = ["READ","vehicles",
 	],
 	true
 ]call Extremo_fnc_database_request;
-if(_vehiclesDB isEqualTo ["DB:Read:Task-failure",false])exitWith{false};
+if (typeName _vehiclesDB isNotEqualTo "ARRAY") exitWith {false};
 
 _vehiclesDB params [
 	["_vehicleID",-1],
 	["_vehicleClass",""]
 ];
-
+ 
 //Generate New VIN
 private _vinNew = [_vehicleClass,_lockCode,_steamID] call extremo_fnc_vehicles_generateVIN;
 
@@ -49,7 +49,9 @@ private _updateRequest = ["UPDATE","vehicles",
 		]
 	]
 ]call Extremo_fnc_database_request;
-if(_updateRequest isEqualTo ["DB:Read:Task-failure",false])exitWith{false};
+   
+if(_updateRequest isEqualTo "DB:Update:Task-success")then{
+	//Set VIN on object
+	[_vehicle,_vinNew] call extremo_fnc_vehicles_setObjectVin;
+};
 
-//Set VIN on object
-[_vehicle,_vinNew] call extremo_fnc_vehicles_setObjectVin;

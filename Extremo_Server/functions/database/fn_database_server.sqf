@@ -51,11 +51,6 @@ switch _table do {
 					format["Reading database records for BEGuid: %1", _BEGuid] call Extremo_fnc_database_systemlog;
 					private _request = ["READ",_table,[["BEGuid","S64ID","LastKnownName","LastLoadout","LastPosition","Wallet"],_whereClause]]call Extremo_fnc_database_request;
 
-					//--- DB Down...
-					if("DB:Task-failure" in _request)exitWith {
-						[_rexecID, "Warning error occured with database"] call Extremo_fnc_system_kick;
-					};
-
 					//--- Bad.. fail safe
 					if (typeName _request isNotEqualTo "ARRAY") exitWith {
 						missionNamespace setVariable [_uniqueVar, (_attempts + 1), true];
@@ -78,7 +73,7 @@ switch _table do {
 							]
 						]call Extremo_fnc_database_request;
 
-						if("DB:Task-failure" in _request)exitWith {
+						if (typeName _request isNotEqualTo "ARRAY") exitWith {
 							[_rexecID, "Warning error occured with database"] call Extremo_fnc_system_kick;
 						};
 						
@@ -224,7 +219,7 @@ switch _table do {
 						]
 					]call Extremo_fnc_database_request;
 
-					if("DB:Task-failure" in _request)exitWith {
+					if (typeName _request isNotEqualTo "ARRAY") exitWith {
 						[_rexecID, "Warning error occured with database"] call Extremo_fnc_system_kick;
 					};
 					
@@ -252,7 +247,7 @@ switch _table do {
 					],true
 				]call Extremo_fnc_database_request;
 
-				if(_request isEqualTo ["DB:Read:Task-failure",false])exitWith{
+				if (typeName _request isNotEqualTo "ARRAY") exitWith {
 					[_rexecID, "Warning error occured with database"] call Extremo_fnc_system_kick;
 				};
 
@@ -378,7 +373,7 @@ switch _table do {
 //--- Any updates?
 if(count _updates > 0)then{ 
 	_request = ["UPDATE",_table,[_updates,_whereClause]]call Extremo_fnc_database_request;
-	if("DB:Update:Task-completed" in _request)then {
+	if(_request isEqualTo "DB:Update:Task-success")then {
 		format["Updated Database table: %1", _table] call Extremo_fnc_database_systemlog;
 	};
 };
