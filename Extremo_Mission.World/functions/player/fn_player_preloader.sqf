@@ -8,7 +8,7 @@
 [0,"Preloader","%Loading%",true,true] call Extremo_fnc_gui_splashScreen;
 uiSleep 1.2;
 
-private _preloadDistance = 500;
+private _preloadDistance = 150;
 private _preloadObjects = [];
 private _nearestObjects = nearestTerrainObjects [
 	player,
