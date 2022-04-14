@@ -54,6 +54,9 @@ Extremo_HandleDisconnect = addMissionEventHandler ["HandleDisconnect", Extremo_f
 //--- Initialize vehicles that are stored within SQL database and random config vehicles
 [] spawn extremo_fnc_vehicles_initialize;
 
+//--- Initialize random config loot
+[] spawn extremo_fnc_loot_initialize;
+
 //--- 
 [] spawn {
 	while {true} do {
