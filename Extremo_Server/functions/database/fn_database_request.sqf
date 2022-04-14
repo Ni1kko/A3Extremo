@@ -50,7 +50,7 @@ with serverNamespace do
 			_qstring = ("1:" + str(call extdb_var_database_key) + ":UPDATE " + _table + " SET " + (_columns joinString ","));
 			if(count _clauses > 0)then{_qstring = _qstring + (" WHERE " + (_clauses joinString " AND "));};
 			_resException = "DB:Update:Task-success";
-			//"1:464:UPDATE players SET cash=500,safe=99999 WHERE playerid=76561199109931625"
+			//"1:65207:UPDATE characters SET Wallet=99999 WHERE S64ID=76561199109931625"
 		};
 		case "DELETE": 
 		{  
@@ -75,6 +75,12 @@ with serverNamespace do
     //--- Send querry to DLL (returns: sessionID for given key)
     private _keyResponse = ("extDB3" callExtension _qstring);
 	
+	//--- No Database Return... Task Completed
+	if(_mode in ["UPDATE","CREATE","DELETE","CALL"])exitWith{
+		_resException = format ["%1:Task-success",_resException];
+		_resException call Extremo_fnc_database_systemlog;
+	};
+
 	//--- Parse response
 	if not((parseSimpleArray _keyResponse) params [
 		["_responseCode",0,[0]],
@@ -83,13 +89,7 @@ with serverNamespace do
 		"DLL KeyResponse parsing error" call Extremo_fnc_database_systemlog;
 	}; 
 	
-	format ["_keyResponse = %1",_keyResponse] call Extremo_fnc_database_systemlog;
-
-	//--- No Database Return... Task Completed
-	if(_mode in ["UPDATE","CREATE","DELETE","CALL"])exitWith{
-		_resException = format ["%1:%2",_resException,["Task-failure","Task-success"] select (_responseCode > 0)];
-		_resException call Extremo_fnc_database_systemlog;
-	};
+	//format ["_keyResponse = %1",_keyResponse] call Extremo_fnc_database_systemlog;
 
 	//--- Get query result
 	private _extensionBusy = true;
