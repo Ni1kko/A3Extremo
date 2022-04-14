@@ -33,6 +33,15 @@ class CfgFunctions
             class event_mpKilled {};
         };
 
+        //--- Extremo Loot Functions
+        class Loot_Functions
+        {
+            file = "\Extremo_Server\functions\loot";
+            class loot_initialize {};
+            class loot_addItem {};
+            class loot_spawn {};
+        };
+
         //--- Extremo Server Functions 
         class Server_Functions
         {
@@ -47,6 +56,14 @@ class CfgFunctions
             file = "\Extremo_Server\functions\system"; 
             class system_versionInfo {};
             class system_getObjectFromBEGuid {};
+        };
+
+        //--- Extremo Utils Functions
+        class Utils_Functions
+        {
+            file = "\Extremo_Server\functions\utils";
+            class utils_getCargoType {}; 
+            class utils_isTerritoryInRange {}; 
         };
 
         //--- Extremo Vehicles Functions
@@ -64,15 +81,6 @@ class CfgFunctions
             class vehicles_setObjectVin {};
             class vehicles_updateVinPin {};
             class vehicles_purchase {}; 
-        };
-
-        //--- Extremo Loot Functions
-        class Vehicles_Functions
-        {
-            file = "\Extremo_Server\functions\loot"; 
-            class loot_addItem {};
-            class loot_spawn {};
-            class loot_thread {};
         };
     };
 };

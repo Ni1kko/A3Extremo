@@ -3367,6 +3367,7 @@ class CfgFactionClasses
         side = 0;
     };
 };
+
 //--- Loot System
 class CfgExtremoLoot 
 {

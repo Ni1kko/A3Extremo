@@ -2,10 +2,10 @@
 	## EXTREMO Survival
 	## Nikko Renolds
 */
- 
+
 private _playerObject = _this;
 private _spawnedLoot = false;
-private _config = missionConfigFile >> "Extremo_Settings" >> "Loot";
+private _config = configFile >> "CfgExtremoLoot";
 private _spawnRadius = getNumber (_config >> "spawnRadius");
 private _spawnChancePerPosition = (getNumber (_config >> "spawnChancePerPosition") max 0) min 99; 
 private _spawnChancePerBuilding = (getNumber (_config >> "spawnChancePerBuilding") max 0) min 99; 
@@ -36,10 +36,10 @@ try
 				{
 					if ((floor (random 100)) <= _spawnChancePerBuilding) then {
 						if (_minimumDistanceToTraderZones > 0) then {
-							if ([_building, _minimumDistanceToTraderZones] call Extremo_fnc_util_isTraderZoneInRange) throw false; 
+							if ([_building, _minimumDistanceToTraderZones] call Extremo_fnc_utils_isTraderZoneInRange) throw false; 
 						};
 						if (_minimumDistanceToTerritories > 0) then {
-							if ([_building, _minimumDistanceToTerritories] call Extremo_fnc_util_isTerritoryInRange) throw false;
+							if ([_building, _minimumDistanceToTerritories] call Extremo_fnc_utils_isTerritoryInRange) throw false;
 						};
 
 						private _buildingConfig = _config >> "Buildings" >> _buildingType;
@@ -63,7 +63,7 @@ try
 								for "_n" from 1 to _numberOfItemsToSpawn do  {
 									private _itemClassName = _lootTableName call Extremo_fnc_loot_addItem;
 									if !(_itemClassName in _spawnedItemClassNames) then {
-										private _cargoType = _itemClassName call Extremo_fnc_util_getCargoType;
+										private _cargoType = _itemClassName call Extremo_fnc_utils_getCargoType;
 
 										if (isNull _lootHolder) then  { 
 											_lootHolder = createVehicle ["LootWeaponHolder", _lootPosition, [], 0, "CAN_COLLIDE"]; 
