@@ -11,17 +11,6 @@
 		"sqflint.includePrefixes": {
 			"\\A3\\": "C:/Program Files (x86)/Steam/steamapps/common/Arma 3 Server/addons"
 		},
-		"sqflint.checkPaths": true,
-		"discord.detailsDebugging": "Debugging {file_name}",
-		"discord.detailsEditing": "Editing {file_name} - Line#{current_line}",
-		"discord.detailsIdling": "Idling",
-		"discord.largeImage": "Editing a {LANG} file",
-		"discord.largeImageIdling": "Idling",
-		"discord.lowerDetailsDebugging": "Debugging: {workspace}  - {git_branch}",
-		"discord.lowerDetailsEditing": "Workspace: {workspace_folder} - {git_branch}",
-		"discord.lowerDetailsIdling": "Idling",
-		"discord.lowerDetailsNoWorkspaceFound": "No workspace",
-		"discord.smallImage": "https://github.com/IceEagle132",
-		"discord.swapBigAndSmallImage": true
+		"sqflint.checkPaths": true
 	}
 }
