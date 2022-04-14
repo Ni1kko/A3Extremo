@@ -3,7 +3,10 @@
 	## Nikko Renolds
 */
 
-private _playerObject = _this;
+params [
+	["_playerObject",objnull,[objnull]]
+];
+
 private _spawnedLoot = false;
 private _config = configFile >> "CfgExtremoLoot";
 private _spawnRadius = getNumber (_config >> "spawnRadius");
