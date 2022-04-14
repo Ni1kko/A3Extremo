@@ -5,7 +5,7 @@ html {
 }
 .navbar-custom,
 body {
-    background-color: #000
+    background-color: #1a232d
 }
 .intro,
 body,
@@ -51,7 +51,7 @@ p {
     }
 }
 a {
-    color: #42DCA3;
+    color: #c8284f;
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out
@@ -59,7 +59,7 @@ a {
 a:focus,
 a:hover {
     text-decoration: none;
-    color: #1d9b6c
+    color: #db3e42
 }
 .light {
     font-weight: 400
@@ -121,7 +121,7 @@ a:hover {
     }
     .navbar-custom.top-nav-collapse {
         padding: 0;
-        background: #000;
+        background: #1a232d;
         border-bottom: 1px solid rgba(255, 255, 255, .3)
     }
 }
@@ -131,7 +131,7 @@ a:hover {
     padding: 100px 0;
     text-align: center;
     color: #fff;
-    background: url(../img/intro-bg.jpg) bottom center no-repeat #000;
+    background: url(../img/intro-bg.jpg) bottom center no-repeat #1a232d;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -218,15 +218,19 @@ a:hover {
 .content-section {
     padding-top: 100px
 }
+.extremo-logo {
+    margin-top: -140px;
+}
 .download-section {
     width: 100%;
+    margin-top: -250px;
     padding: 50px 0;
-    color: #fff;
-    background: url(../img/downloads-bg.jpg) center center no-repeat #000;
+    color: #fff; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
-    -o-background-size: cover
+    -o-background-size: cover;
+    border-top: 1px solid #c8284f;
 }
 #map {
     width: 100%;
@@ -239,6 +243,9 @@ a:hover {
     }
     .download-section {
         padding: 100px 0
+    }
+    .extremo-logo {
+        margin-top: -380px;
     }
     #map {
         height: 400px;
@@ -253,16 +260,16 @@ a:hover {
     border-radius: 0
 }
 .btn-default {
-    border: 1px solid #42DCA3;
-    color: #42DCA3;
+    border: 1px solid #c8284f;
+    color: #c8284f;
     background-color: transparent
 }
 .btn-default:focus,
 .btn-default:hover {
-    border: 1px solid #42DCA3;
+    border: 1px solid #c8284f;
     outline: 0;
-    color: #000;
-    background-color: #42DCA3
+    color: #1a232d;
+    background-color: #c8284f
 }
 ul.banner-social-buttons {
     margin-top: 0
@@ -283,6 +290,7 @@ ul.banner-social-buttons {
     }
 }
 footer {
+    border-top: 1px solid #c8284f;
     padding: 50px 0
 }
 footer p {
