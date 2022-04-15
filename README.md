@@ -1,3 +1,4 @@
 # A3Extremo GitPages
 
-[View page](https://ni1kko.github.io/A3Extremo/)
+## Repo has been moved
+[New Repo](https://github.com/ExtremoDevTeam/HomePage)
